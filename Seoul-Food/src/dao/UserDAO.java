@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.File;
 import java.util.LinkedHashMap;
 
 import beans.User;
@@ -10,6 +11,22 @@ public class UserDAO {
 	
 	private String path; 
 	public UserDAO() {
-		//Constructor
+		File dir = new File(System.getProperty("catalina.base")+ File.separator + "appData");
+		
+		if(!dir.exists()) {
+			dir.mkdir();
+		}
+		
+		this.path = System.getProperty("catalina.base")+ File.separator + "appData"+ File.separator + "users.json";
+		this.users = new LinkedHashMap<String, User>();
+		
+		
 	}
+	
+	public void readUsers() {
+		
+		//ObjectMapper om = new ObjectMapper();
+		
+	}
+	
 }
