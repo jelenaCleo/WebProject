@@ -3,6 +3,8 @@ package dao;
 import java.io.File;
 import java.util.LinkedHashMap;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import beans.User;
 
 public class UserDAO {
@@ -25,7 +27,7 @@ public class UserDAO {
 	
 	public void readUsers() {
 		
-		//ObjectMapper om = new ObjectMapper();
+		ObjectMapper om = new ObjectMapper();
 		//xoxoxo
 		
 	}
