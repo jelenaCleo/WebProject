@@ -11,9 +11,5 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/jackson-annotations-2.12.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/jackson-core-2.12.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/jackson-databind-2.12.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
