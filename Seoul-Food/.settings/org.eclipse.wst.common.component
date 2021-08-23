@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-        
-    <wb-module deploy-name="Seoul-Food">
-                
-        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-                
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <dependent-module archiveName="json-simple-1.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/json-simple-1.1.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jackson-databind-2.12.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/jackson-databind-2.12.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jackson-core-2.12.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/jackson-core-2.12.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jackson-annotations-2.12.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/jackson-annotations-2.12.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-                
-        <property name="context-root" value="Seoul-Food"/>
-                
-        <property name="java-output-path" value="/Seoul-Food/build/classes"/>
             
-    </wb-module>
     
+    <wb-module deploy-name="Seoul-Food">
+                        
+        
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+                        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+                
+        <dependent-module archiveName="json-simple-1.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/json-simple-1.1.1.jar">
+                        
+            <dependency-type>uses</dependency-type>
+                    
+        </dependent-module>
+                
+        <dependent-module archiveName="jackson-databind-2.12.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/jackson-databind-2.12.1.jar">
+                        
+            <dependency-type>uses</dependency-type>
+                    
+        </dependent-module>
+                
+        <dependent-module archiveName="jackson-core-2.12.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/jackson-core-2.12.1.jar">
+                        
+            <dependency-type>uses</dependency-type>
+                    
+        </dependent-module>
+                
+        <dependent-module archiveName="jackson-annotations-2.12.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Kleopatra/Desktop/III/WEB/WebProject/Seoul-Food/WebContent/WEB-INF/lib/jackson-annotations-2.12.1.jar">
+                        
+            <dependency-type>uses</dependency-type>
+                    
+        </dependent-module>
+                        
+        
+        <property name="context-root" value="Seoul-Food"/>
+                        
+        
+        <property name="java-output-path" value="/Seoul-Food/build/classes"/>
+                    
+    
+    </wb-module>
+        
+
 </project-modules>
