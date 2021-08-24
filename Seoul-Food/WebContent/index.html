@@ -1,29 +1,41 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-    </head>
-    <body>
-        <div id="app">
-            <h1>Wellcome</h1>
-           
-                <router-view></router-view>
-                
-                
-           
-          
-        </div>
 
-        <!-- Libs includes -->
-	<script src="js/vue.js"></script>
-	<script src="js/vue-router.js"></script>
-	<script src="js/axios.js"></script>
-  <!-- <script src="js/jquery-3.3.1.min.js"></script>--> 
-	<script src="js/toast.js"></script>
+<head>
+	<link href="css/toast.css" rel="stylesheet" />
+	<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
+	
+	<meta charset="utf-8"/>
 
-    <script src="app/app.js"></script>
-    <script src="app/Jelena.js"></script>
-    <script src="app/x1.js"></script>
 
-    </body>
-    </html>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--update on this-->
+    <link rel="stylesheet" href="Login.css">
+
+</head> 
+
+<body>
+<div  id="application" align="center">
+
+	<navbar></navbar>
+	<router-view></router-view>
+	  
+</div>
+
+<script src="js/vue.js"></script>
+<script src="js/vue-router.js"></script>
+<script src="js/axios.js"></script>
+<script src="js/jquery.min.js"></script> 
+<script src="js/toast.js"></script> 
+<script src="js/toastr.min.js"></script>
+
+
+<script src="app/components/login.js"></script>
+<script src="app/components/x.js"></script>
+<script src="app/components/navbar.js"></script>
+<script src="app/components/register.js"></script>
+<script src="app/app.js"></script>
+<script src="bootstrap-5.0.2-dist/js/bootstrap.js"></script>
+</body>
+</html>
