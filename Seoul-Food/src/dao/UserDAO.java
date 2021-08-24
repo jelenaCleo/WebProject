@@ -111,6 +111,15 @@ public class UserDAO {
 		return null;
 	}
 	
+	public User findUserByUsername(String username) {
+		for (User currentUser : getValues()) {
+			if(currentUser.getUsername().equals(username))
+				return currentUser;
+		}
+		
+		return null;
+	}
+	
 	public User getUserByUsername(String username) {
 		if (users.containsKey(username)) {
 			return users.get(username);
@@ -129,9 +138,30 @@ public class UserDAO {
 		saveUsersJSON();
 	}
 	
+	public void blockUserByUsername(String username) {
+
+		User tempUser = findUserByUsername(username);
+		if( tempUser != null) {
+			tempUser.setBlocked(1);
+		}
+		
+		saveUsersJSON();
+	}
+	
+	
 	public void unblockUserById(Integer id) {
 
 		User tempUser = findUserById(id);
+		if( tempUser != null) {
+			tempUser.setBlocked(0);
+		}
+		
+		saveUsersJSON();
+	}
+	
+	public void unblockUserById(String username) {
+
+		User tempUser = findUserByUsername(username);
 		if( tempUser != null) {
 			tempUser.setBlocked(0);
 		}
