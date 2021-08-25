@@ -47,9 +47,8 @@ public class UserService {
 		usersDAO.addUser(user);
 		System.out.println("REGISTRACIIIJAAA " + user.username);
 		
-		return Response.status(Response.Status.OK).build();
-		//return Response.status(Response.Status.ACCEPTED).entity("/Apartments/#/login").build(); // redirect to login
-																								// when is registration																							// accepted
+		//return Response.status(Response.Status.OK).build();
+		return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html").build(); 	
 	}
 	
 	private UserDAO getUsers() {
@@ -104,31 +103,29 @@ public class UserService {
 		// Guest, Host]
 		if (userForLogin.getRole().equals("ADMIN")) {
 			System.out.println("REGISTRACIIIJAAA ADMIN " + user.username);
-			return Response.status(Response.Status.ACCEPTED).entity("ovde vratim sl putanju kao na primer : /Seoul-Food/proba.html").build();
+			return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/adminHome.html").build();
 
 			//return Response.status(Response.Status.OK).build();
 			
 		} else if (userForLogin.getRole().equals("MANAGER")) {
-			//return Response.status(Response.Status.ACCEPTED).entity("").build();
+			
 			System.out.println("REGISTRACIIIJAAA MANAGER " + user.username);
-			return Response.status(Response.Status.OK).build();
+			return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/managerHome.html").build();
 			
 		} else if (userForLogin.getRole().equals("DELIVERYMAN")) {
-			//return Response.status(Response.Status.ACCEPTED).entity("").build();
+			
 			System.out.println("REGISTRACIIIJAAA DELIVERYMAN" + user.username);
-			return Response.status(Response.Status.OK).build();
+			return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/deliveryHome.html").build();
 			
 		} else if (userForLogin.getRole().equals("BUYER")) {
-			//return Response.status(Response.Status.ACCEPTED).entity("").build();
+			
 			System.out.println("REGISTRACIIIJAAA BUYER" + user.username);
-			return Response.status(Response.Status.OK).build();
+			return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/costumerHome.html").build();
 			
 		}
 
-		//return Response.status(Response.Status.ACCEPTED).entity("/Apartments/#/loginaaa").build(); // redirect to login
-		return Response.noContent().build();																					// when is login
-																									// accepted
-		// return Response.ok().build();
+		return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html").build(); 
+		
 
 	}
 	

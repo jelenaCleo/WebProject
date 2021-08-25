@@ -95,7 +95,8 @@ Vue.component("login", {
                 console.log(response.data);
                 toastr["success"]("Success log in!");
                 
-                
+                location.href = response.data;
+                console.log("-------------------redirektoovano-----------------" + response.data);
              })
              .catch(err =>{ 
                 console.log("\n\n ------- ERROR LOGIN-------\n");
