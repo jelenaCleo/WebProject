@@ -85,7 +85,7 @@ Vue.component("login", {
         userLogin:function(event){
             event.preventDefault();
 
-            console.log("username  " + this.loginUser.username+ "  password  " + this.loginUser.password);
+            console.log("username  " + this.loginUser.username + "  password  " + this.loginUser.password);
 
             axios
             .post('rest/users/login',this.loginUser)
