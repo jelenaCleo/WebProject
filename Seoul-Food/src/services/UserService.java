@@ -68,7 +68,7 @@ public class UserService {
 	
 	@POST
 	@Path("/login")
-	@Produces(MediaType.TEXT_HTML)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(LoginUserDTO user) {
 		UserDAO allUsersDAO = getUsers();
@@ -97,28 +97,29 @@ public class UserService {
 		}
 
 		request.getSession().setAttribute("loginUser", userForLogin); // we give him a session
-		
-		System.out.println(request.getSession().getAttribute("loginUser"));
+		User usere = (User)request.getSession().getAttribute("loginUser");
+		System.out.println(usere.getUsername() + " " + usere.getName());
 
 		// We know this, because in users we have 3 types of instances[Administrator,
 		// Guest, Host]
 		if (userForLogin.getRole().equals("ADMIN")) {
-			//return Response.status(Response.Status.ACCEPTED).entity("/Apartments/administratorDashboard.html").build();
 			System.out.println("REGISTRACIIIJAAA ADMIN " + user.username);
-			return Response.status(Response.Status.OK).build();
+			return Response.status(Response.Status.ACCEPTED).entity("ovde vratim sl putanju kao na primer : /Seoul-Food/proba.html").build();
+
+			//return Response.status(Response.Status.OK).build();
 			
 		} else if (userForLogin.getRole().equals("MANAGER")) {
-			//return Response.status(Response.Status.ACCEPTED).entity("/Apartments/guestDashboard.html").build();
+			//return Response.status(Response.Status.ACCEPTED).entity("").build();
 			System.out.println("REGISTRACIIIJAAA MANAGER " + user.username);
 			return Response.status(Response.Status.OK).build();
 			
 		} else if (userForLogin.getRole().equals("DELIVERYMAN")) {
-			//return Response.status(Response.Status.ACCEPTED).entity("/Apartments/hostDashboard.html").build();
+			//return Response.status(Response.Status.ACCEPTED).entity("").build();
 			System.out.println("REGISTRACIIIJAAA DELIVERYMAN" + user.username);
 			return Response.status(Response.Status.OK).build();
 			
 		} else if (userForLogin.getRole().equals("BUYER")) {
-			//return Response.status(Response.Status.ACCEPTED).entity("/Apartments/hostDashboard.html").build();
+			//return Response.status(Response.Status.ACCEPTED).entity("").build();
 			System.out.println("REGISTRACIIIJAAA BUYER" + user.username);
 			return Response.status(Response.Status.OK).build();
 			
@@ -133,16 +134,21 @@ public class UserService {
 	
 	@GET
 	@Path("/logout")
-	@Produces(MediaType.TEXT_HTML)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response logoutUser() {
-		
-		if(isUser() ) {
+		System.out.println("prvi");
+		if(true) {
 		
 			HttpSession session = request.getSession();
+			User usere = (User)request.getSession().getAttribute("loginUser");
+			System.out.println(usere.getUsername() + " " + usere.getName());
+			System.out.println("drugii");
+			System.out.println(session.getAttribute("loginUser"));
+			System.out.println("treci");
 			if(session != null && session.getAttribute("loginUser") != null) {
 				session.invalidate();
 				
-				System.out.println(session.getAttribute("loginUser"));
 				return Response
 						.status(Response.Status.ACCEPTED).entity("SUCCESS LOGOUT")
 						.build();
