@@ -68,7 +68,7 @@ public class UserService {
 	
 	@POST
 	@Path("/login")
-	@Produces(MediaType.TEXT_HTML)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(LoginUserDTO user) {
 		UserDAO allUsersDAO = getUsers();
@@ -134,10 +134,11 @@ public class UserService {
 	
 	@GET
 	@Path("/logout")
-	@Produces(MediaType.TEXT_HTML)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response logoutUser() {
 		System.out.println("prvi");
-		if(isUser() ) {
+		if(true) {
 		
 			HttpSession session = request.getSession();
 			User usere = (User)request.getSession().getAttribute("loginUser");
