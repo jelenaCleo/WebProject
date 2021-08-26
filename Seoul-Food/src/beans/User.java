@@ -16,12 +16,12 @@ public class User {
 	private Date birthday;
 	private String role;
 
-	private List<Integer> allOrders;
-	// Korpa
-	private List<Integer> restaurants;
-	private List<Integer> ordersToDeliver;
-	private Double points;
-	private Integer buyerClass; // GOLD, SILVER, BRONZE
+	private List<Integer> allOrders;		//kupac
+	// Korpa								//kupac
+	private List<Integer> restaurants;		// ovo treba biti samo jedan restoran bas tog managera ako je user manager
+	private List<Integer> ordersToDeliver;	//dostavljac
+	private Double points;					//kupac
+	private Integer buyerClass; // GOLD, SILVER, BRONZE //kupac
 
 	public User() {
 		super();

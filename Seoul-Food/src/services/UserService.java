@@ -16,6 +16,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.simple.JSONObject;
+
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import beans.User;
@@ -135,7 +137,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response logoutUser() {
 		System.out.println("prvi");
-		if(true) {
+		if(isUser()) {
 		
 			HttpSession session = request.getSession();
 			User usere = (User)request.getSession().getAttribute("loginUser");
@@ -147,15 +149,14 @@ public class UserService {
 				session.invalidate();
 				
 				return Response
-						.status(Response.Status.ACCEPTED).entity("SUCCESS LOGOUT")
+						.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html")
 						.build();
 			}
 			return Response
 					.status(Response.Status.ACCEPTED).entity("LOGOUT UNSUCCESSFUL")
 					.build();
 		}
-		return Response.status(403).type("text/plain")
-				.entity("You do not have permission to access!").build();
+		return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
 	}
 	
 	private boolean isUser() {
@@ -174,28 +175,35 @@ public class UserService {
 	@Path("/blockUser")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response blockUser(String username){
+	public Response blockUser(User selectedUser){
 		// bilo je prosledjeno UserDTOJSON selectedUser
+		
+		//System.out.println(selectedUser);
 		if(isUserAdmin()) {
+			System.out.println("blok1");
 			UserDAO allUsersDAO = getUsers();
+			//System.out.println("blok2");
 			//allUsersDAO.blockUserById(selectedUser.user.getID());
-			allUsersDAO.blockUserByUsername(username);
-			
+			//System.out.println(selectedUser.getUsername());
+			allUsersDAO.blockUserByUsername(selectedUser.getUsername());
+			//System.out.println("blok3");
 			//hmn
 			return Response
 					.status(Response.Status.ACCEPTED).entity("SUCCESS BLOCK")
 					.entity(getUsers().getValues())
 					.build();
 		}
+		//System.out.println("blok-1");
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
 	}
 	
 	private boolean isUserAdmin() {
 		User user = (User) request.getSession().getAttribute("loginUser");
-		
+		System.out.println(user.getRole());
 		if(user!= null) {
-			if(user.getRole().equals("ADMINISTRATOR")) {
+			if(user.getRole().equals("ADMIN")) {
+				System.out.println("jeste admin");
 				return true;
 			}
 		}	
@@ -205,15 +213,16 @@ public class UserService {
 	@POST
 	@Path("/unblockUser")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public Response unblockUser(String username){
-		
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response unblockUser(User selectedUser){
+		//System.out.println(selectedUser);
+		System.out.println("usao u unblock zahtev");
 		if(isUserAdmin()) {
 			System.out.println("uno");
 			UserDAO allUsersDAO = getUsers();
 			//allUsersDAO.unblockUserById(param.user.getID());
-			allUsersDAO.blockUserByUsername(username);
-			System.out.println("blokiran user :" +  username );
+			allUsersDAO.unblockUserById(selectedUser.getUsername());
+			System.out.println("blokiran user :" +  selectedUser.getUsername() );
 			return Response
 					.status(Response.Status.ACCEPTED).entity("SUCCESS UNBLOCK")
 					.entity(getUsers().getValues())
