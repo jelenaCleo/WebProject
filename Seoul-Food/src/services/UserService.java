@@ -246,4 +246,21 @@ public class UserService {
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
 	}
+	
+	@GET
+	@Path("/myProfile")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getMyProfile() {
+		System.out.println("hana");
+		if( request.getSession().getAttribute("loginUser") != null) {
+			System.out.println("dul");
+			return Response
+					.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
+					.entity(request.getSession().getAttribute("loginUser"))
+					.build();
+		}
+		System.out.println("set");
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+	}
 }
