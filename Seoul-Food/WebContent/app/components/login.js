@@ -3,6 +3,8 @@ Vue.component("login", {
     data:function(){
 
         return {
+            checked: null,
+
             loginUser:{
                 username:'',
                 password:''
@@ -18,7 +20,9 @@ Vue.component("login", {
             }
         }
     },
-
+    components:{
+		vuejsDatepicker,
+	},
     template: `
     
   
@@ -64,9 +68,24 @@ Vue.component("login", {
                                     <input type="password"  v-model="registerUser.password" class="mt-3 input-custom" placeholder="Vaša lozinka" required>
                                     <input type="text"      v-model="registerUser.name"     class="mt-3  input-custom" placeholder="Ime" required>
                                     <input type="text"      v-model="registerUser.lastname" class="mt-3  input-custom" placeholder="Prezime" required>
-                                    <input type="text"      v-model="registerUser.gender"   class="mt-3  input-custom" placeholder="Pol" required>
-                                    <input type="text"      v-model="registerUser.birthday" class="mt-3  input-custom" placeholder="Datum rođenja" required>
-    
+                                    
+                                    <label  class="text-left">Pol</label>
+                                    <div class="form-check" >
+                                        <input  v-model="registerUser.gender"  value="F" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                        <p >Ž</p>
+                                        </label>
+                                    </div>
+                                    <div class="form-check"  >
+                                        <input  v-model="registerUser.gender"  value="M" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                        <label  class="form-check-label"  for="flexRadioDefault2">
+                                        <p>M</p>
+                                        </label>
+                                    </div>
+
+                                    <vuejs-datepicker format="dd.MM.yyyy" v-model="registerUser.birthday" class="mt-3 " placeholder="Datum rođenja" required>
+                                    </vuejs-datepicker>
+                                    
                                     <!-- BUTTON REGISTER -->
                                     <button type="submit" class="btn btn-warning fw-600 mt-3">Registrujte se </button>
                                     <br><br>
@@ -95,7 +114,11 @@ Vue.component("login", {
                 console.log(response.data);
                 toastr["success"]("Success log in!");
                 
+
+                //vratim
+                //putanja u zavisnosti od role
                 location.href = response.data;
+                
                 console.log("-------------------redirektoovano-----------------" + response.data);
              })
              .catch(err =>{ 
@@ -104,16 +127,16 @@ Vue.component("login", {
                 toastr["error"]("Password, username are incorrect, or your account is blocked!", "Fail");
                
             })
-            //vratim
-            //putanja u zavisnosti od role
+            
         },
         userRegister:function(event){
             event.preventDefault();
 
+            console.log(this.registerUser);
 
-            console.log(this.registerUser.username + ", " + this.registerUser.password +", " 
-            + this.registerUser.name +", " + this.registerUser.lastname + ", " + this.registerUser.gender
-            + ", " + this.registerUser.birthday);
+          //  console.log(this.registerUser.username + ", " + this.registerUser.password +", " 
+          //  + this.registerUser.name +", " + this.registerUser.lastname + ", " + this.registerUser.gender
+          //  + ", " + this.registerUser.birthday);
         }
 
     }

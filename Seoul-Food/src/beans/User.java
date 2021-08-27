@@ -1,9 +1,13 @@
 package beans;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class User {
+import javax.json.bind.annotation.JsonbDateFormat;
+
+public class User  {
 
 	private Integer ID;
 	private Integer logicalDeleted; // 1 - deleted, 0 - not deleted
@@ -13,6 +17,7 @@ public class User {
 	private String name;
 	private String surname;
 	private String gender;
+	@JsonbDateFormat(JsonbDateFormat.TIME_IN_MILLIS)
 	private Date birthday;
 	private String role;
 
@@ -28,7 +33,7 @@ public class User {
 	}
 
 	public User(Integer iD, Integer logicalDeleted, Integer blocked, String username, String password, String name,
-			String surname, String gender, Date birthday, String role, List<Integer> allOrders,
+			String surname, String gender, String birthday, String role, List<Integer> allOrders,
 			List<Integer> restaurants, List<Integer> ordersToDeliver, Double points, Integer buyerClass) {
 		super();
 		ID = iD;
@@ -39,7 +44,13 @@ public class User {
 		this.name = name;
 		this.surname = surname;
 		this.gender = gender;
-		this.birthday = birthday;
+		
+		try {
+			this.birthday = new SimpleDateFormat("dd-MM-yyyy").parse(birthday);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		this.role = role;
 		this.allOrders = allOrders;
 		this.restaurants = restaurants;
@@ -164,9 +175,7 @@ public class User {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
+	
 
 	public String getRole() {
 		return role;
@@ -174,6 +183,15 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public void setBirthday(String birthday2) {
+		try {
+			this.birthday = new SimpleDateFormat("dd-MM-yyyy").parse(birthday2);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

@@ -195,7 +195,7 @@ public class UserService {
 		User user = (User) request.getSession().getAttribute("loginUser");
 		
 		if(user!= null) {
-			if(user.getRole().equals("ADMINISTRATOR")) {
+			if(user.getRole().equals("ADMIN")) {
 				return true;
 			}
 		}	
