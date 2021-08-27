@@ -8,7 +8,7 @@ public class UserDTO {
 	public String gender;
 	public String name;
 	public String surname;
-	public Date birthday;
+	public String birthday;
 	public String role;
 
 }
