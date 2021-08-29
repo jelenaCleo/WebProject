@@ -1,6 +1,6 @@
 Vue.component("reslist",{
 
-
+ 
   template:
   `
   <div id="appCostumer" align="center">
@@ -71,7 +71,7 @@ Vue.component("reslist",{
   <div class="restourant-search py-3">
     <div class="row align-items-center ">
         <div class="col-4">
-            <img src="/assets/imgs/restourant-1.jpg" class="restourant-logo" alt="assets/imgs/restourant-1.jpg">
+            <img src="assets/imgs/restourant-1.jpg" class="restourant-logo" alt="Image not found">
         </div>
         <div class="col-8">
             <div class="d-flex justify-content-around align-items-center">
@@ -96,7 +96,7 @@ Vue.component("reslist",{
     <div class="restourant-search py-3">
         <div class="row align-items-center ">
             <div class="col-4">
-                <img src="/assets/imgs/restourant-4.jpg" class="restourant-logo" alt="assets/imgs/restourant-4.jpg">
+                <img src="assets/imgs/restourant-4.jpg" class="restourant-logo" alt="Image not found">
             </div>
             <div class="col-8">
                 <div class="d-flex justify-content-around align-items-center">
