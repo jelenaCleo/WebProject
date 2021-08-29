@@ -1,0 +1,8 @@
+Vue.component("myprofile",{
+
+    template:`
+   
+    `
+
+
+});

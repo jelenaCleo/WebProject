@@ -121,7 +121,7 @@ Vue.component("login", {
                 
                 console.log("-------------------redirektoovano-----------------" + response.data);
              })
-             .catch(err =>{ 
+             .catch(err  =>{ 
                 console.log("\n\n ------- ERROR LOGIN-------\n");
                 console.log(err);
                 toastr["error"]("Password, username are incorrect, or your account is blocked!", "Fail");
