@@ -30,6 +30,7 @@ public class UserDAO {
 		}
 
 		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users.json";
+		System.out.println("-------------------USERS FOLDER -------------------" + this.path);
 		this.users = new LinkedHashMap<String, User>();
 
 	}
@@ -196,6 +197,7 @@ public class UserDAO {
 		this.path = path;
 	}
 	
+	@SuppressWarnings("unused")
 	private void addDummyUsers() {
 		
 	}
