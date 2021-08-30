@@ -122,7 +122,7 @@ public class RestaurantDAO {
 	}
 	
 	
-	
+	//Helping Methods
 	public Restaurant findRestaurantById(Integer ID) {
 		
 		if(restaurants.containsKey(ID)) {
@@ -134,50 +134,21 @@ public class RestaurantDAO {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//Helping Methods
 
-	private Collection<Restaurant> getValues() {
+	public Collection<Restaurant> getValues() {
 		return restaurants.values();
+	}
+
+	public Restaurant findRestaurantByName(String name) {
+		for(Restaurant r : getValues()) {
+					
+				
+			if(r.getName().equals(name)) {
+				return r;
+			
+					}
+		}
+		return null;
 	}
 
 }
