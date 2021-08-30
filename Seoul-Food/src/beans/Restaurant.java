@@ -9,7 +9,7 @@ public class Restaurant {
 	private String name;
 	private String restaurantType;
 	private List<Integer> restaurantItemIDs;
-	private boolean isWorking; //status(radi(true) ili ne radi(false))
+	private boolean working; //status(radi(true) ili ne radi(false))
 	private Location location;
 	private Image logo; //can be used l8er
 	private String imgURL;
@@ -25,7 +25,7 @@ public class Restaurant {
 		this.name = name;
 		this.restaurantType = restaurantType;
 		this.restaurantItemIDs = restaurantItemIDs;
-		this.isWorking = isWorking;
+		this.working = isWorking;
 		this.location = location;
 		this.logo = null;
 		this.imgURL = imgURL;
@@ -75,12 +75,12 @@ public class Restaurant {
 		this.restaurantItemIDs = restaurantItemIDs;
 	}
 
-	public boolean isWorking() {
-		return isWorking;
+	public boolean getWorking() {
+		return working;
 	}
 
 	public void setWorking(boolean isWorking) {
-		this.isWorking = isWorking;
+		this.working = isWorking;
 	}
 
 	public Location getLocation() {

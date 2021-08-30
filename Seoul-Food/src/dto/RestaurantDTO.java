@@ -9,7 +9,7 @@ public class RestaurantDTO {
 	public String name;
 	public String restaurantType;
 	public List<Integer> restaurantItemIDs;
-	public boolean isWorking; 
+	public boolean working; 
 	public Location location;
 	public String imgURL;
 	

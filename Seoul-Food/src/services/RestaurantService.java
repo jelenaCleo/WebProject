@@ -2,7 +2,6 @@ package services;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -26,19 +25,8 @@ public class RestaurantService {
 	@Context
 	ServletContext ctx;
 	
-	@GET
-	@Path("/")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getJustUsers()
-	{
-		
-		return Response
-				.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
-				.entity(getRestaurants().getValues())
-				.build();
 	
-	}
-	
+
 	private RestaurantDAO getRestaurants() {
 		
 		RestaurantDAO restaurants = (RestaurantDAO) ctx.getAttribute("restaurants");
@@ -52,6 +40,18 @@ public class RestaurantService {
 		
 	}
 	
+	
+	
+	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRes(){
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
+				.entity(getRestaurants().getValues())
+				.build();
+		
+	}
 	
 	@POST
 	@Path("/")
@@ -123,7 +123,7 @@ public class RestaurantService {
 		r.setLocation(dto.location);
 		r.setRestaurantItemIDs(dto.restaurantItemIDs);
 		r.setRestaurantType(dto.restaurantType);
-		r.setWorking(dto.isWorking);
+		r.setWorking(dto.working);
 		
 		return r;
 		

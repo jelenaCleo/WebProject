@@ -93,7 +93,7 @@ public class RestaurantDAO {
 	
 	public void addRestaurant(RestaurantDTO res) {
 		Restaurant newRes = new Restaurant(getValues().size()+1,res.name,res.restaurantType, res.restaurantItemIDs,
-				res.isWorking, res.location,res.imgURL);
+				res.working, res.location,res.imgURL);
 		
 		if(!restaurants.containsValue(newRes)) {
 			
@@ -112,7 +112,7 @@ public class RestaurantDAO {
 				r.setName(res.name);
 				r.setRestaurantType(res.restaurantType);
 				r.setRestaurantItemIDs(res.restaurantItemIDs);
-				r.setWorking(res.isWorking);
+				r.setWorking(res.working);
 				r.setLocation(res.location);
 				r.setImgURL(res.imgURL);
 				
