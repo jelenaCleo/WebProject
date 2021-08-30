@@ -1,136 +1,78 @@
+<div id="profile" class="container bootstrap snippets bootdey">
+        <h1 class="text-primary"><span class="glyphicon glyphicon-user"></span>Izmjena Profila</h1>
+        <hr>
+    <div class="row">
+        <!-- left column -->
+            <div class="col-md-3">
+                <div class="text-center">
+                <img src="//placehold.it/100" class="avatar img-circle" alt="img">
+                <h6>Dodajte drugu fotografiju...</h6>
 
-<div id="appCostumer" align="center">
-
-    <section>
-
-        <div class="main-banner d-flex align-items-center  text-white  text-center">
-            <div class="container">
-                <h2>Lista restorana u Vašoj blizini</h2>
-            </div>
-            <span id="black-overlay"></span>
-
-
-        </div>
-    </section>
-    <section>
-        <input id="search" type="text" placeholder="Unesite ime restorana" />
-        <br><br>
-        <div class="filter-head">
-            <div class="text-center mt-3 fs-14 pb-4">
-                <h1 class="text-dark">Napredna pretraga</h1>
+                <input type="file" class="form-control">
+                </div>
             </div>
 
-            <form class="form-inline ">
+        <!-- edit form column -->
+        <div class="col-md-9 personal-info">
 
-                <div class="form-group">
+                <h3>Lične info</h3>
 
-
-                    <select id="in1" data-trigger="">
-                        <option placeholder="" value="">Lokacija</option>
-                        <option>Bijeljina</option>
-                        <option>Brčko</option>
-                        <option>Novi Sad</option>
-                    </select>
-
-                    <select id="in1" data-trigger="">
-                        <option placeholder="" value="">Tip restorana</option>
-                        <option>Italijanski</option>
-                        <option>Korejski</option>
-                        <option>Indijski</option>
-                    </select>
-                    <select id="in1" data-trigger="">
-                        <option placeholder="" value="">Ocjena</option>
-                        <option>1*</option>
-                        <option>2*</option>
-                        <option>3*</option>
-                        <option>4*</option>
-                        <option>5*</option>
-                    </select>
-                    <br><br><br>
-                    <div class="row third">
-                        <div class="input-field">
-                            <div class="group-btn">
-                                <button class="btn-delete" id="delete">RESET</button>
-                                <button class="btn-search">SEARCH</button>
+            <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Korisnčko ime:</label>
+                            <div class="col-lg-8">
+                            <input class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Šifra:</label>
+                            <div class="col-lg-8">
+                            <input class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Ime:</label>
+                            <div class="col-lg-8">
+                            <input class="form-control" type="text" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Prezime:</label>
+                            <div class="col-lg-8">
+                            <input class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <label class="col-lg-3 control-label">Pol:</label>
+                            <hr class="col-lg-3">
+                            <div class="col-lg-3">
+                            <input class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label  " for="flexRadioDefault1">
+                                Ženski
+                            </label>
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <div class="col-lg-3">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Muški
+                            </label>
                             </div>
                         </div>
                     </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Datum rođenja :</label>
+                    <div class="col-lg-8">
+                    <!-- DOPUNI SA DATE PICKER-->
+                    </div>
                 </div>
 
+                <button v-on:click="enableEdit" v-bind:disabled ="mode !='VIEW' ">Edit</button>
             </form>
         </div>
-    </section>
-    <section class="container">
-
-        <p class="fw-bold fs-20">Otvoreni objekti</p>
-
-        <div class="restourant-search py-3">
-            <!--ovdje pocne-->
-            <div v-for="r in restaurants">
-                <p>{{r.name}}</p>
-                <p>{{r.restaurantType}}</p>
-                <p>{{r.restaurantItemIDs}}</p>
-                <p>{{r.isWorking}}</p>
-                <p>{{r.location}}</p>
-                <p>{{r.imgURL}}</p>
       
-                    <div class="row align-items-center ">
-
-                        <div class="col-4">
-                            <img src="assets/imgs/restourant-1.jpg" class="restourant-logo" alt="Image not found">
-                        </div>
-                        <div class="col-8">
-                            <div class="d-flex justify-content-around align-items-center">
-                                <div>
-                                    <p class="restourant-name ">{{r.name}}</p>
-                                    <span class="restourant-price">Pica - 40' • Min. 6,00KM • Besplatna dostasva</span>
-                                </div>
-                                <div class="restourant-mark">
-                                    <i class="fas fa-star"></i>
-                                    <span>4.5</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="my-2">
-                            <hr>
-                        </div>
-
-                    </div>
-                    <!--ovdje kraj-->
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="container mt-5">
-        <p class="fw-bold fs-20">Zatvoreni objekti</p>
-        <div class="restourant-search py-3">
-            <div class="row align-items-center ">
-                <div class="col-4">
-                    <img src="assets/imgs/restourant-4.jpg" class="restourant-logo" alt="Image not found">
-                </div>
-                <div class="col-8">
-                    <div class="d-flex justify-content-around align-items-center">
-                        <div>
-                            <p class="restourant-name ">Just Dance</p>
-                            <span class="restourant-price">Pica - 40' • Min. 6,00KM • Besplatna dostasva</span>
-                        </div>
-                        <div class="restourant-mark">
-                            <i class="fas fa-star"></i>
-                            <span>4.1</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-
-
-
-
-
-
+        
+    </div>
 </div>
-
+<hr>

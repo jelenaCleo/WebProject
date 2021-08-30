@@ -11,8 +11,8 @@ Vue.component("reslist", {
     template:
         `
  
-<div id="appCostumer" align="center">
 
+<div id= "restaurants">
 <section>
 
     <div class="main-banner d-flex align-items-center  text-white  text-center">
@@ -116,7 +116,7 @@ Vue.component("reslist", {
 	                <img src="assets/imgs/restourant-4.jpg" class="restourant-logo" alt="Image not found">
 	            </div>
 	            <div class="col-8">
-	                <div class="d-flex justify-content-around align-items-center"
+	                <div class="d-flex justify-content-around align-items-center">
 	                    <div>
 	                        <p class="restourant-name ">{{r.name}}</p>
 	                        <span class="restourant-price">{{r.restaurantType}}  •  {{r.location.address.street}}, {{r.location.address.houseNumber}}, {{r.location.address.zipCode}} </span>
@@ -132,15 +132,11 @@ Vue.component("reslist", {
     </div>
 </section>
 
-
-
-
-
-
-
-
-
 </div>
+
+
+
+
 
 
 

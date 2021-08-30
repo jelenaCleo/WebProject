@@ -1,4 +1,5 @@
 .main-banner {
+
   position: relative;
   height: 250px;
   background-size: cover;
@@ -7,6 +8,7 @@
   z-index: -1;
   
 }
+
 #black-overlay {
   position: absolute;
   top: 0;
