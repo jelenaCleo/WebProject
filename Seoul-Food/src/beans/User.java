@@ -2,10 +2,13 @@ package beans;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.json.bind.annotation.JsonbDateFormat;
+
+import com.sun.org.apache.xml.internal.utils.MutableAttrListImpl;
 
 public class User  {
 
@@ -30,6 +33,27 @@ public class User  {
 
 	public User() {
 		super();
+	}
+	public User(Integer iD, Integer logicalDeleted, Integer blocked, String username, String password, String name,
+			String surname, String gender, Date birthday, String role, List<Integer> allOrders,
+			List<Integer> restaurants, List<Integer> ordersToDeliver, Double points, Integer buyerClass) {
+		super();
+		ID = iD;
+		this.logicalDeleted = logicalDeleted;
+		this.blocked = blocked;
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.gender = gender;
+		
+		this.birthday = birthday;
+		this.role = role;
+		this.allOrders = allOrders;
+		this.restaurants = restaurants;
+		this.ordersToDeliver = ordersToDeliver;
+		this.points = points;
+		this.buyerClass = buyerClass;
 	}
 
 	public User(Integer iD, Integer logicalDeleted, Integer blocked, String username, String password, String name,
@@ -188,10 +212,22 @@ public class User  {
 	public void setBirthday(String birthday2) {
 		try {
 			this.birthday = new SimpleDateFormat("dd-MM-yyyy").parse(birthday2);
+			System.out.println("parsiran datum" + this.birthday);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void setBirthdayMiliseconds(String miliseconds) {
+		Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(miliseconds));
+		this.birthday = calendar.getTime();
+		System.out.println("Moj parsirani datum iz milisekundi u datum : " + this.birthday);
+	}
+	
+	public void setBirthdayDate(Date date) {
+		this.birthday = date;
 	}
 
 }
