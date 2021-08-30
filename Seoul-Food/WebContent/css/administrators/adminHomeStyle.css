@@ -2,6 +2,10 @@ body {
   background-color: #f7f7f7;
 }
 
+div.vdp-datepicker{ 
+  display: inline;
+}
+
 .main-banner {
   position: relative;
   height: 250px;

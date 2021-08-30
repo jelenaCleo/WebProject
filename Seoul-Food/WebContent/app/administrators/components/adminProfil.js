@@ -1,6 +1,6 @@
  function fixDate(user) {
 		
-			user.birthday = new Date(parseInt(user.birthday));
+			user.birthday = new Date(parseInt(user.birthday)).toLocaleDateString();
 			
 			return user;
 		}
@@ -50,7 +50,7 @@ Vue.component("admin-profil", {
                 <td> <input style="width:150px;" type="text" v-model="editedUser.surname" placeholder="Name"> </td>
                 <td> <input style="width:150px;" type="text" v-model="editedUser.gender" placeholder="Name"> </td>
                 <td> <input style="width:150px;" type="text" v-model="editedUser.role" placeholder="Name" readonly> </td>
-                <td> <vuejs-datepicker v-model="this.editedUser.birthday" format="dd-MM-yyyy" ></vuejs-datepicker> </td>
+                <td> <input type="text" onfocus="(this.type='date')" format="dd-mm-yyyy"   v-model="editedUser.birthday" /></td>
                 </tr>
             </tbody>
         </table>
@@ -126,7 +126,7 @@ Vue.component("admin-profil", {
 		},
 		saveChanges: function() {
 			if (true) {
-					var u = {username:this.editedUser.username,name:this.editedUser.name,surname:this.editedUser.surname,role:this.editedUser.role,password:this.editedUser.password,gender:this.editedUser.gender,birthday:this.editedUser.birthday.getTime()}
+					//var u = {username:this.editedUser.username,name:this.editedUser.name,surname:this.editedUser.surname,role:this.editedUser.role,password:this.editedUser.password,gender:this.editedUser.gender,birthday:this.editedUser.birthday.getTime()}
 					console.log(this.editedUser.birthday + "editedUser birthday");
 					console.log(this.user.birthday + "user birthday");
 					axios
@@ -151,10 +151,10 @@ Vue.component("admin-profil", {
 		this.editedUser.surname = this.user.surname;
 		this.editedUser.gender = this.user.gender;
 		this.editedUser.role = this.user.role;
-		this.editedUser.birthday = new Date(parseInt(this.user.birthday));
+		this.editedUser.birthday = new Date(parseInt(this.user.birthday)).toLocaleDateString();
 		this.editedUser.password = this.user.password;
 		this.user= fixDate(this.user);
-		console.log(this.user.birthday);
+		console.log(this.editedUser.birthday);
 	});
 
 	},
