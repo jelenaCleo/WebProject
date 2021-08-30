@@ -3,6 +3,9 @@ package dao;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -14,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.User;
+import dto.ChangePasswordDTO;
 import dto.UserDTO;
 
 public class UserDAO {
@@ -31,14 +35,17 @@ public class UserDAO {
 
 		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users.json";
 		System.out.println("-------------------USERS FOLDER -------------------" + this.path);
+	
 		this.users = new LinkedHashMap<String, User>();
-
+		
 	}
 
 	//READ AND WRITE
 	public void readUsers() {
 
 		ObjectMapper om = new ObjectMapper();
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		om.setDateFormat(df);
 
 		File file = new File(this.path);
 
@@ -57,6 +64,7 @@ public class UserDAO {
 
 		for (User u : userlist) {
 			System.out.println("username: " + u.getUsername() + "\\n");
+			System.out.println("birthday:" + u.getBirthday());
 			users.put(u.getUsername(), u);
 
 		}
@@ -66,10 +74,13 @@ public class UserDAO {
 	public void saveUsersJSON() {
 		List<User> allUsers = new ArrayList<User>();
 		for(User u : getValues()) {
+			System.out.println(u.getBirthday());
 			allUsers.add(u);
 		}
 		
 		ObjectMapper om = new ObjectMapper();
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		om.setDateFormat(df);
 		try {
 			om.writeValue(new FileOutputStream(this.path), allUsers);
 		} catch (IOException e) {
@@ -88,19 +99,64 @@ public class UserDAO {
 		saveUsersJSON();
 	}
 	
-	public Boolean editUser(UserDTO user) {
-		for(User u : getValues()) {
-			if(u.getUsername().equals(user.username)){
-				u.setName(user.name);
-				u.setSurname(user.surname);
-				u.setPassword(user.password);
-				u.setRole(user.role);
-				u.setBirthday(user.birthday);
-				u.setGender(user.gender);
-				return true;
+	public String editUser(UserDTO user,String oldUsername) {
+		
+		if(user.username.equals(oldUsername)) {
+			for(User u : getValues()) {
+				if(u.getUsername().equals(user.username)){
+					u.setName(user.name);
+					u.setSurname(user.surname);
+					u.setRole(user.role);
+					System.out.println("valjda datum u milisekundama " + user.birthday);
+					u.setBirthdayDate(user.birthday);
+					
+					u.setGender(user.gender);
+					saveUsersJSON();
+					return "true";
+				}
 			}
+		}else {
+			User newUser = findUserByUsername(oldUsername);
+			newUser.setUsername(user.username);
+			newUser.setUserName(user.username); //nzm zasto imamo dva polja username
+			newUser.setName(user.name);
+			newUser.setSurname(user.surname);
+			newUser.setRole(user.role);
+			newUser.setBirthdayDate(user.birthday);
+			newUser.setGender(user.gender);
+			if(!users.containsKey(newUser.getUsername())) {
+				//korisnicko ime je slobodno
+				System.out.println("KORISNICKO IME JE SLOBODNO");
+				for(User u : getValues()) {
+					if(u.getUsername().equals(oldUsername)) {
+						u.setUsername(user.username);
+						u.setUserName(user.username); //nzm odakle imamo dva polja username
+						System.out.println("PROMENILA SAM USRNAME");
+						u.setName(user.name);
+						u.setSurname(user.surname);
+						u.setRole(user.role);
+						u.setBirthdayDate(user.birthday);
+						u.setGender(user.gender);
+						break;
+					}
+					}
+				for(String key : users.keySet()) {
+					if(key.equals(oldUsername)) {
+						key = user.username;
+						break;
+					}
+					}
+				saveUsersJSON();
+				return "true";
+			}else {
+				//korisnicko ime nije slobodno
+				System.out.println("KORISNICKO IME NIJE SLOBODNO");
+				return "Korisnicko ime je zauzeto!";
+			}
+			
 		}
-		return false;
+		
+		return "true";
 	}
 
 	public User findUserById(Integer ID) {
@@ -200,6 +256,32 @@ public class UserDAO {
 	@SuppressWarnings("unused")
 	private void addDummyUsers() {
 		
+		
 	}
 
+	public User changePassword(ChangePasswordDTO selectedUser) {
+		// TODO Auto-generated method stub
+		
+		for (User currentUser : getValues()) {
+
+			System.out.println("rodjendan trenutnoog usera bilo kog: "+ currentUser.getBirthday());
+			System.out.println("trazimo usera");
+			if(currentUser.getUsername().equals(selectedUser.username)) {
+				System.out.println("nasli smo usera");
+				if(currentUser.getPassword().equals(selectedUser.password)) {
+					System.out.println("sifre se poklapaju");
+					System.out.println("datum rodjenja usera kom menjamo sifru: " + currentUser.getBirthday());
+					currentUser.setPassword(selectedUser.newPassword); //OVA LINIJA
+					saveUsersJSON();
+					System.out.println("izmenjena sifra");
+					//User user = getUserByUsername(selectedUser.username);
+					System.out.println("rodjendan trenutnoog usera: "+ currentUser.getBirthday());
+					return currentUser;
+				}
+				
+		}
+		
+	}
+		return null;
+}
 }

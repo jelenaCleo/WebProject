@@ -2,6 +2,10 @@ body {
   background-color: #f7f7f7;
 }
 
+div.vdp-datepicker{ 
+  display: inline;
+}
+
 .main-banner {
   position: relative;
   height: 250px;
@@ -89,4 +93,32 @@ form.example::after {
   content: "";
   clear: both;
   display: table;
+}
+
+.tableInProfil{
+	border-collapse: separate !important;
+    background-color: #cdf3b9;
+    color: black;
+    font-weight: bold;
+    border: 3px solid white;
+    width: 90%;
+    border-radius: 10px;
+    margin: 20px;
+}
+#styleForProfile{
+	background-color: #cdf3b9;
+	width: 80%;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px 100px;
+    box-sizing: border-box;
+    border-radius: 30px;
+}
+#styleForProfile h1{
+	color: black;
+	padding: 20px;
+}
+#styleForProfile h2{
+	font-size: 30px;
+	padding: 20px;
 }

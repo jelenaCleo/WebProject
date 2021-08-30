@@ -1,5 +1,6 @@
 package services;
 
+import dto.ChangePasswordDTO;
 import dto.LoginUserDTO;
 import dto.UserDTO;
 import dto.UserDTOJSON;
@@ -55,14 +56,14 @@ public class UserService {
 	
 	private UserDAO getUsers() {
 		
-		UserDAO users = (UserDAO) ctx.getAttribute("users");
-		
-		if (users == null) {
-			users = new UserDAO();
+		//UserDAO users = (UserDAO) ctx.getAttribute("users");
+		UserDAO users = new UserDAO();
+		//if (users == null) {
+			//users = new UserDAO();
 			users.readUsers();
 			ctx.setAttribute("users", users);
 
-		}
+		//}
 
 		return users;
 	}
@@ -72,10 +73,11 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(LoginUserDTO user) {
+		System.out.println("aaaaaaaaaaaaaaaa");
 		UserDAO allUsersDAO = getUsers();
 
 		User userForLogin = allUsersDAO.getUserByUsername(user.username);
-		
+		System.out.println(user.username);
 
 		if (userForLogin == null) {
 			System.out.println("Ne postoji user sa unetim korisnickim imenom!");
@@ -140,8 +142,8 @@ public class UserService {
 		if(isUser()) {
 		
 			HttpSession session = request.getSession();
-			User usere = (User)request.getSession().getAttribute("loginUser");
-			System.out.println(usere.getUsername() + " " + usere.getName());
+			User user = (User)request.getSession().getAttribute("loginUser");
+			System.out.println(user.getUsername() + " " + user.getName());
 			System.out.println("drugii");
 			System.out.println(session.getAttribute("loginUser"));
 			System.out.println("treci");
@@ -176,24 +178,15 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response blockUser(User selectedUser){
-		// bilo je prosledjeno UserDTOJSON selectedUser
-		
-		//System.out.println(selectedUser);
 		if(isUserAdmin()) {
-			System.out.println("blok1");
 			UserDAO allUsersDAO = getUsers();
-			//System.out.println("blok2");
-			//allUsersDAO.blockUserById(selectedUser.user.getID());
-			//System.out.println(selectedUser.getUsername());
 			allUsersDAO.blockUserByUsername(selectedUser.getUsername());
-			//System.out.println("blok3");
-			//hmn
 			return Response
-					.status(Response.Status.ACCEPTED).entity("SUCCESS BLOCK")
+					.status(Response.Status.ACCEPTED).entity("USER BLOCKED")
 					.entity(getUsers().getValues())
 					.build();
 		}
-		//System.out.println("blok-1");
+	
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
 	}
@@ -215,16 +208,11 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response unblockUser(User selectedUser){
-		//System.out.println(selectedUser);
-		System.out.println("usao u unblock zahtev");
 		if(isUserAdmin()) {
-			System.out.println("uno");
 			UserDAO allUsersDAO = getUsers();
-			//allUsersDAO.unblockUserById(param.user.getID());
 			allUsersDAO.unblockUserById(selectedUser.getUsername());
-			System.out.println("blokiran user :" +  selectedUser.getUsername() );
 			return Response
-					.status(Response.Status.ACCEPTED).entity("SUCCESS UNBLOCK")
+					.status(Response.Status.ACCEPTED).entity("USER UNBLOCKED")
 					.entity(getUsers().getValues())
 					.build();
 		}
@@ -246,7 +234,7 @@ public class UserService {
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
 	}
-	
+	/*
 	@GET
 	@Path("/myProfile")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -263,4 +251,82 @@ public class UserService {
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
 	}
+	*/
+	@GET
+	@Path("/myProfile")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getMyProfile() {
+		System.out.println("hana1");
+		User user = getUsers().findUserByUsername(((User)request.getSession().getAttribute("loginUser")).getUsername());
+		System.out.println(user.getBirthday());
+		//umesto da vratim objekat iz sesije nadjem taj objekat u bazi
+		if( request.getSession().getAttribute("loginUser") != null) {
+			System.out.println("dul2");
+			return Response
+					.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
+					.entity(user)
+					.build();
+		}
+		System.out.println("set3");
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+	}
+	
+	@POST
+	@Path("/changePassword")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changePassword(ChangePasswordDTO selectedUser){
+		if(isUserLogedIn(selectedUser.username)) {
+			System.out.println("ulogovan je bas taj korisnik");
+			UserDAO allUsersDAO = getUsers();
+			User user = allUsersDAO.changePassword(selectedUser);
+			//da li staviti izmenjenog usera u sesiju
+			if(user != null) {
+				return Response
+						.status(Response.Status.ACCEPTED).entity("PASSWORD CHANGED SUCCESSFULY").build();
+			}
+			System.out.println("sifra nije izmjenjena");
+			return Response.status(403).type("text/plain")
+					.entity("Password incorrect!").build();
+		}
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+	}
+	
+	@POST
+	@Path("/editUser")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response editUser(UserDTO selectedUser){
+		System.out.println("usao u edit user zahtev");
+		System.out.println("izmenjen user:birthday: " + selectedUser.birthday);
+		String username = ((User) request.getSession().getAttribute("loginUser")).getUsername();
+		//AKO USPEM PRKO PARAMETRA DA POSALJEM USERNAME OVO PROVERU BI TREBALA RADIT 
+		//if(isUserLogedIn(selectedUser.username)) {
+			System.out.println("ulogovan je bas taj korisnik");
+			UserDAO allUsersDAO = getUsers();
+			//allUsersDAO.unblockUserById(param.user.getID());
+			String changed = allUsersDAO.editUser(selectedUser,username); //da li staviti izmenjenog usera u sesiju
+			request.getSession().setAttribute("loginUser", allUsersDAO.findUserByUsername(selectedUser.username));
+			//System.out.println(user.getPassword());
+			if(changed.equals("true")) {
+				return Response
+						.status(Response.Status.ACCEPTED).entity("USER EDITED SUCCESSFULY").build();
+			}
+			System.out.println("user nije izmjenjen");
+			return Response.status(403).type("text/plain")
+					.entity(changed).build();
+		
+		//return Response.status(403).type("text/plain")
+		//		.entity("You do not have permission to access!").build();
+	}
+
+	private boolean isUserLogedIn(String username) {
+		User user = (User) request.getSession().getAttribute("loginUser");
+		if(user.getUsername().equals(username)) {
+			return true;
+		}
+		return false;
+	}
+	
 }
