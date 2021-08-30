@@ -43,15 +43,21 @@ public class UserService {
 
 		/* If we have already that user, we can't register him */
 		if (usersDAO.getUserByUsername(user.username) != null) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return Response.status(Response.Status.ACCEPTED).entity("Korisničko ime je zauzeto!Nije moguće registrovati korisnika!").build();
 		}
 
 		
-		usersDAO.addUser(user);
+		Boolean isAdded = usersDAO.addUser(user);
 		System.out.println("REGISTRACIIIJAAA " + user.username);
+		if(isAdded) {
+			if(user.role.equals("BUYER")) {
+				return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html").build(); 	
+			}else {
+				return Response.status(Response.Status.ACCEPTED).entity("Korisnik registrovan !").build(); 	
+			}
+		}
+		return Response.status(Response.Status.ACCEPTED).entity("Korisnik već postoji!").build();
 		
-		//return Response.status(Response.Status.OK).build();
-		return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html").build(); 	
 	}
 	
 	private UserDAO getUsers() {

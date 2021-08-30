@@ -33,7 +33,7 @@ public class UserDAO {
 			dir.mkdir();
 		}
 
-		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users.json";
+		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users3.json";
 		System.out.println("-------------------USERS FOLDER -------------------" + this.path);
 	
 		this.users = new LinkedHashMap<String, User>();
@@ -91,12 +91,15 @@ public class UserDAO {
 
 	
 	//CRUD
-	public void addUser(UserDTO user) {
+	public Boolean addUser(UserDTO user) {
 		User newUser = new User(getValues().size()+1,0,0,user.username,user.password,user.name,user.surname,user.gender,user.birthday,user.role,new ArrayList<Integer>(),new ArrayList<Integer>(),new ArrayList<Integer>(),0.0,0);
 		if(!users.containsValue(newUser)) {
 			users.put(newUser.getUsername(), newUser);
+			saveUsersJSON();
+			return true;
+		}else {
+			return false;
 		}
-		saveUsersJSON();
 	}
 	
 	public String editUser(UserDTO user,String oldUsername) {
