@@ -216,7 +216,7 @@ public class UserService {
 	public Response unblockUser(User selectedUser){
 		if(isUserAdmin()) {
 			UserDAO allUsersDAO = getUsers();
-			allUsersDAO.unblockUserById(selectedUser.getUsername());
+			allUsersDAO.unblockUserByUsername(selectedUser.getUsername());
 			return Response
 					.status(Response.Status.ACCEPTED).entity("USER UNBLOCKED")
 					.entity(getUsers().getValues())
@@ -333,6 +333,42 @@ public class UserService {
 			return true;
 		}
 		return false;
+	}
+	
+	
+	@POST
+	@Path("/deleteUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteUser(User selectedUser){
+		if(isUserAdmin()) {
+			UserDAO allUsersDAO = getUsers();
+			allUsersDAO.logicallyDeleteUserByUsername(selectedUser.getUsername());
+			return Response
+					.status(Response.Status.ACCEPTED).entity("USER DELETED")
+					.entity(getUsers().getValues())
+					.build();
+		}
+	
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+	}
+	
+	@POST
+	@Path("/undeleteUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response restoreUser(User selectedUser){
+		if(isUserAdmin()) {
+			UserDAO allUsersDAO = getUsers();
+			allUsersDAO.logicallyRestoreUserByUsername(selectedUser.getUsername());
+			return Response
+					.status(Response.Status.ACCEPTED).entity("USER UNBLOCKED")
+					.entity(getUsers().getValues())
+					.build();
+		}
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
 	}
 	
 }

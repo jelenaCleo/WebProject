@@ -17,7 +17,7 @@ Vue.component("admin-profil", {
 				gender: '',
 				role: '',
 				password: '',
-				birthday: null
+				birthday: new Date()
 			},
 			changedUser: {
 				username: '',
@@ -28,6 +28,9 @@ Vue.component("admin-profil", {
 			message: ''
 		}
 	},
+	components: {
+      	vuejsDatepicker
+    },
 
 	template: `
 <div>
@@ -50,7 +53,9 @@ Vue.component("admin-profil", {
                 <td> <input style="width:150px;" type="text" v-model="editedUser.surname" placeholder="Name"> </td>
                 <td> <input style="width:150px;" type="text" v-model="editedUser.gender" placeholder="Name"> </td>
                 <td> <input style="width:150px;" type="text" v-model="editedUser.role" placeholder="Name" readonly> </td>
-                <td> <input type="text" onfocus="(this.type='date')" format="dd-mm-yyyy"   v-model="editedUser.birthday" /></td>
+                <td> <vuejs-datepicker format="dd.MM.yyyy" v-model="editedUser.birthday" 
+				placeholder="Datum rođenja">
+			</vuejs-datepicker></td>
                 </tr>
             </tbody>
         </table>
@@ -126,7 +131,6 @@ Vue.component("admin-profil", {
 		},
 		saveChanges: function() {
 			if (true) {
-					//var u = {username:this.editedUser.username,name:this.editedUser.name,surname:this.editedUser.surname,role:this.editedUser.role,password:this.editedUser.password,gender:this.editedUser.gender,birthday:this.editedUser.birthday.getTime()}
 					console.log(this.editedUser.birthday + "editedUser birthday");
 					console.log(this.user.birthday + "user birthday");
 					axios
@@ -136,8 +140,9 @@ Vue.component("admin-profil", {
 							this.message = "user promenjen";
 						})
 						.catch(err => {
+							console.log(err);
 							toastr["error"]("Failed during changes :(", "Fail");
-						})
+						});
 				
 			}
 		}
@@ -151,16 +156,16 @@ Vue.component("admin-profil", {
 		this.editedUser.surname = this.user.surname;
 		this.editedUser.gender = this.user.gender;
 		this.editedUser.role = this.user.role;
-		this.editedUser.birthday = new Date(parseInt(this.user.birthday)).toLocaleDateString();
+		
+		console.log(this.editedUser.birthday + "before");
+		//this.editedUser.birthday = new Date(parseInt(this.user.birthday)).toLocaleDateString();
+		this.editedUser.birthday = this.user.birthday;
 		this.editedUser.password = this.user.password;
-		this.user= fixDate(this.user);
-		console.log(this.editedUser.birthday);
+		//this.user= fixDate(this.user);
+		console.log(this.editedUser.birthday + "after");
 	});
 
 	},
-	components: {
-      	vuejsDatepicker
-    },
 	filters: {
 		dateFormat: function(value, format) {
 			var parsed = moment(value);
