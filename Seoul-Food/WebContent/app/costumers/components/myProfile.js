@@ -20,8 +20,10 @@ Vue.component("myprofile",{
           birthday: null,
 		  role: ''
         },
-        mode: 'VIEW',
-        
+      
+        message: '',
+		female: false,
+		male: false
       }
     },
 
@@ -31,18 +33,8 @@ Vue.component("myprofile",{
         <h1 class="text-primary"><span class="glyphicon glyphicon-user"></span>Izmjena Profila</h1>
         <hr>
     <div class="row">
-        <!-- left column -->
-            <div class="col-md-3">
-                <div class="text-center">
-                <img src="//placehold.it/100" class="avatar img-circle" alt="img">
-                <h6>Dodajte drugu fotografiju...</h6>
-
-                <input type="file" class="form-control">
-                </div>
-            </div>
-
         <!-- edit form column -->
-        <div class="col-md-9 personal-info">
+        <div class="col-md-13 personal-info">
 
                 <h3>Lične info</h3>
 
@@ -75,17 +67,17 @@ Vue.component("myprofile",{
                             <label class="col-lg-3 control-label">Pol:</label>
                             <hr class="col-lg-3">
                             <div class="col-lg-3">
-                            <input class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <input  v-bind:checked="female"  v-model="editedUser.gender"  value="F"  class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                             <label class="form-check-label  " for="flexRadioDefault1">
-                                Ženski
+                                Ž
                             </label>
                             </div>
                         </div>
                         <div class="form-check">
                             <div class="col-lg-3">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <input v-bind:checked="male"  v-model="editedUser.gender"  value="M" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
                             <label class="form-check-label" for="flexRadioDefault2">
-                                Muški
+                                M
                             </label>
                             </div>
                         </div>
@@ -98,7 +90,7 @@ Vue.component("myprofile",{
                 </div>
 			 <section class="container mt-4">
 		        <br><br>
-		        <button @click="saveChanges()" ><i class="fa fa-check" aria-hidden="true"></i> Save changes
+		        <button class="btn btn-success" @click="saveChanges()" ><i class="fa fa-check" aria-hidden="true"></i> Save changes
 		        </button>
 			</section>
               
@@ -116,6 +108,15 @@ Vue.component("myprofile",{
       this.editedUser.name = this.user.name;
       this.editedUser.surname = this.user.surname;
       this.editedUser.gender = this.user.gender;
+	
+		if(this.user.gender == 'F'){
+			this.female = true;
+            this.male = false;
+		}else{
+			this.male = true;
+            this.female = false;
+		}
+
       this.editedUser.role = this.user.role;
       this.editedUser.birthday = new Date(parseInt(this.user.birthday)).toLocaleDateString();
       this.editedUser.password = this.user.password;
@@ -126,10 +127,6 @@ Vue.component("myprofile",{
 	  
     methods:{
 	saveChanges: function() {
-				if (true) {
-						//var u = {username:this.editedUser.username,name:this.editedUser.name,surname:this.editedUser.surname,role:this.editedUser.role,password:this.editedUser.password,gender:this.editedUser.gender,birthday:this.editedUser.birthday.getTime()}
-						console.log(this.editedUser.birthday + "editedUser birthday");
-						console.log(this.user.birthday + "user birthday");
 						axios
 							.post('rest/users/editUser', this.editedUser)
 							.then(response => {
@@ -140,10 +137,16 @@ Vue.component("myprofile",{
 								toastr["error"]("Failed during changes :(", "Fail");
 							})
 					
-				}
+		
 			}
 	
-    }
+    },
+    filters: {
+		dateFormat: function(value, format) {
+			var parsed = moment(value);
+			return parsed.format(format);
+		}
+	}
 
 
 });
