@@ -63,7 +63,7 @@ h2 {
 .input-custom1 {
   display: block;
   float: left;
-  width: 80%;
+  width: 26%;
   height: calc(2.40875rem + 2px);
   padding: 0.57rem 1rem;
   font-size: 0.875rem;
@@ -71,9 +71,10 @@ h2 {
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #dfdfdf;
+  border: 1px solid #87a0b8;
   border-radius: 0.25rem;
 }
+
 
 form.example button {
   border-radius: 0.25rem;
@@ -283,4 +284,8 @@ a{
 table{
 opacity: 0.7;
 
+}
+
+.proba{
+  padding-left: 1rem;
 }
