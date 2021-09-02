@@ -3,17 +3,17 @@ package beans;
 public class Address {
 
 	private String street;
-	private String houseNumber; 
+	private String city; 
 	private String zipCode;
 	
 	public Address() {
 		
 	}
 	
-	public Address(String street, String houseNumber, String zipCode) {
+	public Address(String street, String city, String zipCode) {
 		super();
 		this.street = street;
-		this.houseNumber = houseNumber;
+		this.city = city;
 		this.zipCode = zipCode;
 	}
 
@@ -25,12 +25,12 @@ public class Address {
 		this.street = street;
 	}
 
-	public String getHouseNumber() {
-		return houseNumber;
+	public String getCity() {
+		return city;
 	}
 
-	public void setHouseNumber(String houseNumber) {
-		this.houseNumber = houseNumber;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getZipCode() {

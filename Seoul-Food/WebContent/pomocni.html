@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/toast.css"/>
+	<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+	<link rel="stylesheet" href="assets/fontawesome/css">
+	<link rel="stylesheet" href="css/administrators/adminHomeStyle.css">
+	<link rel="stylesheet" href="Login.css">
+	<link rel="stylesheet" href="css/administrators/adminHomeStyle.scss">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <section class="container mt-4">
+        <div class="add-manager-form">
+            <div class="d-flex align-items-stretch flex-column">
+
+                <div class="d-flex flex-column">
+                    <form v-on:submit="userRegister">
+                        <input type="text" v-model="registerUser.username" class=" input-custom"
+                            placeholder="Korisničko ime" required>
+                        <input type="password" v-model="registerUser.password" class="mt-3 input-custom"
+                            placeholder="Vaša lozinka" required>
+                        <input type="text" v-model="registerUser.name" class="mt-3  input-custom" placeholder="Ime"
+                            required>
+                        <input type="text" v-model="registerUser.lastname" class="mt-3  input-custom"
+                            placeholder="Prezime" required>
+                        <div style="margin:20px;">
+                            <label class="text-left">Pol</label>
+                            <div class="form-check">
+                                <input v-model="registerUser.gender" value="F" class="form-check-input" type="radio"
+                                    name="flexRadioDefault" id="flexRadioDefault1">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    <p>Ž</p>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input v-model="registerUser.gender" value="M" class="form-check-input" type="radio"
+                                    name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    <p>M</p>
+                                </label>
+                            </div>
+                        </div>
+                        <vuejs-datepicker format="dd.MM.yyyy" v-model="registerUser.birthday" 
+                            placeholder="Datum rođenja" required>
+                        </vuejs-datepicker>
+
+                        <!-- BUTTON REGISTER -->
+                        <button type="submit" class="btn btn-warning fw-600 mt-3" style="margin: 90px">Registrujte se </button>
+                        <br><br>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div >
+        <section class="container mt-4">
+            <p class="fw-bold fs-20">Kreirajte novi restoran</p>
+            <form action="#">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="restourantName">Unesite ime restorana: </label>
+                        <input type="text" id="restourantName" v-model="newRestaurant.name" class=" mt-2 input-custom" placeholder="Ime restorana"
+                            required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="status">Da li restoran radi: </label>
+                        <select data-trigger="" id="status"  v-model="newRestaurant.working" class="input-custom mt-2">
+                            <option  value=true>Da</option>
+                            <option  value=false>Ne</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="type">Unesite tip restorana: </label>
+                        <select data-trigger="" id="type"  v-model="newRestaurant.restaurantType" class="input-custom mt-2">
+                        <option v-for="option in typeOptions" :value="option">{{ option }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="restourantPicture"  >Unesite logo restorana: </label>
+                        <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()" class=" mt-2 input-custom" placeholder="Slika proizvoda"
+                            required>
+                    </div>
+                    <div class="col-md-6 mt-3">
+                    <label for="place">Unesite(grad) zip kod grada restorana: </label>
+                    <input type="text" id="cityName" v-model="newRestaurant.city" class=" mt-2 input-custom" placeholder="Grad"
+                            required>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="place">Unesite ulicu i  broj: </label>
+                    <input type="text" id="streetName" v-model="newRestaurant.street" class=" mt-2 input-custom" placeholder="Ulica i broj"
+                        required>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="place">Unesite postanski broj: </label>
+                    <input type="text" id="zipCode" class=" mt-2 input-custom" v-model="newRestaurant.zipCode" placeholder="Postanski broj"
+                        required>
+                </div>
+                    <div class="col-md-6 mt-3">
+                        <label for="manager">Unesite menadžera restorana: </label>
+                        <select data-trigger="" id="manager" class="input-custom mt-2">
+                            <option v-for="m in managers" :value="m.id">{{ option }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary fw-600 mt-3">Dodaj restoran</button>
+                </div>
+            </form>
+        </section>
+    
+    </div>	
+
+
+<script src="js/vue.js"></script>
+<script src="js/vue-router.js"></script>
+<script src="js/axios.js"></script>
+<script src="js/jquery.min.js"></script> 
+<script src="js/toast.js"></script> 
+<script src="js/toastr.min.js"></script>
+<script src="js/vuejs-datepicker.min.js"></script>
+<script src="js/moment.min.js"></script>
+
+<!-- MOJE .JS STRANICE  -->
+<script src="app/administrators/components/adminCreateRestaurant.js"></script>
+<script src="app/administrators/components/adminCreateUser.js"></script>
+<script src="app/administrators/components/adminAllRestaurants.js"></script>
+<script src="app/administrators/components/adminAllUsers.js"></script>
+<script src="app/administrators/components/adminProfil.js"></script>
+<script src="app/administrators/components/dateInput.js"></script>
+<script src="app/administrators/components/administratorNavbar.js"></script>
+<script src="app/administrators/appAdministrators.js"></script>
+</body>
+
+</html>
