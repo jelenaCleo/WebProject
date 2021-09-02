@@ -34,14 +34,14 @@ Vue.component("admin-all-users", {
 
 		<label for="selRole">Uloga:</label>
 
-	    <select v-model="roleSearch"  style="width:200px;height:30px;" class="custom-select"  name="selectRole">
+	    <select v-model="roleSearch"  style="width:200px;height:30px;" class="custom-select" id="selectRole"  name="selectRole">
 	                      		
 	 		<option  value="ADMIN">Admin</option>
 	  		<option  value="MANAGER">Menadžer</option>
 			<option  value="DELIVERYMAN">Dostavljač</option>
 	  		<option  value="BUYER">Kupac</option>
 		</select>
-		<button for="selRole" style="width:30px;height:30px;margin-right: 6rem">X</button>
+		<button @click="clearRoleSearch()" for="selRole" style="width:30px;height:30px;margin-right: 6rem">X</button>
 		<label for="selectType">Tip kupca:</label>
 
 		<select v-model="classSearch"  style="width:200px;height:30px;" class="custom-select"  name="selectType">
@@ -50,8 +50,30 @@ Vue.component("admin-all-users", {
 			<option  value="2">Srebrni</option>
 			<option  value="3">Bronzani</option>
 		</select>
-		<button for="selectType" style="width:30px;height:30px;">X</button>
+		<button @click="clearClassSearch()" for="selectType" style="width:30px;height:30px;">X</button>
 
+		</br>
+		</br>
+		<div  style="display: inline-block;">
+		<button @click="sortByNameAscending()"  style="width:200px;height:30px;">Rastuce:ime</button>
+		</br>
+		<button @click="sortByNameDescending()"  style="width:200px;height:30px;">Opadajuce:ime</button>
+		</div>
+		<div style="display: inline-block;">
+		<button @click="sortBySurnameAscending()"  style="width:200px;height:30px;">Rastuce:prezime</button>
+		</br>
+		<button @click="sortBySurnameDescending()"  style="width:200px;height:30px;">Opadajuce:prezime</button>
+		</div>
+		<div style="display: inline-block;">
+		<button @click="sortByUsernameAscending()"  style="width:250px;height:30px;">Rastuce:korisnicko ime</button>
+		</br>
+		<button @click="sortByUsernameDescending()"  style="width:250px;height:30px;">Opadajuce:korisnicko ime</button>
+		</div>
+		<div style="display: inline-block;">
+		<button @click="sortByPointsAscending()"  style="width:250px;height:30px;">Rastuce:bodovi</button>
+		</br>
+		<button @click="sortBypointsDescending()"  style="width:250px;height:30px;">Opadajuce:bodovi</button>
+		</div>
 
         <div class="ftco-section mt-4">
             <div class="row">
@@ -66,6 +88,7 @@ Vue.component("admin-all-users", {
                                     <th>Pol</th>
                                     <th>Uloga</th>
                                     <th>Tip kupca</th>
+									<th>Broj bodova</th>
                                     <th>Status</th>
 									<th>Obrisan</th>
 									<th>Sumnjiv</th>
@@ -79,6 +102,7 @@ Vue.component("admin-all-users", {
 	                        <td> {{ user.gender | genderFormat }} </td>
 	                        <td> {{ user.role  | roleFormat }} </td>
 	                        <td> {{ user.buyerClass | buyerTypeFormat }} </td>
+							<td> {{ user.points | pointsFormat }} </td>
 	                        <td align ="center" >
                             <button v-if="user.blocked == '1' && user.role != 'ADMIN' " type="button" @click="unblockUser(user)" ><i class="fa fa-check" aria-hidden="true"></i> Odblokiraj </button>
                             <button v-if="user.blocked == '0' && user.role != 'ADMIN' " type="button" @click="blockUser(user)"  ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj </button>
@@ -180,6 +204,85 @@ Vue.component("admin-all-users", {
 					return this.users;
 				});
 		},
+		sortByNameAscending: function () {
+			function compare(a, b) {
+				if (a.name < b.name)
+				  return -1;
+				if (a.name > b.name)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.users.sort(compare);
+		},
+		sortByNameDescending: function () {
+			function compare(a, b) {
+				if (a.name > b.name)
+				  return -1;
+				if (a.name < b.name)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.users.sort(compare);
+		},
+		sortBySurnameAscending: function () {
+			function compare(a, b) {
+				if (a.surname < b.surname)
+				  return -1;
+				if (a.surname > b.surname)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.users.sort(compare);
+		},
+		sortBySurnameDescending: function () {
+			function compare(a, b) {
+				if (a.surname > b.surname)
+				  return -1;
+				if (a.surname < b.surname)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.users.sort(compare);
+		},
+		sortByUsernameAscending: function () {
+			function compare(a, b) {
+				if (a.username < b.username)
+				  return -1;
+				if (a.username > b.username)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.users.sort(compare);
+		},
+		sortByUsernameDescending: function () {
+			function compare(a, b) {
+				if (a.username > b.username)
+				  return -1;
+				if (a.username < b.username)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.users.sort(compare);
+		},
+		sortByPointsAscending: function () {
+			this.users.sort((a,b) => a.points > b.points ? 1 : -1);
+		},
+		sortByPointsDescending: function () {
+			this.users.sort((a,b) => a.points < b.points ? 1 : -1);
+		},
+		clearRoleSearch : function(){
+			this.roleSearch = undefined;
+			
+		},
+		clearClassSearch : function(){
+			this.classSearch = undefined;
+		}
 
 	},
 	mounted() {
@@ -210,6 +313,13 @@ Vue.component("admin-all-users", {
 			if (value == "1") return 'Zlatni';
 			if (value == "2") return 'Srebrni';
 			if (value == "3") return 'Bronzani';
+		},
+		pointsFormat: function (value) {
+			if (value == "0"){ return '';}
+			else{
+				return value;
+			}
+			
 		}
 	}
 	,
