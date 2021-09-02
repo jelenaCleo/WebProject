@@ -5,13 +5,13 @@ Vue.component("myprofile",{
       return{
         user : {},
         editedUser:{
-          username: '',
-          name: '',
-          surname: '',
-          gender: '',
-          password: '',
-          birthday: new Date(),
-		  role: ''
+            username: '',
+            name: '',
+            surname: '',
+            gender: '',
+            role: '',
+            password: '',
+            birthday: new Date()
         },
       
         message: '',
@@ -115,11 +115,12 @@ Vue.component("myprofile",{
 		}
 
       this.editedUser.role = this.user.role;
+      console.log(this.editedUser.birthday + "before");
       this.editedUser.birthday = this.user.birthday;
      
       this.editedUser.password = this.user.password;
       
-      console.log(this.editedUser.birthday);
+      console.log(this.editedUser.birthday + "after");
         });
     },
 	  
@@ -136,8 +137,9 @@ Vue.component("myprofile",{
 								this.message = "user promenjen";
 							})
 							.catch(err => {
+                                console.log(err);
 								toastr["error"]("Failed during changes :(", "Fail");
-								console.log(err);
+								
 							})
 					
 		
