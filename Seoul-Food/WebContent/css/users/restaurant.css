@@ -1,4 +1,5 @@
 .main-banner {
+
   position: relative;
   height: 250px;
   background-size: cover;
@@ -7,6 +8,7 @@
   z-index: -1;
   
 }
+
 #black-overlay {
   position: absolute;
   top: 0;
@@ -122,12 +124,13 @@ background-color: white;
 padding: 0.5rem 0.5rem;
 border-radius: 15px;
 }
-
-.restourant-search {
-background-color: white;
-padding: 0.5rem 0.5rem;
-border-radius: 15px;
-}
+/*
+.restourant-search div :hover {
+ 
+  -ms-transform: scale(1.5); 
+  -webkit-transform: scale(1.5); 
+  transform: scale(1.5); 
+ }*/
 
 .fs-20 {
 text-transform: uppercase;
@@ -161,4 +164,9 @@ font-size: 1.2rem;
 font-weight: 600;
 }
 
-
+/*
+.help:hover {
+  
+   transform: scale(0.5);
+  }
+*/
