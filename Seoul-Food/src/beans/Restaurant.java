@@ -13,6 +13,8 @@ public class Restaurant {
 	private Location location;
 	private Image logo; //can be used l8er
 	private String imgURL;
+	private Integer logicallyDeleted; //dodala jelena
+	private Integer managerID; //dodala jelena
 	
 	public Restaurant() {
 		
@@ -29,8 +31,24 @@ public class Restaurant {
 		this.location = location;
 		this.logo = null;
 		this.imgURL = imgURL;
+		
+		
 	}
-	
+	public Restaurant(Integer ID,String name, String restaurantType, List<Integer> restaurantItemIDs, boolean isWorking,
+			Location location, String imgURL,Integer managerID) {
+		super();
+		this.ID = ID;
+		this.name = name;
+		this.restaurantType = restaurantType;
+		this.restaurantItemIDs = restaurantItemIDs;
+		this.working = isWorking;
+		this.location = location;
+		this.logo = null;
+		this.imgURL = imgURL;
+		this.logicallyDeleted = 0; //dodala jelena
+		this.managerID = managerID; //dodala jelena
+		
+	}
 
 
 	public Integer getID() {
@@ -97,6 +115,22 @@ public class Restaurant {
 
 	public void setLogo(Image logo) {
 		this.logo = logo;
+	}
+
+	public Integer getLogicallyDeleted() {
+		return logicallyDeleted;
+	}
+
+	public void setLogicallyDeleted(Integer logicallyDeleted) {
+		this.logicallyDeleted = logicallyDeleted;
+	}
+
+	public Integer getManagerID() {
+		return managerID;
+	}
+
+	public void setManagerID(Integer managerID) {
+		this.managerID = managerID;
 	}
 	
 	

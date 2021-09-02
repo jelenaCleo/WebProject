@@ -2,12 +2,6 @@ Vue.component("admin-all-users", {
 	data() {
 		return {
 			users: [],
-			searchField: {
-				userName: '',
-				name: '',
-				surname: '',
-				role: ''
-			},
 			nameSearch: '',
 			surnameSearch: '',
 			usernameSearch: '',
@@ -46,9 +40,9 @@ Vue.component("admin-all-users", {
 
 		<select v-model="classSearch"  style="width:200px;height:30px;" class="custom-select"  name="selectType">
 								
-			<option  value="1">Zlatni</option>
-			<option  value="2">Srebrni</option>
-			<option  value="3">Bronzani</option>
+			<option  value=1>Zlatni</option>
+			<option  value=2>Srebrni</option>
+			<option  value=3>Bronzani</option>
 		</select>
 		<button @click="clearClassSearch()" for="selectType" style="width:30px;height:30px;">X</button>
 
@@ -335,7 +329,7 @@ Vue.component("admin-all-users", {
 			return this.users.filter((user) => {
 
 				if (user.name.match(this.nameSearch) && user.surname.match(this.surnameSearch) && user.username.match(this.usernameSearch)
-					&& user.role.match(this.roleSearch) && user.buyerClass.match(this.classSearch)) {
+					&& user.role.match(this.roleSearch) && (user.buyerClass.toString()).match(this.classSearch)) {
 					return user;
 				}
 			});

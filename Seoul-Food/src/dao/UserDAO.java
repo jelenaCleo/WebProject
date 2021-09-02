@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.User;
 import dto.ChangePasswordDTO;
+import dto.ManagerDTO;
 import dto.UserDTO;
 
 public class UserDAO {
@@ -33,7 +34,7 @@ public class UserDAO {
 			dir.mkdir();
 		}
 
-		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users3.json";
+		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users4.json";
 		System.out.println("-------------------USERS FOLDER -------------------" + this.path);
 
 		this.users = new LinkedHashMap<String, User>();
@@ -90,16 +91,16 @@ public class UserDAO {
 	}
 
 	// CRUD
-	public Boolean addUser(UserDTO user) {
+	public Integer addUser(UserDTO user) {
 		User newUser = new User(getValues().size() + 1, 0, 0, user.username, user.password, user.name, user.surname,
-				user.gender, user.birthday, user.role, new ArrayList<Integer>(), new ArrayList<Integer>(),
+				user.gender, user.birthday, user.role, new ArrayList<Integer>(), -1,
 				new ArrayList<Integer>(), 0.0, 0);
 		if (!users.containsValue(newUser)) {
 			users.put(newUser.getUsername(), newUser);
 			saveUsersJSON();
-			return true;
+			return newUser.getID();
 		} else {
-			return false;
+			return -1;
 		}
 	}
 
@@ -306,5 +307,24 @@ public class UserDAO {
 		}
 		
 		saveUsersJSON();
+	}
+	
+	public List<ManagerDTO> getFreeManagers() {
+		
+		List<ManagerDTO> managers = new ArrayList<>();
+		
+		
+		for(User u : getValues()) {
+			if(u.getRole()=="MANAGER") {
+				if(u.getRestarauntID() <0) {
+					ManagerDTO d = (ManagerDTO) new Object();
+					d.ID = u.getID();
+					d.name = u.getName();
+					d.surname = u.getSurname();
+					managers.add(d);
+				}
+			}
+		}
+		return managers;
 	}
 }

@@ -26,7 +26,7 @@ public class User  {
 
 	private List<Integer> allOrders;		//kupac
 	// Korpa								//kupac
-	private List<Integer> restaurants;		// ovo treba biti samo jedan restoran bas tog managera ako je user manager
+	private Integer restarauntID;		// JELENA IZMENILA ovo treba biti samo jedan restoran bas tog managera ako je user manager
 	private List<Integer> ordersToDeliver;	//dostavljac
 	private Double points;					//kupac
 	private Integer buyerClass; // GOLD, SILVER, BRONZE //kupac
@@ -36,7 +36,7 @@ public class User  {
 	}
 	public User(Integer iD, Integer logicalDeleted, Integer blocked, String username, String password, String name,
 			String surname, String gender, Date birthday, String role, List<Integer> allOrders,
-			List<Integer> restaurants, List<Integer> ordersToDeliver, Double points, Integer buyerClass) {
+			Integer restaurantID, List<Integer> ordersToDeliver, Double points, Integer buyerClass) {
 		super();
 		ID = iD;
 		this.logicalDeleted = logicalDeleted;
@@ -50,7 +50,7 @@ public class User  {
 		this.birthday = birthday;
 		this.role = role;
 		this.allOrders = allOrders;
-		this.restaurants = restaurants;
+		this.restarauntID = restaurantID;
 		this.ordersToDeliver = ordersToDeliver;
 		this.points = points;
 		this.buyerClass = buyerClass;
@@ -58,7 +58,7 @@ public class User  {
 
 	public User(Integer iD, Integer logicalDeleted, Integer blocked, String username, String password, String name,
 			String surname, String gender, String birthday, String role, List<Integer> allOrders,
-			List<Integer> restaurants, List<Integer> ordersToDeliver, Double points, Integer buyerClass) {
+			Integer restaurantID, List<Integer> ordersToDeliver, Double points, Integer buyerClass) {
 		super();
 		ID = iD;
 		this.logicalDeleted = logicalDeleted;
@@ -77,7 +77,7 @@ public class User  {
 		
 		this.role = role;
 		this.allOrders = allOrders;
-		this.restaurants = restaurants;
+		this.restarauntID = restaurantID;
 		this.ordersToDeliver = ordersToDeliver;
 		this.points = points;
 		this.buyerClass = buyerClass;
@@ -99,13 +99,7 @@ public class User  {
 		this.allOrders = allOrders;
 	}
 
-	public List<Integer> getRestaurants() {
-		return restaurants;
-	}
-
-	public void setRestaurants(List<Integer> restaurants) {
-		this.restaurants = restaurants;
-	}
+	
 
 	public List<Integer> getOrdersToDeliver() {
 		return ordersToDeliver;
@@ -229,5 +223,13 @@ public class User  {
 	public void setBirthdayDate(Date date) {
 		this.birthday = date;
 	}
+	public Integer getRestarauntID() {
+		return restarauntID;
+	}
+	public void setRestarauntID(Integer restarauntID) {
+		this.restarauntID = restarauntID;
+	}
+	
+	
 
 }

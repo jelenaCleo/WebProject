@@ -47,15 +47,19 @@ public class UserService {
 		}
 
 		
-		Boolean isAdded = usersDAO.addUser(user);
+		Integer userID = usersDAO.addUser(user);
 		System.out.println("REGISTRACIIIJAAA " + user.username);
-		if(isAdded) {
+		if(userID>0) {
+			System.out.println("idemo 1");
 			if(user.role.equals("BUYER")) {
+				System.out.println("idemo 2");
 				return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html").build(); 	
 			}else {
-				return Response.status(Response.Status.ACCEPTED).entity("Korisnik registrovan !").build(); 	
+				System.out.println("idemo 3");
+				return Response.status(Response.Status.ACCEPTED).entity(userID.toString()).build(); 	
 			}
 		}
+		System.out.println("idemo 4");
 		return Response.status(Response.Status.ACCEPTED).entity("Korisnik već postoji!").build();
 		
 	}
@@ -366,6 +370,26 @@ public class UserService {
 					.status(Response.Status.ACCEPTED).entity("USER UNBLOCKED")
 					.entity(getUsers().getValues())
 					.build();
+		}
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+	}
+	
+	@GET
+	@Path("/freeManagers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFreeManagers() {
+		UserDAO allUsersDAO = getUsers();
+		User user = allUsersDAO.findUserByUsername(((User)request.getSession().getAttribute("loginUser")).getUsername());
+		
+		//umesto da vratim objekat iz sesije nadjem taj objekat u bazi
+		if( request.getSession().getAttribute("loginUser") != null) {
+			if(user.getRole()=="ADMIN") {
+				return Response
+						.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
+						.entity(allUsersDAO.getFreeManagers())
+						.build();
+			}
 		}
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
