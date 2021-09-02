@@ -3,19 +3,18 @@ Vue.component("login", {
     data:function(){
 
         return {
-            checked: null,
-
             loginUser:{
                 username:'',
                 password:''
             },
             registerUser:{
-                username:'',
-                password:'',
-                name:'',
-                lastname:'',
-                gender:'',
-                birthday:''
+                username: '',
+				password: '',
+				name: '',
+				surname: '',
+				gender: '',
+                role: '',
+				birthday: null
 
             }
         }
@@ -67,17 +66,17 @@ Vue.component("login", {
                                     <input type="text"      v-model="registerUser.username" class=" input-custom" placeholder="Korisničko ime" required>
                                     <input type="password"  v-model="registerUser.password" class="mt-3 input-custom" placeholder="Vaša lozinka" required>
                                     <input type="text"      v-model="registerUser.name"     class="mt-3  input-custom" placeholder="Ime" required>
-                                    <input type="text"      v-model="registerUser.lastname" class="mt-3  input-custom" placeholder="Prezime" required>
+                                    <input type="text"      v-model="registerUser.surname" class="mt-3  input-custom" placeholder="Prezime" required>
                                     
                                     <label  class="text-left">Pol</label>
                                     <div class="form-check" >
-                                        <input  v-model="registerUser.gender"  value="F" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                        <input  v-model="registerUser.gender"  value="f" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                         <p >Ž</p>
                                         </label>
                                     </div>
                                     <div class="form-check"  >
-                                        <input  v-model="registerUser.gender"  value="M" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                        <input  v-model="registerUser.gender"  value="m" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
                                         <label  class="form-check-label"  for="flexRadioDefault2">
                                         <p>M</p>
                                         </label>
@@ -131,12 +130,36 @@ Vue.component("login", {
         },
         userRegister:function(event){
             event.preventDefault();
+            console.log("bbbbbbbb");
+			
+			this.registerUser.role = "BUYER";
+			
+            console.log(this.registerUser.gender);
+            console.log(this.registerUser.role);
+            console.log(this.registerUser.name);
+            console.log(this.registerUser.surname);
+            console.log(this.registerUser.username);
+            console.log(this.registerUser.birthday);
+            
+			axios
+            .post('rest/users/registration',this.registerUser)
+            .then(response=> {
+                console.log(response.data);
+                toastr["success"]("Success log in!");
+				this.registerUser.gender ='';
+				this.registerUser.role = '';
+				this.registerUser.password = '';
+				this.registerUser.name = '';
+				this.registerUser.surname = '';
+				this.registerUser.username = '';
+				this.registerUser.birthday = null;
 
-            console.log(this.registerUser);
-
-          //  console.log(this.registerUser.username + ", " + this.registerUser.password +", " 
-          //  + this.registerUser.name +", " + this.registerUser.lastname + ", " + this.registerUser.gender
-          //  + ", " + this.registerUser.birthday);
+             })
+             .catch(err  =>{ 
+                console.log("\n\n ------- ERROR LOGIN-------\n");
+                console.log(err);
+               
+            })
         }
 
     }

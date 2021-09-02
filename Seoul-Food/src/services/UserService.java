@@ -43,15 +43,25 @@ public class UserService {
 
 		/* If we have already that user, we can't register him */
 		if (usersDAO.getUserByUsername(user.username) != null) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return Response.status(Response.Status.ACCEPTED).entity("Korisničko ime je zauzeto!Nije moguće registrovati korisnika!").build();
 		}
 
 		
-		usersDAO.addUser(user);
+		Integer userID = usersDAO.addUser(user);
 		System.out.println("REGISTRACIIIJAAA " + user.username);
+		if(userID>0) {
+			System.out.println("idemo 1");
+			if(user.role.equals("BUYER")) {
+				System.out.println("idemo 2");
+				return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html").build(); 	
+			}else {
+				System.out.println("idemo 3");
+				return Response.status(Response.Status.ACCEPTED).entity(userID.toString()).build(); 	
+			}
+		}
+		System.out.println("idemo 4");
+		return Response.status(Response.Status.ACCEPTED).entity("Korisnik već postoji!").build();
 		
-		//return Response.status(Response.Status.OK).build();
-		return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html").build(); 	
 	}
 	
 	private UserDAO getUsers() {
@@ -210,7 +220,7 @@ public class UserService {
 	public Response unblockUser(User selectedUser){
 		if(isUserAdmin()) {
 			UserDAO allUsersDAO = getUsers();
-			allUsersDAO.unblockUserById(selectedUser.getUsername());
+			allUsersDAO.unblockUserByUsername(selectedUser.getUsername());
 			return Response
 					.status(Response.Status.ACCEPTED).entity("USER UNBLOCKED")
 					.entity(getUsers().getValues())
@@ -327,6 +337,62 @@ public class UserService {
 			return true;
 		}
 		return false;
+	}
+	
+	
+	@POST
+	@Path("/deleteUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteUser(User selectedUser){
+		if(isUserAdmin()) {
+			UserDAO allUsersDAO = getUsers();
+			allUsersDAO.logicallyDeleteUserByUsername(selectedUser.getUsername());
+			return Response
+					.status(Response.Status.ACCEPTED).entity("USER DELETED")
+					.entity(getUsers().getValues())
+					.build();
+		}
+	
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+	}
+	
+	@POST
+	@Path("/undeleteUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response restoreUser(User selectedUser){
+		if(isUserAdmin()) {
+			UserDAO allUsersDAO = getUsers();
+			allUsersDAO.logicallyRestoreUserByUsername(selectedUser.getUsername());
+			return Response
+					.status(Response.Status.ACCEPTED).entity("USER UNBLOCKED")
+					.entity(getUsers().getValues())
+					.build();
+		}
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+	}
+	
+	@GET
+	@Path("/freeManagers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFreeManagers() {
+		UserDAO allUsersDAO = getUsers();
+		User user = allUsersDAO.findUserByUsername(((User)request.getSession().getAttribute("loginUser")).getUsername());
+		
+		//umesto da vratim objekat iz sesije nadjem taj objekat u bazi
+		if( request.getSession().getAttribute("loginUser") != null) {
+			if(user.getRole()=="ADMIN") {
+				return Response
+						.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
+						.entity(allUsersDAO.getFreeManagers())
+						.build();
+			}
+		}
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
 	}
 	
 }
