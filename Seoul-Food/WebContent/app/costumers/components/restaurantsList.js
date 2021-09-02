@@ -42,7 +42,7 @@ Vue.component("reslist", {
                       
                       <!-- Filter by Category -->
                       <select v-model="typesearch" id="in1" >
-                          <option placeholder="" value="">Tip restorana</option>
+                          <option value=""> Svi restorani </option>
                           <option value="Italijansi">Italijansi</option>
                           <option value="Kineksi">Kineksi</option>
                           <option value="Indijski">Indijski</option>
@@ -64,12 +64,12 @@ Vue.component("reslist", {
             <div  class=" restourant-search py-3">
                 <!--ovdje pocne-->
                 <div  v-for="r in filteredRestaurants" v-if="r.working == true">
-                   <a href="#" >
+               
           
                         <div  class="row align-items-center ">
         
                             <div class="col-4">
-                                <img src="assets/imgs/default-placeholder.png" class="restourant-logo" alt="Image not found">
+                                <img src="assets/imgs/default-placeholder.png" class="restourant-logo" alt="Image not found" />
                             </div>
                             <div class="col-8">
                                 <div class="d-flex justify-content-around align-items-center">
@@ -86,38 +86,48 @@ Vue.component("reslist", {
                             <div class="my-2">
                                 <hr>
                             </div>
-        				</a>
-                        </div>
+        			    </div>
                         <!--ovdje kraj-->
                 </div>
             </div>
         </section>
-        <section class="container mt-5">
-            <h1 class="fw-bold fs-20">Zatvoreni objekti</h1>
-            <div class="restourant-search py-3">
-             <div v-for="r in restaurants" v-if="r.working == false">
-                  <div class="row align-items-center ">
-                      <div class="col-4">
-                          <img src="assets/imgs/restourant-4.jpg" class="restourant-logo" alt="Image not found">
-                      </div>
-                      <div class="col-8">
-                          <div class="d-flex justify-content-around align-items-center">
-                              <div>
-                                  <p class="restourant-name ">{{r.name}}</p>
-                                  <span class="restourant-price">{{r.restaurantType}}  •  {{r.location.address.street}}, {{r.location.address.houseNumber}}, {{r.location.address.zipCode}} </span>
-                              </div>
-                              <div class="restourant-mark">
-                                  <i class="fas fa-star"></i>
-                                  <span>4.1</span>
-                              </div>
-                          </div>
-                      </div>
-                    </div>
-            </div>
+		<section class="container">
+        
+            <h1 class="fw-bold fs-20">Otvoreni objekti</h1>
+        
+            <div  class=" restourant-search py-3">
+                <!--ovdje pocne-->
+                <div  v-for="r in filteredRestaurants" v-if="r.working == false">
+               
+          
+                        <div  class="row align-items-center ">
+        
+                            <div class="col-4">
+                                <img src="assets/imgs/default-placeholder.png" class="restourant-logo" alt="Image not found" />
+                            </div>
+                            <div class="col-8">
+                                <div class="d-flex justify-content-around align-items-center">
+                                    <div>
+                                        <p class="restourant-name ">{{r.name}}</p>
+                                        <span class="restourant-price">{{r.restaurantType}}  •  {{r.location.address.street}}, {{r.location.address.houseNumber}}, {{r.location.address.zipCode}}</span>
+                                    </div>
+                                    <div class="restourant-mark">
+                                        <i class="fas fa-star"></i>
+                                        <span>4.5</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="my-2">
+                                <hr>
+                            </div>
+        			    </div>
+                        <!--ovdje kraj-->
+                </div>
             </div>
         </section>
         
-        </div>
+        
+    </div>
         
 
 

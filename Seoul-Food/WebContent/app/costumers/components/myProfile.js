@@ -1,10 +1,3 @@
-function fixDate(user){
-
-  user.birthday = new Date(parseInt(user.birthday)).toLocaleDateString();
-  return user;
-}
-
-
 
 Vue.component("myprofile",{
 
@@ -17,7 +10,7 @@ Vue.component("myprofile",{
           surname: '',
           gender: '',
           password: '',
-          birthday: null,
+          birthday: new Date(),
 		  role: ''
         },
       
@@ -26,6 +19,10 @@ Vue.component("myprofile",{
 		male: false
       }
     },
+	components:{
+		
+		vuejsDatepicker,
+	},
 
 
     template:`
@@ -85,8 +82,8 @@ Vue.component("myprofile",{
                 <div class="form-group">
                     <label class="col-lg-3 control-label">Datum rođenja :</label>
                     <div class="col-lg-8">
-                      <input height="40" class= "col-lg-12  " type="text" onfocus="(this.type='date')" format="dd-mm-yyyy"   v-model="editedUser.birthday" />
-                    </div>
+	                      <vuejs-datepicker format="dd.MM.yyyy" v-model="editedUser.birthday"  placeholder="Datum rođenja"></vuejs-datepicker>
+					</div>
                 </div>
 			 <section class="container mt-4">
 		        <br><br>
@@ -118,15 +115,20 @@ Vue.component("myprofile",{
 		}
 
       this.editedUser.role = this.user.role;
-      this.editedUser.birthday = new Date(parseInt(this.user.birthday)).toLocaleDateString();
+      this.editedUser.birthday = this.user.birthday;
+     
       this.editedUser.password = this.user.password;
-      this.user= fixDate(this.user);
+      
       console.log(this.editedUser.birthday);
         });
     },
 	  
     methods:{
 	saveChanges: function() {
+		
+		console.log(this.editedUser.birthday + "editedUser birthday");
+        console.log(this.user.birthday + "user birthday");
+		
 						axios
 							.post('rest/users/editUser', this.editedUser)
 							.then(response => {
@@ -135,18 +137,14 @@ Vue.component("myprofile",{
 							})
 							.catch(err => {
 								toastr["error"]("Failed during changes :(", "Fail");
+								console.log(err);
 							})
 					
 		
 			}
 	
-    },
-    filters: {
-		dateFormat: function(value, format) {
-			var parsed = moment(value);
-			return parsed.format(format);
-		}
-	}
+    }
+    
 
 
 });
