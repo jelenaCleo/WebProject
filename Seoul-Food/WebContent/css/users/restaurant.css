@@ -163,7 +163,9 @@ color: #ffc200;
 font-size: 1.2rem;
 font-weight: 600;
 }
-
+a:hover {
+ cursor:pointer;
+}
 /*
 .help:hover {
   

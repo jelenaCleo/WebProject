@@ -8,14 +8,14 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beans.Article;
 import beans.Restaurant;
-import beans.User;
-import dto.RestaurantDTO;
+import dto.NewRestaurantDTO;
 
 public class RestaurantDAO {
 
@@ -90,10 +90,11 @@ public class RestaurantDAO {
 	//CRUD Methods
 	
 	//create
-	
-	public void addRestaurant(RestaurantDTO res) {
-		Restaurant newRes = new Restaurant(getValues().size()+1,res.name,res.restaurantType, res.restaurantItemIDs,
-				res.working, res.location,res.imgURL);
+	//Restaurant(Integer ID,String name, String restaurantType, Integer startHours, Integer endHours, String imgURL ,String street, 
+	// String city, String zipCode, Integer managerID)
+	public void addRestaurant(NewRestaurantDTO res) {
+		Restaurant newRes = new Restaurant(getValues().size()+1, res.name, res.restaurantType, res.startHours, 
+				res.endHours, res.imgURL, res.street,res.city,res.zipCode, res.managerID );
 		
 		if(!restaurants.containsValue(newRes)) {
 			
@@ -103,7 +104,8 @@ public class RestaurantDAO {
 		saveRestaurantsJSON();
 		
 	}
-	public void editRestaurant(Integer ID, RestaurantDTO res) {
+	//Update
+	public void editRestaurant(Integer ID, NewRestaurantDTO res) {
 		
 		for(Restaurant r : getValues()) {
 			
@@ -111,9 +113,9 @@ public class RestaurantDAO {
 				
 				r.setName(res.name);
 				r.setRestaurantType(res.restaurantType);
-				r.setRestaurantItemIDs(res.restaurantItemIDs);
-				r.setWorking(res.working);
-				r.setLocation(res.location);
+				r.setStartHours(res.startHours);
+				r.setEndHours(res.endHours);
+				r.setLocation(res.street,res.city,res.zipCode);			
 				r.setImgURL(res.imgURL);
 				
 				
@@ -149,6 +151,15 @@ public class RestaurantDAO {
 					}
 		}
 		return null;
+	}
+		/* ADD NEW ARTICLE
+		 * Article(String name, double price, Integer type, Integer restaurantID, Quantity quantity, String description,
+			String image) */
+	public Restaurant addArticle(Integer id, Article newArticle) {
+		Restaurant r = findRestaurantById(id);
+	
+		r.getRestaurantArticles().add(newArticle);
+		return r;
 	}
 
 }

@@ -1,17 +1,21 @@
 Vue.component("reslist", {
-
+	
 
     data: function () {
+		
         return {
             restaurants: null,
             namesearch: '',
             locationsearch:'',
             typesearch: '',
             ratingsearch:'',
+            selectedRestaurant:null,
+			
 
         }
+	
     },
-
+	
     template:
         `
         <div id= "restaurants">
@@ -43,10 +47,10 @@ Vue.component("reslist", {
                       <!-- Filter by Category -->
                       <select v-model="typesearch" id="in1" >
                           <option value=""> Svi restorani </option>
-                          <option value="Italijansi">Italijansi</option>
-                          <option value="Kineksi">Kineksi</option>
+                          <option value="Italijanski">Italijanski</option>
+                          <option value="Kineski">Kineski</option>
                           <option value="Indijski">Indijski</option>
-						  <option value="Rumunski">Rumunski</option>
+						  <option value="Korejski">Korejski</option>
                       </select>
                     
                       <!-- TODO :Filter using Range input --> 
@@ -65,7 +69,7 @@ Vue.component("reslist", {
                 <!--ovdje pocne-->
                 <div  v-for="r in filteredRestaurants" v-if="r.working == true">
                
-          
+          				<a  v-on:click="restaurantView(r.id)" > 
                         <div  class="row align-items-center ">
         
                             <div class="col-4">
@@ -75,11 +79,11 @@ Vue.component("reslist", {
                                 <div class="d-flex justify-content-around align-items-center">
                                     <div>
                                         <p class="restourant-name ">{{r.name}}</p>
-                                        <span class="restourant-price">{{r.restaurantType}}  •  {{r.location.address.street}}, {{r.location.address.houseNumber}}, {{r.location.address.zipCode}}</span>
+                                        <span class="restourant-price">{{r.restaurantType}}  •  {{r.location.address.street}}, {{r.location.address.zipCode}}</span>
                                     </div>
                                     <div class="restourant-mark">
                                         <i class="fas fa-star"></i>
-                                        <span>4.5</span>
+                                        <span>{{r.rating}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -88,6 +92,7 @@ Vue.component("reslist", {
                             </div>
         			    </div>
                         <!--ovdje kraj-->
+						</a>
                 </div>
             </div>
         </section>
@@ -99,9 +104,9 @@ Vue.component("reslist", {
                 <!--ovdje pocne-->
                 <div  v-for="r in filteredRestaurants" v-if="r.working == false">
                
-          
+                         <a  v-on:click="restaurantView(r.id)" > 
                         <div  class="row align-items-center ">
-        
+
                             <div class="col-4">
                                 <img src="assets/imgs/default-placeholder.png" class="restourant-logo" alt="Image not found" />
                             </div>
@@ -109,11 +114,11 @@ Vue.component("reslist", {
                                 <div class="d-flex justify-content-around align-items-center">
                                     <div>
                                         <p class="restourant-name ">{{r.name}}</p>
-                                        <span class="restourant-price">{{r.restaurantType}}  •  {{r.location.address.street}}, {{r.location.address.houseNumber}}, {{r.location.address.zipCode}}</span>
+                                        <span class="restourant-price">{{r.restaurantType}}  •  {{r.location.address.street}}, {{r.location.address.zipCode}}</span>
                                     </div>
                                     <div class="restourant-mark">
                                         <i class="fas fa-star"></i>
-                                        <span>4.5</span>
+                                        <span>{{r.rating}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -122,6 +127,7 @@ Vue.component("reslist", {
                             </div>
         			    </div>
                         <!--ovdje kraj-->
+                        </a>
                 </div>
             </div>
         </section>
@@ -138,6 +144,13 @@ Vue.component("reslist", {
             .get('rest/restaurants/')
             .then(response => (this.restaurants = response.data))
 
+    },
+    methods:{
+        restaurantView:function(id){
+            
+            location.href = "#/restpage/" + id;
+                
+        }
     }
     ,
     computed:{
@@ -158,7 +171,8 @@ Vue.component("reslist", {
             }
             });
         }
-    }
+    },
+
 
 
 });

@@ -13,8 +13,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Article;
 import beans.Restaurant;
 import dao.RestaurantDAO;
+import dto.NewRestaurantDTO;
 import dto.RestaurantDTO;
 
 @Path("/restaurants")
@@ -57,7 +59,7 @@ public class RestaurantService {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addRestaurant(RestaurantDTO res) {
+	public Response addRestaurant(NewRestaurantDTO res) {
 		
 		RestaurantDAO resDAO = getRestaurants();
 		
@@ -99,13 +101,17 @@ public class RestaurantService {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Restaurant findRestaurantbyID(@PathParam("id") Integer id){
+	public Response findRestaurantbyID(@PathParam("id") Integer id){
 		
 		RestaurantDAO dao = (RestaurantDAO) ctx.getAttribute("restaurants");
 		System.out.println("---NAME SEARCH --- "+ id);
 		Restaurant r = dao.findRestaurantById(id);
 		
-		return r;
+		return Response
+				.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
+				.entity(r)
+				.build();
+		
 		
 	 	
 	}
@@ -118,45 +124,29 @@ public class RestaurantService {
 		RestaurantDAO dao = getRestaurants();
 		Restaurant r = dao.findRestaurantById(id);
 		
-		r.setName(dto.name);
-		r.setImgURL(dto.imgURL);
-		r.setLocation(dto.location);
-		r.setRestaurantItemIDs(dto.restaurantItemIDs);
-		r.setRestaurantType(dto.restaurantType);
-		r.setWorking(dto.working);
+		/*
+		 * TODO: Napravi DTO stvari koje ti trebaju 
+		 * 
+		 * */
 		
 		return r;
-		
-		
-	 	
 	}
+	//Dodavanje artikala 
 	
+	@PUT
+	@Path("/{id}/newArticle")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Restaurant newArticle(Article newArticle, @PathParam("id") Integer id){
+		
+		RestaurantDAO dao = (RestaurantDAO) ctx.getAttribute("restaurants");
+		System.out.println("---Restaurant: "+ id + "----- adding a new Article");
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
+		return dao.addArticle(id,newArticle);
+
+	}
+	//Komentari 
+
 	
 	
 	

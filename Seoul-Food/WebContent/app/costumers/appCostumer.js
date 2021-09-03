@@ -1,6 +1,7 @@
 
 const RestaurantList = {template: '<reslist></reslist>'}
 const MyProfile = {template : '<myprofile></myprofile>'}
+const RestaurantPage = {template: '<restpage></restpage>'}
 
 
 
@@ -10,6 +11,8 @@ const router = new VueRouter({
     routes:[
         {path: '/', component: RestaurantList},
         {path: '/myprofile', component: MyProfile},
+		{path: '/restpage/:id', component: RestaurantPage},
+		
         
     ]
 

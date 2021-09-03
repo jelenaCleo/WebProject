@@ -34,7 +34,7 @@ public class UserDAO {
 			dir.mkdir();
 		}
 
-		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users4.json";
+		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users.json";
 		System.out.println("-------------------USERS FOLDER -------------------" + this.path);
 
 		this.users = new LinkedHashMap<String, User>();
