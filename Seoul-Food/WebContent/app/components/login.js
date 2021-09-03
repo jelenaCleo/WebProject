@@ -68,14 +68,14 @@ Vue.component("login", {
                                     <input type="text"      v-model="registerUser.name"     class="mt-3  input-custom" placeholder="Ime" required>
                                     <input type="text"      v-model="registerUser.surname" class="mt-3  input-custom" placeholder="Prezime" required>
                                     
-                                    <label  class="text-left">Pol</label>
-                                    <div class="form-check" >
+                                    <label  class="d-flex text-left">Pol</label>
+                                    <div class="form-check d-flex" >
                                         <input  v-model="registerUser.gender"  value="f" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                         <p >Ž</p>
                                         </label>
                                     </div>
-                                    <div class="form-check"  >
+                                    <div class="form-check d-flex"  >
                                         <input  v-model="registerUser.gender"  value="m" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
                                         <label  class="form-check-label"  for="flexRadioDefault2">
                                         <p>M</p>
