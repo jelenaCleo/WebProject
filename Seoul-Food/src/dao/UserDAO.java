@@ -34,7 +34,7 @@ public class UserDAO {
 			dir.mkdir();
 		}
 
-		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users.json";
+		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users4.json";
 		System.out.println("-------------------USERS FOLDER -------------------" + this.path);
 
 		this.users = new LinkedHashMap<String, User>();
@@ -309,19 +309,15 @@ public class UserDAO {
 		saveUsersJSON();
 	}
 	
-	public List<ManagerDTO> getFreeManagers() {
+	public List<User> getFreeManagers() {
 		
-		List<ManagerDTO> managers = new ArrayList<>();
+		List<User> managers = new ArrayList<>();
 		
 		
 		for(User u : getValues()) {
-			if(u.getRole()=="MANAGER") {
+			if(u.getRole().equals("MANAGER")) {
 				if(u.getRestarauntID() <0) {
-					ManagerDTO d = (ManagerDTO) new Object();
-					d.ID = u.getID();
-					d.name = u.getName();
-					d.surname = u.getSurname();
-					managers.add(d);
+					managers.add(u);
 				}
 			}
 		}

@@ -69,7 +69,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="status">Da li restoran radi: </label>
-                        <select data-trigger="" id="status"  v-model="newRestaurant.working" class="input-custom mt-2">
+                        <select data-trigger="" id="status"   v-model="newRestaurant.working" class="input-custom mt-2">
                             <option  value=true>Da</option>
                             <option  value=false>Ne</option>
                         </select>
@@ -103,7 +103,19 @@
                     <div class="col-md-6 mt-3">
                         <label for="manager">Unesite menadžera restorana: </label>
                         <select data-trigger="" id="manager" class="input-custom mt-2">
-                            <option v-for="m in managers" :value="m.id">{{ option }}</option>
+                            <option v-for="m in managers" :value="m.id">{{ m | managerNameAndSurname }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mt-3" style="width:300px;">
+                        <label for="startTime">Unesite pocetak radnog vremena: </label>
+                        <select data-trigger="" id="startTime" class="input-custom mt-2">
+                            <option v-for="h in hours" :value="h">{{ h }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mt-3" style="width:270px;">
+                        <label for="endTime">Unesite kraj radnog vremena: </label>
+                        <select data-trigger="" id="endTime" class="input-custom mt-2">
+                            <option v-for="h in hours" :value="h">{{ h }}</option>
                         </select>
                     </div>
                 </div>
@@ -111,6 +123,53 @@
                     <button type="submit" class="btn btn-primary fw-600 mt-3">Dodaj restoran</button>
                 </div>
             </form>
+            <button  type="button" @click="addNewManager()" >Dodaj novog menadzera! </button>
+            </br>
+        </br>
+            <div id="newManagerBox" class="toshow" >
+            <h3>Dodaj menadzera</h3>
+        <div class="add-manager-form">
+            <div class="d-flex  ">
+
+                <div class="flex-column">
+                    <form v-on:submit="userRegister">
+                        <input type="text" v-model="user.username" class=" input-custom"
+                            placeholder="Korisničko ime" required>
+                        <input type="password" v-model="user.password" class="mt-3 input-custom"
+                            placeholder="Vaša lozinka" required>
+                        <input type="text" v-model="user.name" class="mt-3  input-custom" placeholder="Ime"
+                            required>
+                        <input type="text" v-model="user.surname" class="mt-3  input-custom"
+                            placeholder="Prezime" required>
+                        <div style="margin:20px;">
+                            
+						<label class="text-left">Pol</label>
+						<div class="custom-control custom-radio">
+ 							<input type="radio" v-model="checked" id="customRadio1" name="customRadio" value="z" class="custom-control-input">
+  							<label class="custom-control-label" for="customRadio1">Ž</label>
+						</div>
+						<div class="custom-control custom-radio">
+  							<input type="radio" v-model="checked" id="customRadio2" name="customRadio" value="m" class="custom-control-input">
+  							<label class="custom-control-label" for="customRadio2">M</label>
+						</div>
+                            
+                        </div>
+                        
+						<div class="datepicker-style1" >
+	                        <vuejs-datepicker format="dd.MM.yyyy" v-model="user.birthday"  
+	                            placeholder="Datum rođenja" required>
+	                        </vuejs-datepicker>
+						</div>
+                        <!-- BUTTON REGISTER -->
+                        <div class="submitbtn-style1" >
+	                        <button type="submit"  class="btn btn-warning fw-600 mt-3" >Dodaj </button>
+	                        <br><br>
+	                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
         </section>
     
     </div>	

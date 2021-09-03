@@ -384,7 +384,8 @@ public class UserService {
 		
 		//umesto da vratim objekat iz sesije nadjem taj objekat u bazi
 		if( request.getSession().getAttribute("loginUser") != null) {
-			if(user.getRole()=="ADMIN") {
+			if(user.getRole().equals("ADMIN")) {
+				System.out.println(allUsersDAO.getFreeManagers().size());
 				return Response
 						.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
 						.entity(allUsersDAO.getFreeManagers())

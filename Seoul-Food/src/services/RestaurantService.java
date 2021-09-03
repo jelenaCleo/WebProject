@@ -60,6 +60,7 @@ public class RestaurantService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addRestaurant(NewRestaurantDTO res) {
+		System.out.println("usao sam u reguest");
 		
 		RestaurantDAO resDAO = getRestaurants();
 		
@@ -78,7 +79,7 @@ public class RestaurantService {
 		System.out.println("NEW RESTAURANT: " + res.name);
 		
 		
-		return Response.status(Response.Status.ACCEPTED).entity("/").build(); 	
+		return Response.status(Response.Status.ACCEPTED).entity("dodat").build(); 	
 	}
 	
 	
