@@ -79,7 +79,7 @@ public class RestaurantService {
 		System.out.println("NEW RESTAURANT: " + res.name);
 		
 		
-		return Response.status(Response.Status.ACCEPTED).entity("dodat").build(); 	
+		return Response.status(Response.Status.ACCEPTED).entity("/").build(); 	
 	}
 	
 	

@@ -99,6 +99,8 @@ public class RestaurantDAO {
 		if(!restaurants.containsValue(newRes)) {
 			
 			restaurants.put(newRes.getID(), newRes);
+			UserDAO userDAO = new UserDAO();
+			userDAO.addRestaurantToManager(newRes.getName(),newRes.getManagerID());
 		}
 	
 		saveRestaurantsJSON();

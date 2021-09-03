@@ -93,7 +93,7 @@ public class UserDAO {
 	// CRUD
 	public Integer addUser(UserDTO user) {
 		User newUser = new User(getValues().size() + 1, 0, 0, user.username, user.password, user.name, user.surname,
-				user.gender, user.birthday, user.role, new ArrayList<Integer>(), -1,
+				user.gender, user.birthday, user.role, new ArrayList<Integer>(), "",
 				new ArrayList<Integer>(), 0.0, 0);
 		if (!users.containsValue(newUser)) {
 			users.put(newUser.getUsername(), newUser);
@@ -316,11 +316,23 @@ public class UserDAO {
 		
 		for(User u : getValues()) {
 			if(u.getRole().equals("MANAGER")) {
-				if(u.getRestarauntID() <0) {
+				if(u.getRestarauntID().equals("")) {
 					managers.add(u);
 				}
 			}
 		}
 		return managers;
+	}
+
+	public void addRestaurantToManager(String name, Integer managerID) {
+		
+		for(User u : getValues()) {
+			if(u.getID().equals(managerID)) {
+				u.setRestarauntID(name);
+				saveUsersJSON();
+				break;
+			}
+		}
+		
 	}
 }
