@@ -8,8 +8,8 @@ public class Article {
 	private double price;
 	private Integer type; //0 - jelo , 1- pice
 	private Integer restaurantID;
-	private double quantity;
-	private String measure;
+	private double quantity; // 200 kg bureka
+	private String measure; //gram, miligram, litar
 	private String description;
 	private String image;
 	

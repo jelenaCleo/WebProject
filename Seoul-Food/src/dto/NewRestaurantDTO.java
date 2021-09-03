@@ -8,8 +8,8 @@ public class NewRestaurantDTO {
 	 public String name;
 	 public String restaurantType;
 	 
-	 public String startHours; 
-	 public String endHours; 
+	 public String startHours; //00:00
+	 public String endHours; //00:00
 
 	 public String imgURL; 
 	 
