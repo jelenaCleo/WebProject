@@ -37,6 +37,16 @@ public class ShoppingCart {
 	public ArrayList<ShoppingCartItem> getItems() {
 		return items;
 	}
+	 
+	public ShoppingCartItem getShoppingCartItem(String name) {
+		
+		for( ShoppingCartItem sci : items) {
+			if(sci.getArticle().getName().equals(name)) {
+				return sci;
+			}
+		}
+		return null;
+	}
 	
 	public double getTotal() {
 		double retVal = 0;

@@ -3,6 +3,7 @@ package services;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -27,7 +28,7 @@ public class ShoppingCartService {
 	@Path("/test")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String test() {
-		return "Hello Jersey";
+		return "Test cart";
 	}
 	
 	//get
@@ -59,13 +60,14 @@ public class ShoppingCartService {
 		
 	}
 
-	@POST
-	@Path("/deleteUser")
+	@DELETE
+	@Path("/delete")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteArticle(ShoppingCartItem a){
+	public Response deleteArticle(String name){
 		
-			getShoppingCart().getItems().remove(a);
+		    ShoppingCartItem sci= getShoppingCart().getShoppingCartItem(name);
+			getShoppingCart().getItems().remove(sci);
 		
 			return Response
 					.status(Response.Status.ACCEPTED).entity("USER DELETED")
