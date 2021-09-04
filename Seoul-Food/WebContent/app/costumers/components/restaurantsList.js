@@ -155,34 +155,12 @@ Vue.component("reslist", {
 
     },
     methods:{
-        restaurantView:function(id){
-            
-            location.href = "#/restpage/" + id;
-                
-        }
-    }
-    ,
-	    computed:{
-	       
-	        filteredRestaurants:function(){
-	
-	           
-				if(this.restaurants == null){
-					return ;
-				}
-	
-	            return this.restaurants.filter((r) =>{
-	
-					// DOPUNI ZA RATING I r.location.match(this.locationsearch) && S
-	              
-		            if( r.name.toUpperCase().match(this.namesearch.toUpperCase()) && r.restaurantType.match(this.typesearch) ){
-		                return r;
-		            }
-		            });
-	        	}
-	    	},
-		methods:{
-				sortByNameAscending : function(){
+	        restaurantView:function(id){
+	            
+	            location.href = "#/restpage/" + id;
+	                
+	        },
+		sortByNameAscending : function(){
 					function compare(a,b){
 						
 						if(a.name < b.name){
@@ -214,11 +192,11 @@ Vue.component("reslist", {
 				
 				sortByLocationAscending : function(){
 					function compare(a,b){
-						
-						if(a.location.address.city < b.location.address.city){
+
+						if(a.location.address.street < b.location.address.street){
 							return -1;
 						}
-						if(a.location.address.city > b.location.address.city){
+						if(a.location.address.street > b.location.address.street){
 							return 1;
 						}
 						return 0;
@@ -229,12 +207,14 @@ Vue.component("reslist", {
 				
 				sortByLocationDescending : function(){
 					
+					
 					function compare(a,b){
+					
 						
-						if(a.location.address.city > b.location.address.city){
+						if(a.location.address.street > b.location.address.street){
 							return -1;
 						}
-						if(a.location.address.city < b.location.address.city){
+						if(a.location.address.street < b.location.address.street){
 							return 1;
 						}
 						return 0;
@@ -250,9 +230,30 @@ Vue.component("reslist", {
 				sortByRatingsDescending: function () {
 					this.restaurants.sort((a,b) => a.rating < b.rating ? 1 : -1);
 					this.ratingcnt = true;
-				},
+				}
 				
 				
-				
-		}
+    }
+    ,
+	    computed:{
+	       
+	        filteredRestaurants:function(){
+	
+	           
+				if(this.restaurants == null){
+					return ;
+				}
+	
+	            return this.restaurants.filter((r) =>{
+	
+					// DOPUNI ZA RATING I r.location.match(this.locationsearch) && S
+	              
+		            if( r.name.toUpperCase().match(this.namesearch.trim().toUpperCase()) && r.restaurantType.match(this.typesearch) &&
+							r.location.address.street.toUpperCase().match(this.locationsearch.trim().toUpperCase()) ){
+		                return r;
+		            }
+		            });
+	        	}
+	    	},
+		
 });
