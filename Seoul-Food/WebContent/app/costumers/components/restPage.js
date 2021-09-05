@@ -7,6 +7,11 @@ Vue.component("restpage",{
 			restaurant : null,
 			name: '',
 			disable: true,
+			count: 1,
+			counts:[],
+			selection:[],
+			selectionOK:false,
+			isLoaded2: false,
 		}
 	},
 	
@@ -36,7 +41,7 @@ Vue.component("restpage",{
                 <p class="fw-bold fs-15">Ponude</p>
             </div>
 
-            <div v-for="a in restaurant.restaurantArticles" class="mt-3 d-flex border-bottom align-items-center justify-content-between">
+            <div v-for="(a,index) in restaurant.restaurantArticles" class="firstcol  mt-3 d-flex border-bottom align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     <img src="assets/imgs/default-placeholder.png" class="item-picture" alt="menu item picture">
                    <div class="d-flex align-items-start flex-column ">
@@ -45,7 +50,14 @@ Vue.component("restpage",{
 						<p class="product-price ms-1"> {{a.description}}</p>
                     </div>
                 </div>
-                <button v-on:click="log" type="button" class="btn btn-success btn-sm">Dodaj u korpu</button>
+					<div class= " fixed qty mt-2">
+                        <span v-on:click="dec(index)" class="minus bg-dark">-</span>				
+						<input  v-model.number="selection[index].count"  type="number" class="count" name="qty" >
+                        <span v-on:click="inc(index)" class="plus bg-dark">+</span>
+                    
+
+				</div>
+                <button  :disabled="isDisabled(index)" v-on:click="log(index)" type="button" class="btn btn-success btn-block btn-sm">Dodaj u korpu</button>
             </div>
            
         </div>
@@ -194,19 +206,89 @@ Vue.component("restpage",{
 				
 				this.restaurant = response.data;
 				this.isLoaded = true;
+			
+			
+			for (let i = 0; i < this.restaurant.restaurantArticles.length; i++) {
+				 console.log(this.restaurant.restaurantArticles[i].name);
 				
-				//ako je ovaj user kupovao u restoranu sa ovim id ==>
-				//disabled = false
+				this.selection.push({
+						key: this.restaurant.restaurantArticles[i].name,
+						count: 0
+					});
+					
+					
+			
+				}
+				isLoaded2 = true;
 			});
+			
+			
+			
+			
 			
 	},
 	methods:{
-		log:function(){
+		log:function(index){
 			
-			console.log(this.restaurant.location.address.city);
-		}
+			console.log(this.selection[index]);
+			//treba da saljem na bekend
+			//STEP 1: get the ARTICLE
+			let name = this.selection[index].key;
+			let count = this.selection[index].count;
+			
+			for (let i = 0; i <  this.restaurant.restaurantArticles.length ; i++) {
+			
+					if(this.restaurant.restaurantArticles[i].name == name){
+						
+						//NOW MAKE A POST REQUEST
+						console.log(this.restaurant.restaurantArticles[i]);
+						console.log(count);
+						
+					}
+				
+				}					
+			
+    },
+			
+	
+		inc:function(index){
+			 
 		
-	}
+				this.selection[index].count +=1;
+				console.log(this.selection[index].count);
+				
+                   
+		},
+		dec:function(index){
+			
+			if(this.selection[index].count == 0){
+				return;
+			}
+			this.selection[index].count -=1;
+			console.log(this.selection[index].count);
+				
+				
+		},
+		resetCount : function(index){
+			this.selection[index].count = 0;
+			
+		}
+		,
+		isDisabled:function(index){
+			
+			if(!isLoaded2){
+				return true;
+			}
+			
+			if(this.selection[index].count == 0){
+				return true;
+			}
+			return false;
+			
+		}
+	},
+	
+	
 	
 	
 	
