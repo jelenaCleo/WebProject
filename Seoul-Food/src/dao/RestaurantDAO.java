@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Article;
 import beans.Restaurant;
+import dto.ArticleDTO;
 import dto.NewRestaurantDTO;
 
 public class RestaurantDAO {
@@ -157,12 +158,32 @@ public class RestaurantDAO {
 		/* ADD NEW ARTICLE
 		 * Article(String name, double price, Integer type, Integer restaurantID, Quantity quantity, String description,
 			String image) */
-	public Restaurant addArticle(Integer id, Article newArticle) {
-		Restaurant r = findRestaurantById(id);
-	
-		r.getRestaurantArticles().add(newArticle);
-		return r;
+	public Restaurant addArticle(Integer restID, ArticleDTO newArticle) {
+		System.out.println("usao u dao za dodavanje artikla");
+		Article a = new Article(newArticle.name,newArticle.price,newArticle.type,restID,newArticle.quantity,newArticle.measure,newArticle.description,newArticle.image);
+		for(Restaurant r : getValues()) {
+			if(r.getID().equals(restID)) {
+				System.out.println("nasao restiran");
+				if(noDuplicateArticleName(r,a.getName())) {
+				r.getRestaurantArticles().add(a);
+				System.out.println("DODAO ARTIKAL");
+				saveRestaurantsJSON();
+				return r;
+				}
+			}
+		}
+		return null;
 	}
+	private boolean noDuplicateArticleName(Restaurant r, String articleName) {
+		for(Article a : r.getRestaurantArticles()) {
+			if(a.getName().equals(articleName)){
+				System.out.println("vec nimamo artikal sa zadatim imenom");
+				return false;
+			}
+		}
+		return true;
+	}
+
 	//LOGICKKO BRISANJE
 	public Restaurant deleteRestaurant(Integer id) {
 		Restaurant r = findRestaurantById(id);
