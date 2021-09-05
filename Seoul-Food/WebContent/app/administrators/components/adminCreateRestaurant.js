@@ -1,7 +1,18 @@
+function fixManagers(managers) {
+	console.log(managers);
+    	
+    for(m in managers){
+        console.log(m.id);
+        m.id = m.id.toString();
+    }
+    return managers;
+}
+
 Vue.component("create-restaurant",{
     data() {
 		return {
 			file : {},
+			temp: [],
             managers: [],
             isHidden: true,
             checked: '',
@@ -14,7 +25,7 @@ Vue.component("create-restaurant",{
                 zipCode : '',
                 startHours : '',
                 endHours : '',
-                managerID : '',
+                managerID : ''
             },
             user: {
 				username: '',
@@ -113,8 +124,8 @@ Vue.component("create-restaurant",{
             </div>
                 <div class="col-md-6 mt-3">
                     <label for="managerCombo">Unesite menadžera restorana: </label>
-                    <select data-trigger="" id="managerCombo"  v-model="newRestaurant.managerID" class="input-custom mt-2">
-                        <option v-for="(m,index) in managers" :key="index" :value="m.ID">{{ m | managerNameAndSurname }}</option>
+                    <select data-trigger="" id="managerCombo" @change="onChangeManager()"  v-model="newRestaurant.managerID" class="input-custom mt-2">
+                        <option v-for="(m,index) in managers" :key="index" :value="m.id.toString()">{{ m | managerNameAndSurname }}</option>
                     </select>
                 </div>
                 <div class="col-md-6 mt-3" style="width:300px;">
@@ -189,7 +200,17 @@ Vue.component("create-restaurant",{
     ,
     mounted() {
 		axios.get('rest/users/freeManagers')
-        .then(response => this.managers = response.data)
+        .then(response => {
+            
+            this.managers = response.data;
+            console.log('aaaaappp' + this.managers[1].id);
+            //this.managers = fixManagers(this.managers);
+            console.log('aaaaappp' + this.managers[1].id);
+            for( m in this.managers) {
+  			temp.push(m.id.toString())
+			}
+        }
+            )
         .catch(err => {
             console.log(err);
         });
@@ -257,8 +278,10 @@ Vue.component("create-restaurant",{
         });
         },
         addRestoran : function(){
+
+            console.log(' ID MENADZERA:  '+this.newRestaurant.managerID);
             axios
-            .post('rest/restaurants/',this.newRestaurant)
+            .post('rest/restaurants/',this.newRestaurant)            
             .then(response=> {
                 console.log(response.data);
 				console.log("dodat restoran");
@@ -270,6 +293,11 @@ Vue.component("create-restaurant",{
                 console.log(err);
                
             })
+        },
+        onChangeManager : function(value){
+            console.log(this.newRestaurant.managerID);
+            console.log(this.newRestaurant.endHours);
+            
         }
 
         

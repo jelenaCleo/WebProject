@@ -148,7 +148,7 @@ Vue.component("admin-all-restaurants", {
     methods:{
         restaurantView:function(id){
             
-            location.href = "#/restpage/" + id;
+            location.href = "#/admin-rest-page/" + id;
                 
         }
     }

@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import beans.Article;
 import beans.Restaurant;
+import beans.User;
 import dao.RestaurantDAO;
 import dto.NewRestaurantDTO;
 import dto.RestaurantDTO;
@@ -148,13 +149,64 @@ public class RestaurantService {
 	}
 	//Komentari 
 
+	//LOGICKO BRISANJE
+	@PUT
+	@Path("deleteRestaurant/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteRestaurant( @PathParam("id") Integer id){
+		if(isUser()) {	
+			if(isUserAdmin()) {
+				RestaurantDAO dao = getRestaurants();
+				Restaurant r = dao.deleteRestaurant(id);
+				
+				return Response.status(Response.Status.ACCEPTED).entity(r).build();
+			}
+			return Response.status(403).type("text/plain")
+					.entity("You do not have permission to access!").build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+		
+	}
+	//LOGICKI RESTORE RESTORANA
+	@PUT
+	@Path("restoreRestaurant/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response restoreRestaurant( @PathParam("id") Integer id){
+		if(isUser()) {	
+			if(isUserAdmin()) {
+				RestaurantDAO dao = getRestaurants();
+				Restaurant r = dao.restoreRestaurant(id);
+				
+				return Response.status(Response.Status.ACCEPTED).entity(r).build();
+			}
+			return Response.status(403).type("text/plain")
+					.entity("You do not have permission to access!").build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+	}
 	
+	private boolean isUserAdmin() {
+		User user = (User) request.getSession().getAttribute("loginUser");
+		System.out.println(user.getRole());
+		if(user!= null) {
+			if(user.getRole().equals("ADMIN")) {
+				System.out.println("jeste admin");
+				return true;
+			}
+		}	
+		return false;
+	}
 	
-	
-	
-	
-	
-	
+	private boolean isUser() {
+		User user = (User) request.getSession().getAttribute("loginUser");
+		
+		if(user!= null) {
+			if(user.getRole().equals("ADMIN") || user.getRole().equals("MANAGER") || user.getRole().equals("DELIVERYMAN") || user.getRole().equals("BUYER")) {	
+				return true;
+			}
+		}	
+		return false;
+	}
 	
 
 }

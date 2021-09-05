@@ -97,10 +97,10 @@ public class RestaurantDAO {
 				res.endHours, res.imgURL, res.street,res.city,res.zipCode, res.managerID );
 		
 		if(!restaurants.containsValue(newRes)) {
-			
+			System.out.println("id restorana:  " + newRes.getID() + "   id menadzera: " + newRes.getManagerID());
 			restaurants.put(newRes.getID(), newRes);
 			UserDAO userDAO = new UserDAO();
-			userDAO.addRestaurantToManager(newRes.getName(),newRes.getManagerID());
+			userDAO.addRestaurantToManager(newRes.getID(),newRes.getManagerID());
 		}
 	
 		saveRestaurantsJSON();
@@ -163,5 +163,18 @@ public class RestaurantDAO {
 		r.getRestaurantArticles().add(newArticle);
 		return r;
 	}
-
+	//LOGICKKO BRISANJE
+	public Restaurant deleteRestaurant(Integer id) {
+		Restaurant r = findRestaurantById(id);
+		r.setLogicallyDeleted(1);
+		saveRestaurantsJSON();
+		return r;
+	}
+	// LOGICKI RESTORE RESTORANA
+	public Restaurant restoreRestaurant(Integer id) {
+		Restaurant r = findRestaurantById(id);
+		r.setLogicallyDeleted(0);
+		saveRestaurantsJSON();
+		return r;
+	}
 }

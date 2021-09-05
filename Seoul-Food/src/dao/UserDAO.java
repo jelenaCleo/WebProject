@@ -93,7 +93,7 @@ public class UserDAO {
 	// CRUD
 	public Integer addUser(UserDTO user) {
 		User newUser = new User(getValues().size() + 1, 0, 0, user.username, user.password, user.name, user.surname,
-				user.gender, user.birthday, user.role, new ArrayList<Integer>(), "",
+				user.gender, user.birthday, user.role, new ArrayList<Integer>(), -1,
 				new ArrayList<Integer>(), 0.0, 0);
 		if (!users.containsValue(newUser)) {
 			users.put(newUser.getUsername(), newUser);
@@ -316,7 +316,7 @@ public class UserDAO {
 		
 		for(User u : getValues()) {
 			if(u.getRole().equals("MANAGER")) {
-				if(u.getRestarauntID().equals("")) {
+				if(u.getRestarauntID() == -1) {
 					managers.add(u);
 				}
 			}
@@ -324,11 +324,16 @@ public class UserDAO {
 		return managers;
 	}
 
-	public void addRestaurantToManager(String name, Integer managerID) {
-		
+	public void addRestaurantToManager(Integer restaurantId, Integer managerID) {
+		System.out.println("id restorana:  " + restaurantId + "   id menadzera: " + managerID);
+		readUsers();
 		for(User u : getValues()) {
+			System.out.println(u.getID());
 			if(u.getID().equals(managerID)) {
-				u.setRestarauntID(name);
+				
+				System.out.println("NASAO TRAZENOG MENADZERA");
+				u.setRestarauntID(restaurantId);
+				System.out.println("ppostavljen id restorana " + u.getRestarauntID());
 				saveUsersJSON();
 				break;
 			}
