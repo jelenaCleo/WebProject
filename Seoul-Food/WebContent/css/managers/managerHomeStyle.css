@@ -14,6 +14,13 @@ div.vdp-datepicker{
   background-image: url(assets/imgs/admin.jpg);
   z-index: -1;
 }
+.article-banner {
+  position: relative;
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
 
 h2 {
   font-family: "Berkshire Swash", cursive;
@@ -296,4 +303,30 @@ opacity: 0.7;
 
 .proba{
   padding-left: 1rem;
+}
+.errorMess{
+  width: 250px;
+  height: 20px;
+  -webkit-text-fill-color: rgb(233, 4, 4);
+  text-emphasis-color: rgb(233, 4, 4);
+  font-size: 0.66rem;
+}
+.details{
+  padding: 20px;
+  border: darkgrey 2px  ;
+  background: rgb(207, 224, 230)  linear-gradient();
+  width: 500px;
+}
+.pseudo-background-img-container {
+  position: relative;
+  width:400px;
+  height: 200px;
+}
+.pseudo-background-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

@@ -289,3 +289,10 @@ opacity: 0.7;
 .proba{
   padding-left: 1rem;
 }
+
+.details{
+  padding: 20px;
+  border: darkgrey 2px  ;
+  background: rgb(207, 224, 230) linear-gradient();
+  width: 500px;
+}

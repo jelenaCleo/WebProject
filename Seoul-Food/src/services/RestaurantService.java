@@ -243,5 +243,79 @@ public class RestaurantService {
 		return Response.status(Response.Status.NOT_FOUND).build();
 
 	}
+	
+	@PUT
+	@Path("/{id}/deleteArticle")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteArticle(ArticleDTO article, @PathParam("id") Integer restID) {
+		System.out.println("usao");
+		if (isUser()) {
+			if (isUserManager()) {
+
+				RestaurantDAO dao = getRestaurants();
+				
+				Restaurant r = dao.deleteArticle(restID, article);
+				if(r==null) {
+					return Response.status(Response.Status.NOT_FOUND).build();
+				}
+				return Response.status(Response.Status.ACCEPTED).entity(r).build();
+				
+			}
+
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+
+	}
+	@PUT
+	@Path("/{id}/editArticle")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response editArticle(ArticleDTO article, @PathParam("id") Integer restID) {
+		System.out.println("usao");
+		if (isUser()) {
+			if (isUserManager()) {
+				RestaurantDAO dao = getRestaurants();
+				
+				Restaurant r = dao.editArticle(restID, article);
+				if(r==null) {
+					return Response.status(Response.Status.NOT_FOUND).build();
+				}
+				return Response.status(Response.Status.ACCEPTED).entity(r).build();
+				
+			}
+
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+
+	}
+	
+	@GET
+	@Path("/{id}/article/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getArticle( @PathParam("id") Integer restID,@PathParam("name") String articleName ) {
+		System.out.println("usao");
+		if (isUser()) {
+			if (isUserManager()) {
+				RestaurantDAO dao = getRestaurants();
+				
+				Article a = dao.getArticle(restID, articleName);
+				if(a==null) {
+					return Response.status(Response.Status.NOT_FOUND).build();
+				}
+				return Response.status(Response.Status.ACCEPTED).entity(a).build();
+				
+			}
+
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+
+	}
 
 }

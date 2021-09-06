@@ -4,6 +4,7 @@ Vue.component("manager-rest-page",{
 		return{
 			user : null,
 			restaurant : null,
+            manager:null,
             mode: 'read', //moze biti i edit
             deletedMessage: '',
             typeOptions: [
@@ -37,23 +38,32 @@ Vue.component("manager-rest-page",{
                 <div class="border-bottoms">
                     <p class="fw-bold fs-15">Ponude</p>
                 </div>
-                <div class="mt-3 d-flex border-bottom align-items-center justify-content-between">
+                <!-- novo -->
+                <div  v-for="a in this.restaurant.restaurantArticles" >
+               
+                    <div class="mt-3 d-flex border-bottom align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <img src="assets/imgs/default-placeholder.png" class="item-picture" alt="menu item picture">
+                        <img v-bind:src="a.image"  class="item-picture" alt="menu item picture">
                         <div class="ms-3">
-                            <p class="product-name">Cheeseburger + Pomfrit ili Pohovani luk + Coca-Cola 330ml</p>
-                            <p class="product-price">6,00 KM</p>
+                        <a  v-on:click="articleView(a.name)" > 
+                            <p class="product-name">{{a.name}}</p>
+                        </a>
+                            <p class="product-price">{{a.price}} din</p>
                         </div>
                     </div>
-                    <button type="button" @click="deleteRestaurant()" class="btn btn-success btn-sm">OBRISI</button>
+                    <button type="button" @click="deleteArticle(a)"  class="btn btn-success btn-sm">OBRISI</button>
+                    </div>
                 </div>
+
+                <!-- novo -->
                
             </div>
         </section>
         <div class="col-md-5" style="margin-top: 30px;">
-            <button type="button" @click="editRestaurant()" class="btn btn-primary btn-sm">IZMENI RESTORAN</button>
+          <!--  <button type="button" @click="editRestaurant()" class="btn btn-primary btn-sm">IZMENI RESTORAN</button>
             <button type="button" @click="saveChanges()" id="saveChangesBtn" disabled=true class="btn btn-success btn-sm">SACUVAJ IZMENE</button>
-            <button type="button" @click="addArticle()" id="addArticleBtn"  class="btn btn-success btn-sm">DODAJ ARTIKAL</button>
+          -->
+           <button type="button" @click="addArticle()" id="addArticleBtn"  class="btn btn-success btn-sm">DODAJ ARTIKAL</button>
         </div>
     
         <section class="container mt-5">
@@ -66,25 +76,42 @@ Vue.component("manager-rest-page",{
     
                         <div class="border-bottom working" >
                             <p class="working-day">OD:</p>
-                            <input disabled=true type="time" id="startTime" v-model="restaurant.startHours" >
+                            <!--<input disabled=true type="time" id="startTime" v-model="restaurant.startHours" > -->
+                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{restaurant.startHours}} </label>
                         </div>
                         <div class="border-bottom working">
                             <p class="working-day">DO:</p>
-                            <input disabled=true type="time" id="endTime"  v-model="restaurant.endHours" >
+                            <!--<input disabled=true type="time" id="endTime"  v-model="restaurant.endHours" > -->
+                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{restaurant.endHours}} </label>
                         </div>
                         <div class="ms-3 " style="margin:30px ;">
                             <p class="fs-20">Lokacija</p>
-                            <input disabled=true class="input-custom2" type="text" id="resStreet" v-model="restaurant.location.street" placeholder="Ulica" ></br></br>
+                           <!-- <input disabled=true class="input-custom2" type="text" id="resStreet" v-model="this.restaurant.location.street" placeholder="Ulica" ></br></br>
                             <input disabled=true class="input-custom2" type="text" id="resCity" v-model="restaurant.location.city" placeholder="Grad" ></br></br>
                             <input disabled=true class="input-custom2" type="text" id="resZip" v-model="restaurant.location.zipCode"  placeholder="Postanski broj"></br></br>
-                        
+                            -->
+                            <div class="border-bottom working">
+                            <p class="working-day">Ulica:</p>
+                            <!--<input disabled=true type="time" id="endTime"  v-model="restaurant.endHours" > -->
+                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{this.restaurant.location.address.street}} </label>
+                        </div>
+                        <div class="border-bottom working">
+                            <p class="working-day">Grad:</p>
+                            <!--<input disabled=true type="time" id="endTime"  v-model="restaurant.endHours" > -->
+                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{this.restaurant.location.address.city}} </label>
+                        </div>
+                        <div class="border-bottom working">
+                            <p class="working-day">Poštanski broj:</p>
+                            <!--<input disabled=true type="time" id="endTime"  v-model="restaurant.endHours" > -->
+                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{this.restaurant.location.address.zipCode}} </label>
+                        </div>
                     </div>
     
                     </div>
                     <div class="col-6 d-flex align-items-center">
                         <div>
                             
-                            <img src="assets/imgs/adresa.jpg" class="address-picture" alt="address">
+                            <img v-bind:src="restaurant.imgURL" class="address-picture" alt="address">
                             </br></br></br>
                     
                             
@@ -92,31 +119,37 @@ Vue.component("manager-rest-page",{
                         
                     </div>
                 </div>
-               
-                <div class="col-md-6">
-                    <label for="restourantName"  style="padding: 5px;" class="fw-bold fs-15"  >Ime restorana: {{restaurant.name}} </label>
-                    <input  disabled=true type="text" id="restourantName" style="margin-bottom: 40px;" v-model="restaurant.name" class=" mt-2 input-custom" placeholder="Ime restorana"
-                        required>
+                </br>
+               <div class=" filter-head text-center ">
+                <div  >
+                    <label   style="padding: 5px;margin-bottom: 20px;margin-top: 10px;" class=" fs-15"  >Ime restorana: {{this.restaurant.name}}   {{restaurant.rating}} <i class="fas fa-star text-warning"></i></label>
+                   <!-- <input  disabled=true type="text" id="restourantName" style="margin-bottom: 40px;" v-model="this.restaurant.name" class=" mt-2 input-custom" placeholder="Ime restorana"
+                        required> -->
                 </div>
-                <div class="col-md-6">
+                <div  >
                     
-                    <label for="status" style="padding: 5px;"  v-if="restaurant.working == '1'"  class="fw-bold fs-15" >Status: Radi </label>
-                    <label for="status" style="padding: 5px;"  v-if="restaurant.working == '0'" class="fw-bold fs-15" >Status: Ne radi </label>
+                    <label  style="padding: 5px;margin-bottom: 20px;"  v-if="restaurant.working == '1'"  class=" fs-15" >Status: Radi </label>
+                    <label style="padding: 5px;margin-bottom: 20px;"  v-if="restaurant.working == '0'" class=" fs-15" >Status: Ne radi </label>
                     
-                    <select disabled=true data-trigger="" id="resStatus"  style="margin-bottom: 40px;"  class="input-custom mt-2">
+                   <!-- <select disabled=true data-trigger="" id="resStatus"  style="margin-bottom: 40px;"  class="input-custom mt-2">
                         <option  value=true>Da</option>
                         <option  value=false>Ne</option>
-                    </select>
+                    </select> -->
                 </div>
-                <div class="col-md-6">
-                    <label for="type"  style="padding: 5px;"  class="fw-bold fs-15" >Tip restorana: {{restaurant.restaurantType}} </label>
-                    <select disabled=true data-trigger="" id="type" style="margin-bottom: 40px;"  v-model="restaurant.restaurantType" class="input-custom mt-2">
+                <div >
+                    <label  style="padding: 5px;margin-bottom: 20px;"  class=" fs-15" >Tip restorana: {{restaurant.restaurantType}} </label>
+                   <!-- <select disabled=true data-trigger="" id="type" style="margin-bottom: 40px;"  v-model="restaurant.restaurantType" class="input-custom mt-2">
                     <option v-for="option in typeOptions" :value="option">{{ option }}</option>
-                    </select>
+                    </select> -->
                 </div>
+                <div>
+                    <label   style="padding: 5px;margin-bottom: 20px;"  class=" fs-15" >Menadžer: {{manager.name}} {{manager.surname}} </label>
+                </div>
+                <!--
                 <div class="d-flex">
-                    <p   class="fw-bold fs-15" style="padding: 10px;"  >Ocena restorana:</p>
-                    <span class="ms-1">{{restaurant.rating}}<i class="fas fa-star text-warning"></i></span>
+                     <label  style="padding: 5px;margin-bottom: 20px;"  class="fs-15" >Ocena restorana: {{restaurant.rating}} <i class="fas fa-star text-warning"></i></label>
+                </div>
+                -->
                 </div>
     
                 <!-- TODO -->
@@ -157,8 +190,12 @@ Vue.component("manager-rest-page",{
                     console.log('usao u if u mountedu');
                     this.deletedMessage = 'Restoran je obrisan';
                 }
-            }
-			);
+                this.getManager();
+            }).catch(err  =>{ 
+                console.log("\n\n ------- ERROR -------\n");
+                console.log(err);
+               
+            });
 			
 	},
 	methods:{
@@ -178,6 +215,18 @@ Vue.component("manager-rest-page",{
 
 
         },
+        getManager: function(){
+            console.log('funkcija getManagers');
+            axios.get('rest/users/myManager/' + this.restaurant.managerID) 
+			.then(response =>{
+				this.manager = response.data;
+                console.log(this.manager.name);
+            }).catch(err  =>{ 
+                console.log("\n\n ------- ERROR -------\n");
+                console.log(err);
+               
+            });
+        },
         saveChanges: function(){
             document.getElementById("startTime").disabled=true;
             document.getElementById("endTime").disabled=true;
@@ -191,6 +240,34 @@ Vue.component("manager-rest-page",{
         },
         addArticle: function(){
 			 location.href = "#/addIthem/" + this.restaurant.id;
+        },
+        deleteArticle: function(a){
+            axios
+            .put('rest/restaurants/' + this.restaurant.id + '/deleteArticle',{
+                "name":a.name,
+                "price":a.price,
+                "type":a.type,
+                "restaurantID":this.restaurant.restaurantID,
+                "quantity":a.quantity,
+                "measure":a.measure,
+                "description":a.description,
+                "image": a.image
+                })            
+            .then(response=> {
+               this.restaurant = response.data;
+               console.log('obrisan artikal');
+
+             })
+             .catch(err  =>{ 
+                console.log("\n\n ------- ERROR -------\n");
+                console.log(err);
+               
+            })
+        },
+        articleView:function(name){
+            
+            location.href = "#/" + this.restaurant.id + "/article" + "/" + name;
+                
         }
 		
 	}

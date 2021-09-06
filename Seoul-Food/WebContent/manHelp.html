@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="Manager.css">
+    <title>Manager</title>
+</head>
+
+<body>
+
+    <section>
+        <div class="main-banner d-flex align-items-center  text-center">
+            <div class="container">
+                <h2 class="text-white">Upravljanje restoranom</h2>
+            </div>
+            <span id="black-overlay"></span>
+        </div>
+    </section>
+
+    <!-- Section 2 -->
+
+    <section class="container mt-4">
+        <p class="fw-bold fs-20">Dodajte novi proizvod u restoran</p>
+        <form action="#">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="productName">Unesite ime proizvoda: </label>
+                    <input type="text" id="productName" class=" mt-2 input-custom" placeholder="Ime proizvoda" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="price">Unesite cijenu proizvoda: </label>
+                    <input type="number" id="price" class=" mt-2 input-custom" placeholder="Unesite cijenu" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="type">Unesite tip proizvoda: </label>
+                    <select data-trigger="" id="type" class="input-custom mt-2">
+                        <option placeholder="" value="">Tip proizvoda</option>
+                        <option>Hrana</option>
+                        <option>Piće</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="productPicture">Unesite sliku proizvoda: </label>
+                    <input type="file" id="productPicture" class=" mt-2 input-custom" placeholder="Slika proizvoda"
+                        required>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="aboutProduct">Unesite opis proizvoda: </label>
+                    <textarea type="text" id="aboutProduct" class=" mt-2 input-custom"
+                        placeholder="Opis proizvoda"> </textarea>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="productQty">Unesite količinu proizvoda: </label>
+                    <input type="number" id="productQty" class=" mt-2 input-custom" placeholder="Količina proizvoda">
+                </div>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary fw-600 mt-3">Dodaj proizvod</button>
+            </div>
+        </form>
+
+
+    </section>
+
+    <!-- Section 3 -->
+
+    <section class="container">
+        <p class="fw-bold fs-20">Izmenite postojeći proizvod</p>
+        <form action="#">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="productIDedit">Unesite ID proizvoda: </label>
+                    <input type="number" id="productIDedit" class="mt-2 input-custom" placeholder="ID proizvoda"
+                        required>
+                </div>
+                <div class="col-md-3">
+                    <label for="productNameEdit">Unesite ime proizvoda: </label>
+                    <input type="text" id="productNameEdit" class=" mt-2 input-custom" placeholder="Ime proizvoda"
+                        required>
+                </div>
+                <div class="col-md-3">
+                    <label for="priceEdit">Unesite cijenu proizvoda: </label>
+                    <input type="number" id="priceEdit" class=" mt-2 input-custom" placeholder="Unesite cijenu"
+                        required>
+                </div>
+                <div class="col-md-3">
+                    <label for="typeEdit">Unesite tip proizvoda: </label>
+                    <select data-trigger="" id="typeEdit" class="input-custom mt-2">
+                        <option placeholder="" value="">Tip proizvoda</option>
+                        <option>Hrana</option>
+                        <option>Piće</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mt-3">
+                    <label for="productPictureEdit">Unesite sliku proizvoda: </label>
+                    <input type="file" id="productPictureEdit" class=" mt-2 input-custom" placeholder="Slika proizvoda"
+                        required>
+                </div>
+                <div class="col-md-4 mt-3">
+                    <label for="aboutProductEdit">Unesite opis proizvoda: </label>
+                    <textarea type="text" id="aboutProductEdit" class=" mt-2 input-custom"
+                        placeholder="Opis proizvoda"> </textarea>
+                </div>
+                <div class="col-md-4 mt-3">
+                    <label for="productQtyEdit">Unesite količinu proizvoda: </label>
+                    <input type="number" id="productQtyEdit" class=" mt-2 input-custom"
+                        placeholder="Količina proizvoda">
+                </div>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary fw-600 mt-3">Izmeni proizvod</button>
+            </div>
+        </form>
+
+
+    </section>
+
+    <!-- Section 4 -->
+
+    <section class="container">
+        <p class="fw-bold fs-20">Pregled svih porudžbina</p>
+
+        <div class="table-wrap">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID porudžbine</th>
+                        <th>Korisnik</th>
+                        <th>Količina</th>
+                        <th>Dostavljač</th>
+                        <th>Porudžbina</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">0</th>
+                        <td>Desanka Maksimović</td>
+                        <td>2 <span>porcije</span></td>
+                        <td>Pero Perić</td>
+                        <td>Ćevapi sa lukom</td>
+                        <td><a href="#" class="btn btn-success">Dostavljena</a></td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Maja Blagić</td>
+                        <td>2 <span>porcije</span></td>
+                        <td>Pero Perić</td>
+                        <td>Ćevapi sa lukom</td>
+                        <td><a href="#" class="btn btn-warning">U pripremi</a></td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Laza Lazarević</td>
+                        <td>2 <span>porcije</span></td>
+                        <td>Pero Perić</td>
+                        <td>Ćevapi sa lukom</td>
+                        <td><a href="#" class="btn btn-dark">U transportu</a></td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Jovan Dučić</td>
+                        <td>2 <span>porcije</span></td>
+                        <td>Pero Perić</td>
+                        <td>Ćevapi sa lukom</td>
+                        <td><a href="#" class="btn btn-info">Čeka dostavljača</a></td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>Nikola Tesla</td>
+                        <td>2 <span>porcije</span></td>
+                        <td>Pero Perić</td>
+                        <td>Ćevapi sa lukom</td>
+                        <td><a href="#" class="btn btn-warning">U pripremi</a></td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>Savo Savanović</td>
+                        <td>2 <span>porcije</span></td>
+                        <td>Pero Perić</td>
+                        <td>Ćevapi sa lukom</td>
+                        <td><a href="#" class="btn btn-info">Čeka dostavljača</a></td>
+
+                    <tr>
+                        <th scope="row">6</th>
+                        <td>Stepa Stepanović</td>
+                        <td>2 <span>porcije</span></td>
+                        <td>Pero Perić</td>
+                        <td>Ćevapi sa lukom</td>
+                        <td><a href="#" class="btn btn-success">Dostavljena</a></td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">7</th>
+                        <td>Radomir Putnik</td>
+                        <td>2 <span>porcije</span></td>
+                        <td>Pero Perić</td>
+                        <td>Ćevapi sa lukom</td>
+                        <td><a href="#" class="btn btn-secondary">Obrada</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <!-- Section 5 -->
+
+    <section class="container mt-4">
+        <p class="fw-bold fs-20">Komentari vezani za restoran</p>
+        <p class="fw-bold">Za odobriti:</p>
+        <div class="row border-top border-bottom py-3">
+            <div class="col-6 d-flex align-items-center">
+                <img src="assets/imgs/user.jpg" class="user-logo" alt="review user logo">
+                <p class="reviewer-name">Jovan Jovanović Zmaj</p>
+            </div>
+            <div class="col-6">
+                <p class="fs-10">Poruka:</p>
+                <p class="review-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam, sint dicta!
+                    Quo natus quae in
+                    nisi delectus eius molestias nobis reiciendis ad eveniet consequuntur omnis, dicta rerum animi
+                    eligendi veritatis!
+                    Iste, officiis! Dolorum odio nesciunt nemo deserunt accusantium officia cum, molestiae
+                    distinctio eius. Porro ex a ipsa suscipit! Impedit quisquam accusamus repellat, ut nisi qui
+                    ipsum non tempora ab nobis?</p>
+            </div>
+            <div class="col-12">
+                <div class="d-flex justify-content-end">
+                    <td><a href="#" class="btn btn-success me-3">Prihvati</a></td>
+                    <td><a href="#" class="btn btn-danger">Odbij</a></td>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top border-bottom py-3">
+            <div class="col-6 d-flex align-items-center">
+                <img src="assets/imgs/user.jpg" class="user-logo" alt="review user logo">
+                <p class="reviewer-name">Jovan Jovanović Zmaj</p>
+            </div>
+            <div class="col-6">
+                <p class="fs-10">Poruka:</p>
+                <p class="review-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam, sint dicta!
+                    Quo natus quae in
+                    nisi delectus eius molestias nobis reiciendis ad eveniet consequuntur omnis, dicta rerum animi
+                    eligendi veritatis!
+                    Iste, officiis! Dolorum odio nesciunt nemo deserunt accusantium officia cum, molestiae
+                    distinctio eius. Porro ex a ipsa suscipit! Impedit quisquam accusamus repellat, ut nisi qui
+                    ipsum non tempora ab nobis?</p>
+            </div>
+            <div class="col-12">
+                <div class="d-flex justify-content-end">
+                    <td><a href="#" class="btn btn-success me-3">Prihvati</a></td>
+                    <td><a href="#" class="btn btn-danger">Odbij</a></td>
+                </div>
+            </div>
+        </div>
+
+        <p class="fw-bold fs-15 mt-3">Prihvaćeni komentari:</p>
+
+        <div class="row border-top border-bottom py-3">
+            <div class="col-6 d-flex align-items-center">
+                <img src="assets/imgs/user.jpg" class="user-logo" alt="review user logo">
+                <p class="reviewer-name">Jovan Jovanović Zmaj</p>
+            </div>
+            <div class="col-6">
+                <p class="fs-10">Poruka:</p>
+                <p class="review-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam, sint dicta!
+                    Quo natus quae in
+                    nisi delectus eius molestias nobis reiciendis ad eveniet consequuntur omnis, dicta rerum animi
+                    eligendi veritatis!
+                    Iste, officiis! Dolorum odio nesciunt nemo deserunt accusantium officia cum, molestiae
+                    distinctio eius. Porro ex a ipsa suscipit! Impedit quisquam accusamus repellat, ut nisi qui
+                    ipsum non tempora ab nobis?</p>
+            </div>
+        </div>
+
+        <div class="row border-top border-bottom py-3">
+            <div class="col-6 d-flex align-items-center">
+                <img src="assets/imgs/user.jpg" class="user-logo" alt="review user logo">
+                <p class="reviewer-name">Jovan Jovanović Zmaj</p>
+            </div>
+            <div class="col-6">
+                <p class="fs-10">Poruka:</p>
+                <p class="review-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam, sint dicta!
+                    Quo natus quae in
+                    nisi delectus eius molestias nobis reiciendis ad eveniet consequuntur omnis, dicta rerum animi
+                    eligendi veritatis!
+                    Iste, officiis! Dolorum odio nesciunt nemo deserunt accusantium officia cum, molestiae
+                    distinctio eius. Porro ex a ipsa suscipit! Impedit quisquam accusamus repellat, ut nisi qui
+                    ipsum non tempora ab nobis?</p>
+            </div>
+        </div>
+
+
+    </section>
+
+    <script src="bootstrap-5.0.2-dist/js/bootstrap.js"></script>
+
+</body>
+
+</html>

@@ -1,26 +1,9 @@
-Vue.component("admin-rest-page",{
-	
-	data:function(){
-		return{
-			user : null,
-            manager:null,
-			restaurant : null,
-            mode: 'read', //moze biti i edit
-            deletedMessage: '',
-            typeOptions: [
-                "Korejski",
-                "Kineski",
-                "Italijanski",
-                "FastFood",
-                "Pekara",
-                "Poslasticarnica",
-            ],
-		}
-	},
-	
-	template:
-	`
-	<div  >
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <div  >
         <section>
             <div class="main-banner help d-flex align-items-center  text-center">
                 <div class="container help">
@@ -177,110 +160,5 @@ Vue.component("admin-rest-page",{
             </div>
         </section>
     </div>
-	
-	`,
-	mounted(){
-		var path = location.href;
-		var restID = path.split('/admin-rest-page/')[1];
-		/**What is %20 in the url?
-		URL-encoding from %00 to %8f
-		ASCII -	URL-encode
-		space -	  %20 
-		*/
-		console.log("DUG JE PUT: " + path +"\n" + restID);
-		var id = restID.replace('%20', ' ');
-		//this.restaurant = response.data
-		console.log("id koji trazm:"+ id);
-		axios.get('rest/restaurants/' + id) 
-			.then(response =>{
-				this.restaurant = response.data;
-                if(this.restaurant.logicallyDeleted == 1){
-                    console.log('usao u if u mountedu');
-                    this.deletedMessage = 'Restoran je obrisan';
-                    
-                }
-                this.getManager();
-            }).catch(err  =>{ 
-                console.log("\n\n ------- ERROR -------\n");
-                console.log(err);
-               
-            });
-
-            
-			
-	},
-	methods:{
-		f:function(){
-			console.log("Restoran page: " + this.restaurant.name);
-		},
-        getManager: function(){
-            console.log('funkcija getManagers');
-            axios.get('rest/users/myManager/' + this.restaurant.managerID) 
-			.then(response =>{
-				this.manager = response.data;
-                console.log(this.manager.name);
-            }).catch(err  =>{ 
-                console.log("\n\n ------- ERROR -------\n");
-                console.log(err);
-               
-            });
-        },
-        editRestaurant: function(){
-            document.getElementById("startTime").disabled=false;
-            document.getElementById("endTime").disabled=false;
-            document.getElementById("resStreet").disabled=false;
-            document.getElementById("resCitu").disabled=false;
-            document.getElementById("resZip").disabled=false;
-            document.getElementById("restourantName").disabled=false;
-            document.getElementById("resStatus").disabled=false;
-            document.getElementById("type").disabled=false;
-            document.getElementById("saveChangesBtn").disabled=false;
-
-
-        },
-        saveChanges: function(){
-            document.getElementById("startTime").disabled=true;
-            document.getElementById("endTime").disabled=true;
-            document.getElementById("resStreet").disabled=true;
-            document.getElementById("resCitu").disabled=true;
-            document.getElementById("resZip").disabled=true;
-            document.getElementById("restourantName").disabled=true;
-            document.getElementById("resStatus").disabled=true;
-            document.getElementById("type").disabled=true; 
-            document.getElementById("saveChangesBtn").disabled=true;
-        },
-        deleteRestaurant: function(){
-            console.log(this.restaurant.id);
-            
-            axios.put('rest/restaurants/deleteRestaurant/' + this.restaurant.id) 
-			.then(response =>
-				{
-                    this.restaurant = response.data;
-                    this.deletedMessage = 'Restoran je obrisan ';
-                }).catch(err  =>{ 
-                console.log("\n\n ------- ERROR -------\n");
-                console.log(err);
-               
-            });
-            
-        },
-        restoreRestaurant: function(){
-            console.log(this.restaurant.id);
-            
-            axios.put('rest/restaurants/restoreRestaurant/' + this.restaurant.id) 
-			.then(response =>
-				{
-                    this.restaurant = response.data;
-                    this.deletedMessage = '';
-                }).catch(err  =>{ 
-                console.log("\n\n ------- ERROR -------\n");
-                console.log(err);
-               
-            });
-        }
-		
-	}
-	
-	
-	
-});
+</body>
+</html>

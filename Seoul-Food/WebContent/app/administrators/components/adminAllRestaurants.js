@@ -67,13 +67,13 @@ Vue.component("admin-all-restaurants", {
         
             <div  class=" restourant-search py-3">
                 <!--ovdje pocne-->
-                <div  v-for="r in filteredRestaurants" v-if="r.working == true">
+                <div  v-for="r in filteredRestaurants" v-if="r.working == true"  >
                
           				<a  v-on:click="restaurantView(r.id)" > 
                         <div  class="row align-items-center ">
         
                             <div class="col-4">
-                                <img src="assets/imgs/default-placeholder.png" class="restourant-logo" alt="Image not found" />
+                                <img v-bind:src="r.imgURL" class="restourant-logo" alt="Image not found" />
                             </div>
                             <div class="col-8">
                                 <div class="d-flex justify-content-around align-items-center">

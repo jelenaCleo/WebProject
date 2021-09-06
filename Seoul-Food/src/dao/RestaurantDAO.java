@@ -174,6 +174,58 @@ public class RestaurantDAO {
 		}
 		return null;
 	}
+	
+	public Restaurant deleteArticle(Integer restID, ArticleDTO aDTO) {
+		Article article = new Article(aDTO.name,aDTO.price,aDTO.type,restID,aDTO.quantity,aDTO.measure,aDTO.description,aDTO.image);
+		for(Restaurant r : getValues()) {
+			if(r.getID().equals(restID)) {
+				System.out.println("nasao restiran");
+				ArrayList<Article> oldArticles =(ArrayList<Article>) r.getRestaurantArticles();
+				ArrayList<Article> newArticles = (ArrayList<Article>) r.getRestaurantArticles();
+				for(Article a : oldArticles) {
+					if(a.getName().equals(article.getName())){
+						newArticles.remove(a);
+						System.out.println("UKLONIO ARTIKAL");
+						break;
+					}
+				}
+				
+				r.setRestaurantArticles(newArticles);
+				System.out.println("zamjenjene liste");
+				saveRestaurantsJSON();
+				System.out.println("savuvano");
+				return r;
+				
+			}
+		}
+		return null;
+	}
+	public Restaurant editArticle(Integer restID , ArticleDTO oldArticle) {
+		for(Restaurant r : getValues()) {
+			if(r.getID().equals(restID)) {
+				System.out.println("nasao restiran");
+				for(Article a : r.getRestaurantArticles()) {
+					if(a.getName().equals(oldArticle.name)){
+						a.setName(oldArticle.name);
+						a.setPrice(oldArticle.price);
+						a.setType(oldArticle.type);
+						a.setQuantity(oldArticle.quantity);
+						a.setMeasure(oldArticle.measure);
+						a.setDescription(oldArticle.description);
+						a.setImage(oldArticle.image);
+						System.out.println("EDITOVAN ARTIKAL");
+						break;
+					}
+				}
+				saveRestaurantsJSON();
+				System.out.println("sacuvano");
+				return r;
+				
+			}
+		}
+		return null;
+	}
+	
 	private boolean noDuplicateArticleName(Restaurant r, String articleName) {
 		for(Article a : r.getRestaurantArticles()) {
 			if(a.getName().equals(articleName)){
@@ -197,5 +249,19 @@ public class RestaurantDAO {
 		r.setLogicallyDeleted(0);
 		saveRestaurantsJSON();
 		return r;
+	}
+
+	public Article getArticle(Integer restID, String articleName) {
+		for(Restaurant r : getValues()) {
+			if(r.getID().equals(restID)) {
+				System.out.println("nasao restiran");
+				for(Article a : r.getRestaurantArticles()) {
+					if(a.getName().equals(articleName)){
+						return a;
+					}
+				}
+			}
+		}
+		return null;
 	}
 }

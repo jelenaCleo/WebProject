@@ -12,6 +12,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -392,6 +393,23 @@ public class UserService {
 						.build();
 			}
 		}
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+	}
+	
+	@GET
+	@Path("/myManager/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getManager(@PathParam("id") Integer manID) {
+		User user = getUsers().findUserById(manID);
+		System.out.println(user.getBirthday()+"rodj menadzera");
+		if(isUser()) {
+			return Response
+					.status(Response.Status.ACCEPTED)
+					.entity(user)
+					.build();
+		}
+		System.out.println("set3");
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
 	}

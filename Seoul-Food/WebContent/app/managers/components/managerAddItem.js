@@ -8,7 +8,7 @@ function fixManagers(managers) {
     return managers;
 }
 
-Vue.component("add-ithem",{
+Vue.component("add-item",{
     data() {
 		return {
 			file : {},
@@ -17,7 +17,7 @@ Vue.component("add-ithem",{
                 price : 0.0,
                 type : '',
                 restaurantID : '',
-                quantity : 0,
+                quantity : '',
                 measure : '',
                 description : '',
                 image : '',
@@ -33,6 +33,9 @@ Vue.component("add-ithem",{
             }
                 
             ],
+            mess0: ' ',
+            mess1: ' ',
+            mess2: ' ',
 
 		}
 	},
@@ -45,13 +48,15 @@ Vue.component("add-ithem",{
             <div class="row">
                 <div class="col-md-3">
                     <label id="nameLabel" for="articleName">Unesite ime artikla: </label>
-                    <input type="text" @change="restoreLabelColor" id="articleName" v-model="newArticle.name" class=" mt-2 input-custom" placeholder="Naziv artikla"
+                    <input type="text" v-on:change="restoreNameErrMess()" id="articleName" v-model="newArticle.name" class=" mt-2 input-custom" placeholder="Naziv artikla"
                         required>
+                        <label class="errorMess" >{{ mess0 }}</label>
                 </div>
                 <div class="col-md-3">
                     <label for="articlePrice">Cena: </label>
-                    <input type="text" id="articlePrice" v-model="newArticle.price" class=" mt-2 input-custom" placeholder="Cena"
+                    <input type="double" id="articlePrice" v-on:change="restorePriceErrMess()" v-model="newArticle.price" class=" mt-2 input-custom" placeholder="Cena"
                         required>
+                        <label class="errorMess" >{{ mess1 }}</label>
                 </div>
                 <div class="col-md-3">
                     <label for="type">Tip artikla: </label>
@@ -66,7 +71,8 @@ Vue.component("add-ithem",{
                 </div>
                 <div class="col-md-6 mt-3">
                 <label for="articleQuantity">Kolicina:</label>
-                <input type="text" id="articleQuantity" v-on:change="quantityChange()" v-model="newArticle.quantity" class=" mt-2 input-custom" placeholder="Kolicina">
+                <input type="text" id="articleQuantity" v-on:change="quantityChange();restoreQuanErrMess()" v-model="newArticle.quantity" class=" mt-2 input-custom" placeholder="Kolicina">
+                <label class="errorMess">{{ mess2 }}</label>
             </div>
             <div class="col-md-6 mt-3">
                 <label for="acrticleMeasure">Jedinica za kolicinu:</label>
@@ -118,7 +124,8 @@ Vue.component("add-ithem",{
         
         	event.preventDefault();
 			console.log("pritisnuto dugme za potvrdu dodavanja artikla");
-            axios
+            if(this.inputValidate()){
+                axios
             .put('rest/restaurants/' + this.newArticle.restaurantID + '/newArticle',{
                 "name":this.newArticle.name,
                 "price":this.newArticle.price,
@@ -132,7 +139,7 @@ Vue.component("add-ithem",{
                 var v = response.data;
                 if(v === ''){
                     toastr["error"]("Korisničko ime već postoji!");
-                    document.getElementById("nameLabel").className="input-custom-invalid";             
+                    this.mess0 = 'Korisničko ime već postoji!' ;          
                    }else{
                     location.href = '/Seoul-Food/managerHome.html';
                 }
@@ -143,6 +150,8 @@ Vue.component("add-ithem",{
                 console.log(err);
                
             })
+            }
+            
         },
         quantityChange: function(){
             if(this.newArticle.quantity!=''){
@@ -152,8 +161,29 @@ Vue.component("add-ithem",{
             }
             
         },
-        restoreLabelColor: function(){
-            document.getElementById("nameLabel").className="input-custom-valid"; 
+        restoreNameErrMess: function(){
+            this.mess0 = ' '; 
+        },
+        restorePriceErrMess: function(){
+            this.mess1 = ' '; 
+            console.log('mess1:' + this.mess1);
+        },
+        restoreQuanErrMess: function(){
+            this.mess2 = ' '; 
+        },
+        inputValidate: function(){
+            var a = true;
+            if(!parseFloat(this.newArticle.price)){
+                this.mess1='Ovo polje ne može sadržati znakove osim brojeva i . !';
+                console.log('aaaaaaaaaa');
+                a = false;
+            }
+            if(this.newArticle.quantity!='' && !parseFloat(this.newArticle.quantity)){
+                this.mess2='Ovo polje ne može sadržati znakove osim brojeva i . !';
+                console.log('aaaaaaaaaa');
+                a = false;
+            }
+            return a;
         }
 
         
