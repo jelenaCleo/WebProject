@@ -1,5 +1,11 @@
 package services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -11,10 +17,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Order;
+import beans.ShoppingCartItem;
 import dao.OrderDAO;
-import dao.RestaurantDAO;
 import dto.NewOrderDTO;
-import dto.NewRestaurantDTO;
 
 @Path("/orders")
 public class OrderService {
@@ -23,6 +29,9 @@ public class OrderService {
 	HttpServletRequest request;
 	@Context
 	ServletContext ctx;
+	
+	private LinkedHashMap<Integer,  ArrayList<ShoppingCartItem> > temp = new LinkedHashMap<Integer, ArrayList<ShoppingCartItem>>();
+	
 	
 	private OrderDAO getOrdersDAO() {
 		
@@ -59,26 +68,101 @@ public class OrderService {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addOrder(NewOrderDTO newOrder) {
+	public Response addOrder( NewOrderDTO order) {
+		//NewOrderDTO
+		ArrayList<ShoppingCartItem>  newOrder  = order.selection;
 		
-		OrderDAO dao = getOrdersDAO();
-		if(dao.findOrderByID(newOrder.ID) != null) {
+		for(ShoppingCartItem i : newOrder) {
 			
-			System.out.println("\n\n Order sa istim ID vec postoji"
-					+ "ovo ne bi trbalo da se desava i  nadam se da nece nikad");
-			//eventualno mozemo ovdje izmijeniti as special case order
-			
-			return Response.status(Response.Status.BAD_REQUEST).build();
-			
-			
+			System.out.println("SELECTION " + i.getArticle().getName());
 		}
 	
 		
-		dao.addOrder(newOrder);
-		System.out.println("POST -- New Order " + newOrder.ID  );
-	
 		
-		return  Response.status(Response.Status.ACCEPTED).entity("/").build(); 	
+		
+		
+		
+		for (ShoppingCartItem item : newOrder) {
+			
+			int key = item.getArticle().getRestaurantID();
+		
+			if(temp.containsKey(key)) {
+				System.out.println("VEC POSTOJI:" + item.getArticle().getName());
+				temp.get(key).add(item);
+			}
+			else
+			{
+			System.out.println("FIRST OF ITS KIND :" + item.getArticle().getName());
+			temp.put(key, new ArrayList<ShoppingCartItem>());
+			temp.get(key).add(item);
+			}
+		}
+		
+		createOrders(order.username, order.name, order.surname);
+		
+//		String id = dao.getSaltString(10);
+//		System.out.println(id);
+		return null;
+		
+		/*
+		 * OrderDAO dao = getOrdersDAO(); if(dao.findOrderByID(newOrder.ID) != null) {
+		 * 
+		 * System.out.println("\n\n Order sa istim ID vec postoji" +
+		 * "ovo ne bi trbalo da se desava i  nadam se da nece nikad"); //eventualno
+		 * mozemo ovdje izmijeniti as special case order
+		 * return Response.status(Response.Status.BAD_REQUEST).build();
+		 * }
+		 * dao.addOrder(newOrder); System.out.println("POST -- New Order " + newOrder.ID
+		 * );
+		 * return Response.status(Response.Status.ACCEPTED).entity("/").build();
+		 */
+		
+		
+	}
+
+	private void createOrders(String username, String name, String surname) {
+		@SuppressWarnings("unused")
+		OrderDAO dao = getOrdersDAO();
+		
+		for(Map.Entry<Integer, ArrayList<ShoppingCartItem>> entry : temp.entrySet()) {
+			String id = dao.getSaltString(10);
+			   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");  
+			   LocalDateTime now = LocalDateTime.now();  
+			   
+			   ArrayList<ShoppingCartItem> items = entry.getValue();
+			   
+
+			
+		
+			Order o = new Order(id, items, entry.getKey(), dtf.format(now), calculatePrice(items), username, name, surname);
+			dao.addOrder(o);
+			   System.out.println(username);
+			   System.out.println(name);
+			   System.out.println(surname);
+
+				System.out.println(calculatePrice(items));
+				System.out.println(dtf.format(now)); 
+				System.out.println(id);	
+				System.out.println("key: " + entry.getKey() );
+			
+			
+				temp.clear();
+		
+			
+	}
+		
+		
+		
+	}
+
+	private double calculatePrice(ArrayList<ShoppingCartItem> items) {
+		
+		double totalPrice= 0.0;
+		for(ShoppingCartItem item : items) {
+			totalPrice += item.getArticle().getPrice()*item.getCount();
+		}
+		return totalPrice;
+		
 	}
 	
 	

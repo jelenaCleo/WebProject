@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Random;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import beans.Article;
 import beans.Order;
 import dto.NewOrderDTO;
 
@@ -103,15 +103,26 @@ public class OrderDAO {
 		return null;
 	}
 
+//TODO : EDIT THIS SHIT
+	public void addOrder(Order newOrder) {
 
-	public void addOrder(NewOrderDTO newOrder) {
-//Order(String ID,ArrayList<Article> articles,Integer restID, String oderDate,String price,String username,String firstName,String lastName)
-		Order o = new Order(newOrder.ID, newOrder.articles, newOrder.restID,
-				newOrder.oderDate, newOrder.price, newOrder.username, newOrder.firstName, newOrder.lastName);
-		orders.put(newOrder.restID, o);
+		orders.put(newOrder.getRestID(), newOrder);
 		saveOrders();
-		
 	}
+
+	
+	public String getSaltString(int len) {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < len) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
+    }
 	
 	
 	
