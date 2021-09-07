@@ -46,7 +46,7 @@ Vue.component("cart",{
                             </button>
                         </div>
 
-                        <img src="assets/imgs/default-placeholder.png" class="cart-logo"
+                        <img v-bind:src="item.article.image" class="cart-logo"
                             alt="assets/imgs/cart-meal.jpg">
                     </div>
                     <div class="col-8">

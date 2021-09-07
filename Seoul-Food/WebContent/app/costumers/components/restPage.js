@@ -47,7 +47,7 @@ Vue.component("restpage",{
 
             <div v-for="(a,index) in restaurant.restaurantArticles" class="firstcol  mt-3 d-flex border-bottom align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
-                    <img src="assets/imgs/default-placeholder.png" class="item-picture" alt="menu item picture">
+                    <img v-bind:src="a.image" class="item-picture" alt="menu item picture">
                    <div class="d-flex align-items-start flex-column ">
                         <p class="product-name ms-3">{{a.name}} ,{{a.quantity}}{{a.measure}}</p>
                         <p class="product-name ms-3">{{a.price}}DIN</p>
