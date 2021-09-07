@@ -35,10 +35,7 @@ public class ShoppingCartItem {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	//DAO 
-	public double getTotal() {
-		return article.getPrice() * count;
-	}
+	
 
 
 

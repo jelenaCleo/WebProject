@@ -2,16 +2,12 @@ package dto;
 
 import java.util.ArrayList;
 
-import beans.Article;
+import beans.ShoppingCartItem;
 
 public class NewOrderDTO {
 
-	public String ID;
-	public ArrayList<Article> articles;
-	public Integer restID;
-	public String oderDate;
-	public String price;
+	public ArrayList<ShoppingCartItem> selection;
 	public String username;
-	public String firstName;
-	public String lastName;
+	public String name;
+	public String surname;
 }

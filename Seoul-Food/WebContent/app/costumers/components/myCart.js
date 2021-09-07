@@ -5,7 +5,10 @@ Vue.component("cart",{
 
 				cartItems: {},
 				isLoaded: false,
-               
+                selection:[],
+                user: null,
+
+                
 
 			}
 		},
@@ -106,7 +109,13 @@ Vue.component("cart",{
 								
 								console.log ("chart items: " + this.cartItems)
 								}
-							})
+							});
+             axios
+                .get('rest/users/myProfile')
+                .then(response =>
+                     {
+                          this.user = response.data;
+                      });
 		
 		},
         methods:{
@@ -135,10 +144,36 @@ Vue.component("cart",{
 			},
 			createOrder:function(){
 				
+                
+                for (let i = 0; i < this.cartItems.length; i++) {
+					
+                    this.selection.push({
+						"article": this.cartItems[i].article,
+						"count": this.cartItems[i].count
+					});
+                }
+               
+				console.log("cartitems");
+				console.log(this.cartItems);
 				
-				 const uint32 = window.crypto.getRandomValues(new Uint32Array(1))[0];
-				 const id =  uint32.toString(8);
-				 console.log(id);
+				console.log("selecetion");
+				console.log(this.selection);
+				
+            	console.log("============================================//////////")
+				
+                axios
+                    .post('rest/orders/',
+                     {
+                       "selection": this.selection,
+                        "username" : this.user.username,
+                        "name" :  this.user.name,
+                        "surname" : this.user.surname
+                    
+                    });
+                    
+                
+
+
 				
 			}
         },
