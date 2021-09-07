@@ -7,17 +7,21 @@ Vue.component("restpage",{
 			restaurant : null,
 			name: '',
 			disable: true,
-			count: 1,
-			counts:[],
+		
 			selection:[],
 			selectionOK:false,
 			isLoaded2: false,
+            article: null,
 		}
 	},
 	
 	template:
 	`
+
+	
 	<div v-if="isLoaded"  >
+	<link rel= "stylesheet" href="css/users/restPage.css">
+	
     <section>
         <div class="main-banner help d-flex align-items-center  text-center">
             <div class="container help">
@@ -219,10 +223,9 @@ Vue.component("restpage",{
 					
 			
 				}
-				isLoaded2 = true;
+				this.isLoaded2 = true;
 			});
-			
-			
+            axios.get('rest/users/myProfile').then(response => {this.user = response.data});
 			
 			
 			
@@ -230,23 +233,56 @@ Vue.component("restpage",{
 	methods:{
 		log:function(index){
 			
-			console.log(this.selection[index]);
+	
 			//treba da saljem na bekend
 			//STEP 1: get the ARTICLE
 			let name = this.selection[index].key;
 			let count = this.selection[index].count;
+			
 			
 			for (let i = 0; i <  this.restaurant.restaurantArticles.length ; i++) {
 			
 					if(this.restaurant.restaurantArticles[i].name == name){
 						
 						//NOW MAKE A POST REQUEST
+                        
 						console.log(this.restaurant.restaurantArticles[i]);
-						console.log(count);
-						
+						console.log("taken the count : " + count);
+                        console.log("moj user ID " + this.user.id);
+                        
+                        
+                        
+						axios
+                        .post('rest/cart/', 
+                        {
+                            "article" : this.restaurant.restaurantArticles[i],
+                            "count" : count,
+                            "userID" : this.user.id
+                        }
+                        
+                        )
+                        .then(response => {
+                            toastr["success"]("Success changes!!", "Success!");
+                            this.message = "user promenjen";
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            toastr["error"]("Failed during changes :(", "Fail");
+                            
+                        })
+
+
+
+
+
+
 					}
 				
-				}					
+				}			
+				this.selection[index].count = 0;
+			
+			
+				
 			
     },
 			
@@ -276,7 +312,7 @@ Vue.component("restpage",{
 		,
 		isDisabled:function(index){
 			
-			if(!isLoaded2){
+			if(!this.isLoaded2){
 				return true;
 			}
 			

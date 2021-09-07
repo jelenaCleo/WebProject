@@ -7,4 +7,5 @@ public class AddToCartDTO {
 	
 	public Article article;
 	public int count;
+	public int userID;
 }

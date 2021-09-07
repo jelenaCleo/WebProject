@@ -35,11 +35,12 @@ public class ShoppingCartService {
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getJustProducts() {
+	public Response getJustItems() {
+		ShoppingCart sc = getShoppingCart();
 		
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
-				.entity(getShoppingCart().getItems())
+				.entity(sc.getItems())
 				.build();
 		
 	}
@@ -53,10 +54,15 @@ public class ShoppingCartService {
 	public String addArticle(AddToCartDTO dto) {
 		
 		ShoppingCart sc = getShoppingCart();
-		if(sc.addArticle(dto.article, dto.count)) {
+		if(sc.addArticle(dto)) {
+			
+		
+			
+			
 			return "Added article to cart";
 		}
 		return "Already exists in cart";
+		
 		
 	}
 
@@ -66,14 +72,15 @@ public class ShoppingCartService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteArticle(String name){
 		
-		    ShoppingCartItem sci= getShoppingCart().getShoppingCartItem(name);
+		  /*  ShoppingCartItem sci= getShoppingCart().getShoppingCartItem(name);
 			getShoppingCart().getItems().remove(sci);
 		
 			return Response
 					.status(Response.Status.ACCEPTED).entity("USER DELETED")
 					.entity(getShoppingCart().getItems())
 					.build();
-		
+		*/
+		return null;
 	}
 
 	private ShoppingCart getShoppingCart() {

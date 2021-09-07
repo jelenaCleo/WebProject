@@ -26,7 +26,12 @@ Vue.component("myprofile",{
 
 
     template:`
+
+
+
+
     <div id="profile" class="container bootstrap snippets bootdey">
+	<link rel= "stylesheet" href="css/users/myProfile.css">
         <h1 class="text-primary"><span class="glyphicon glyphicon-user"></span>Izmjena Profila</h1>
         <hr>
     <div class="row">

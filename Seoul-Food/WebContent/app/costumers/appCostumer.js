@@ -2,6 +2,7 @@
 const RestaurantList = {template: '<reslist></reslist>'}
 const MyProfile = {template : '<myprofile></myprofile>'}
 const RestaurantPage = {template: '<restpage></restpage>'}
+const ShoppingCart = {template: '<cart></cart>'} 
 
 
 
@@ -12,6 +13,7 @@ const router = new VueRouter({
         {path: '/', component: RestaurantList},
         {path: '/myprofile', component: MyProfile},
 		{path: '/restpage/:id', component: RestaurantPage},
+        {path: '/cart', component : ShoppingCart}
 		
         
     ]

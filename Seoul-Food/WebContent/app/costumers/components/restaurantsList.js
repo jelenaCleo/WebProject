@@ -22,7 +22,11 @@ Vue.component("reslist", {
 	
     template:
         `
+		
+		 
+		
         <div id= "restaurants">
+ 		<link rel= "stylesheet" href="css/users/restaurant.css">
         <section>
         
             <div class="main-banner d-flex align-items-center  text-white  text-center">

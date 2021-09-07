@@ -75,7 +75,7 @@ public class RestaurantService {
 		}
 		
 		resDAO.addRestaurant(res);
-		System.out.println("NEW RESTAURANT: " + res.name);
+		System.out.println("POST -- New Restaurant: " + res.name);
 		
 		
 		return Response.status(Response.Status.ACCEPTED).entity("/").build(); 	
@@ -104,7 +104,7 @@ public class RestaurantService {
 	public Response findRestaurantbyID(@PathParam("id") Integer id){
 		
 		RestaurantDAO dao = (RestaurantDAO) ctx.getAttribute("restaurants");
-		System.out.println("---NAME SEARCH --- "+ id);
+		System.out.println("GET -- Restaurant id: "+ id);
 		Restaurant r = dao.findRestaurantById(id);
 		
 		return Response
@@ -140,6 +140,7 @@ public class RestaurantService {
 		
 		RestaurantDAO dao = (RestaurantDAO) ctx.getAttribute("restaurants");
 		System.out.println("---Restaurant: "+ id + "----- adding a new Article");
+		dao.saveRestaurantsJSON();
 	
 		
 		return dao.addArticle(id,newArticle);

@@ -12,7 +12,11 @@ Vue.component("navbar",{
                 
                 <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
                     <router-link to="/myprofile" exact class="navbar-brand mb-0 h1"> Moj Profil </router-link>
-                </li>      
+                </li>    
+                
+                <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
+                    <router-link to="/cart" exact class="navbar-brand mb-0 h1"> Korpa </router-link>
+                </li> 
             
             </ul>
         </div>
