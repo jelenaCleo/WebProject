@@ -6,7 +6,7 @@
 		}
 
 
-Vue.component("admin-profil", {
+Vue.component("manager-profil", {
 	data() {
 		return {
 			user: {},
@@ -55,7 +55,7 @@ Vue.component("admin-profil", {
             <tbody>
                 <td> <input style="width:150px;" v-on:change="restoreMess4()" class="form-control" type="text" v-model="editedUser.username" placeholder="Korisnicko ime"> </td>
                 <td> <input style="width:150px;" v-on:change="restoreMess4()" class="form-control" type="text" v-model="editedUser.name" placeholder="Ime"> </td>
-                <td> <input style="width:150px;" v-on:change="restoreMess4()" class="form-control" type="text" v-model="editedUser.surname" placeholder="Prezime"> </td>
+                <td> <input style="width:150px;"  v-on:change="restoreMess4()"class="form-control" type="text" v-model="editedUser.surname" placeholder="Prezime"> </td>
                 <td> <input style="width:150px;" v-on:change="restoreMess4()" class="form-control" type="text" v-model="editedUser.gender" placeholder="Pol"> </td>
                 <td> <input style="width:150px;" v-on:change="restoreMess4()" class="form-control" type="text" v-model="editedUser.role" placeholder="Uloga" readonly> </td>
                 <td> <vuejs-datepicker format="dd.MM.yyyy" v-model="editedUser.birthday" 
@@ -68,10 +68,12 @@ Vue.component("admin-profil", {
 		<label class="errorMess" >{{ mess4 }}</label>
 		<label class="errorMess" >{{ serverMess }}</label>
 
+
     </section>
     <section class="container mt-4">
         <br><br>
-        <button @click="saveChanges()"  class="btn btn-success fw-600 mt-3" ><i class="fa fa-check" aria-hidden="true"></i> Save changes
+        <button @click="saveChanges()"  class="btn btn-success fw-600 mt-3">
+		<i class="fa fa-check" aria-hidden="true"></i>Save changes
         </button>
         <button @click="showPasswordBox()"  class="btn btn-primary fw-600 mt-3"><i aria-hidden="true"></i> Promeni sifru
         </button>
@@ -88,20 +90,20 @@ Vue.component("admin-profil", {
 
                 </div>
                 <div style="width:200px; float:right;">
-                    <input type="password" v-on:change="restoreMess1()" v-model="changedUser.password" class="form-control" placeholder="password">
-					<label class="errorMess" >{{ mess1 }}</label>
-                    <br></br>
-                    <input type="password" v-on:change="restoreMess2()" v-model="changedUser.newPassword"  class="form-control" placeholder="new password">
-					<label class="errorMess" >{{ mess2 }}</label>
-                    <br></br>
-                    <input id="passwordConfirm" v-on:change="restoreMess3()" type="password"  class="form-control" placeholder="new password">
+                    <input type="password"  v-on:change="restoreMess1()" class="form-control" v-model="changedUser.password" placeholder="password">
+                    <label class="errorMess" >{{ mess1 }}</label>
+					<br></br>
+                    <input type="password"  v-on:change="restoreMess2()" class="form-control" v-model="changedUser.newPassword" placeholder="new password">
+                    <label class="errorMess" >{{ mess2 }}</label>
+					<br></br>
+                    <input id="passwordConfirm"  v-on:change="restoreMess3()" style="margin-bottom:30px;" class="form-control" type="password"  placeholder="new password">
 					<label class="errorMess" >{{ mess3 }}</label>
-                </div>
-				</br>
-            </div>
-           
+				</div>
 
-            <button @click="saveNewPassword()" style="margin-left:350px;"  class="btn btn-success fw-600 mt-3"><i class="fa fa-check" aria-hidden="true"></i> Sacuvaj novu lozinku </button>
+            </div>
+
+            <button @click="saveNewPassword()" style="margin-left:350px;" class="btn btn-success fw-600 mt-3">
+			<i class="fa fa-check" aria-hidden="true"></i> Sacuvaj novu lozinku </button>
         </div>
     </section>
 	<p>{{this.message}}</p>
@@ -109,7 +111,6 @@ Vue.component("admin-profil", {
 </div>
     
     `
-	
 	,
 	methods: {
 
@@ -126,7 +127,7 @@ Vue.component("admin-profil", {
 			}
 		},
 		saveNewPassword: function() {
-			if ( this.requiredFieldsPassword() && this.user.password == this.changedUser.password) {
+			if  (this.requiredFieldsPassword() && this.user.password == this.changedUser.password) {
 				this.changedUser.username = this.user.username;
 				if (this.changedUser.newPassword == document.getElementById("passwordConfirm").value) {
 					axios
@@ -137,7 +138,7 @@ Vue.component("admin-profil", {
 							this.serverMess = '';
 						})
 						.catch(err => {
-							this.serverMess = 'Nemoguce sacuvati lozinku!';
+							this.serverMess = 'Nemoguce sacuvati lozinku!  ' + response.data ;
 							toastr["error"]("Failed during changes :(", "Fail");
 						})
 				}
@@ -153,11 +154,12 @@ Vue.component("admin-profil", {
 							toastr["success"]("Success changes!!", "Success!");
 							this.message = "user promenjen";
 							this.serverMess = '';
+
 						})
 						.catch(err => {
+							this.serverMess = 'Nemooguce sacuvati izmene: ' + response.data;
 							console.log(err);
 							toastr["error"]("Failed during changes :(", "Fail");
-							this.serverMess = 'Nemoguce sacuvati izmene: ' + 'korisnicko ime zauzeto';
 						});
 				
 			}
@@ -223,6 +225,7 @@ Vue.component("admin-profil", {
 	},
 
 	mounted() {
+		console.log("profil medadzera");
 		axios.get('rest/users/myProfile').then(response => {this.user = response.data;
 		console.log(this.user.birthday);
 		this.editedUser.username = this.user.username;
