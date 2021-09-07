@@ -9,6 +9,12 @@
   
 }
 
+.sortbutton{
+	 box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	 background-color: #4CAF50;
+}
+
+
 #black-overlay {
   position: absolute;
   top: 0;
@@ -50,13 +56,13 @@
 
 
 .filter-head {
-width: 60%;
+width: 90%;
 padding: 1rem 1.5rem;
 font-size: 1rem;
 font-weight: 600;
 border-radius: 10px;
 background-color: white;
-margin: 50px,20px,20px,50px;
+margin: 50px 20px 20px 50px;
 
 }
 
@@ -166,6 +172,8 @@ font-weight: 600;
 a:hover {
  cursor:pointer;
 }
+
+
 /*
 .help:hover {
   
