@@ -82,6 +82,7 @@ public class RestaurantDAO {
 
 		try {
 			om.writeValue(new FileOutputStream(this.path), resList);
+			System.out.println("WRITING IN restaurants.json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

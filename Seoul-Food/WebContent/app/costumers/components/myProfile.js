@@ -26,7 +26,12 @@ Vue.component("myprofile",{
 
 
     template:`
+
+
+
+
     <div id="profile" class="container bootstrap snippets bootdey">
+	<link rel= "stylesheet" href="css/users/myProfile.css">
         <h1 class="text-primary"><span class="glyphicon glyphicon-user"></span>Izmjena Profila</h1>
         <hr>
     <div class="row">
@@ -64,7 +69,7 @@ Vue.component("myprofile",{
                             <label class="col-lg-3 control-label">Pol:</label>
                             <hr class="col-lg-3">
                             <div class="col-lg-3">
-                            <input  v-bind:checked="female"  v-model="editedUser.gender"  value="F"  class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <input checked="female"  v-model="editedUser.gender"  value="F"  class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                             <label class="form-check-label  " for="flexRadioDefault1">
                                 Ž
                             </label>
@@ -72,7 +77,7 @@ Vue.component("myprofile",{
                         </div>
                         <div class="form-check">
                             <div class="col-lg-3">
-                            <input v-bind:checked="male"  v-model="editedUser.gender"  value="M" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+                            <input checked="male"  v-model="editedUser.gender"  value="M" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
                             <label class="form-check-label" for="flexRadioDefault2">
                                 M
                             </label>
@@ -106,14 +111,15 @@ Vue.component("myprofile",{
       this.editedUser.surname = this.user.surname;
       this.editedUser.gender = this.user.gender;
 	
-		if(this.user.gender == 'F'){
+
+		if(this.user.gender.toUpperCase() == "F"){
 			this.female = true;
             this.male = false;
 		}else{
 			this.male = true;
             this.female = false;
 		}
-
+		  console.log("geder change ---------" + this.user.gender.toUpperCase()  + "----" + this.female);
       this.editedUser.role = this.user.role;
       console.log(this.editedUser.birthday + "before");
       this.editedUser.birthday = this.user.birthday;

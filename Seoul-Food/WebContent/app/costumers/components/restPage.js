@@ -2,14 +2,26 @@ Vue.component("restpage",{
 	
 	data:function(){
 		return{
+			isLoaded : false,
 			user : null,
 			restaurant : null,
+			name: '',
+			disable: true,
+		
+			selection:[],
+			selectionOK:false,
+			isLoaded2: false,
+            article: null,
 		}
 	},
 	
 	template:
 	`
-	<div  >
+
+	
+	<div v-if="isLoaded"  >
+	<link rel= "stylesheet" href="css/users/restPage.css">
+	
     <section>
         <div class="main-banner help d-flex align-items-center  text-center">
             <div class="container help">
@@ -32,15 +44,24 @@ Vue.component("restpage",{
             <div class="border-bottoms">
                 <p class="fw-bold fs-15">Ponude</p>
             </div>
-            <div class="mt-3 d-flex border-bottom align-items-center justify-content-between">
+
+            <div v-for="(a,index) in restaurant.restaurantArticles" class="firstcol  mt-3 d-flex border-bottom align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     <img src="assets/imgs/default-placeholder.png" class="item-picture" alt="menu item picture">
-                    <div class="ms-3">
-                        <p class="product-name">Cheeseburger + Pomfrit ili Pohovani luk + Coca-Cola 330ml</p>
-                        <p class="product-price">6,00 KM</p>
+                   <div class="d-flex align-items-start flex-column ">
+                        <p class="product-name ms-3">{{a.name}} ,{{a.quantity}}{{a.measure}}</p>
+                        <p class="product-name ms-3">{{a.price}}DIN</p>
+						<p class="product-price ms-1"> {{a.description}}</p>
                     </div>
                 </div>
-                <button type="button" class="btn btn-success btn-sm">Dodaj u korpu</button>
+					<div class= " fixed qty mt-2">
+                        <span v-on:click="dec(index)" class="minus bg-dark">-</span>				
+						<input  v-model.number="selection[index].count"  type="number" class="count" name="qty" >
+                        <span v-on:click="inc(index)" class="plus bg-dark">+</span>
+                    
+
+				</div>
+                <button  :disabled="isDisabled(index)" v-on:click="log(index)" type="button" class="btn btn-success btn-block btn-sm">Dodaj u korpu</button>
             </div>
            
         </div>
@@ -57,7 +78,7 @@ Vue.component("restpage",{
 
                     <div class="border-bottom working">
                         <p class="working-day">Ponedeljak</p>
-                        <p class="working-time">{{restaurant.startHours}}-{{restaurant.endHours}}/p>
+                        <p class="working-time">{{restaurant.startHours}}-{{restaurant.endHours}}</p>
                     </div>
                     <div class="border-bottom working">
                         <p class="working-day">Utorak</p>
@@ -90,8 +111,8 @@ Vue.component("restpage",{
                         <img src="assets/imgs/adresa.jpg" class="address-picture" alt="address">
                     </div>
                     <div class="ms-3">
-                        <p class="fw-bold fs-15">{{restaurant.location.street}}/p>
-                        <p class="working-day text-muted">{{restaurant.location.city}} {{restaurant.location.zipCode}}</p>
+                        <p class="fw-bold fs-15">{{restaurant.location.address.street}}</p>
+                        <p class="working-day text-muted">{{restaurant.location.address.city}}, {{restaurant.location.address.zipCode}}</p>
                     </div>
                 </div>
             </div>
@@ -104,11 +125,11 @@ Vue.component("restpage",{
             <div class="d-flex">
                 <p class="fw-bold">Status restorana:</p>
                 <span class="ms-1 text-success">
-                <p v-if="restaurant.working == true" show>
-                    Radi
+                <p v-if="restaurant.working == true" class="fw-bold" show>
+                    Otvoren
                 </p>
-                <p v-else show>
-                    Ne radi
+                <p  v-else class="text-danger fw-bold"  show>
+                    Zatvoren
                 </p>
                 </span>
             </div>
@@ -120,14 +141,15 @@ Vue.component("restpage",{
             <!-- TODO -->
             <p class="fw-bold fs-15 mt-4">Pregled komentara</p>
 
-            <div class="row border-top border-bottom py-3">
+            <div  c class="overflow-auto row border-top border-bottom py-3">
                 <div class="col-6 d-flex align-items-center">
                    
                     <p class="reviewer-name">Jovan Jovanović Zmaj</p>
                 </div>
                 <div class="col-6">
                     <p class="fs-10">Poruka:</p>
-                    <p class="review-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam, sint dicta!
+                    <p class="review-text">
+						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam, sint dicta!
                         Quo natus quae in
                         nisi delectus eius molestias nobis reiciendis ad eveniet consequuntur omnis, dicta rerum animi
                         eligendi veritatis!
@@ -136,19 +158,41 @@ Vue.component("restpage",{
                         ipsum non tempora ab nobis?</p>
                 </div>
             </div>
+			 <p class="fw-bold fs-15 mt-4">Ostavite komentar</p>
+            <form >
+                <div class="row">
+                    <div class="col-6">
+                        <label for="reviewer" class="mb-2">Unesite Vaše ime:</label>
+                        <input :disabled="disable" type="text" id="reviewer" class="input-custom">
+                    </div>
+                    <div class="col-6">
+                        <label for="review-message" class="mb-2">Unesite poruku:</label>
+                        <textarea :disabled="disable" type="text" id="review-message" class="input-custom"></textarea>
+                    </div>
+                </div>
+				 <button :disabled="disable" type="submit" class="btn btn-success mt-3">Pošaljite review</button>
+            </form>
 
-         
+         	<br>
+			<div class="alert alert-warning" role="alert">
+				  Ne možete ostaviti komentar ako niste kupovali u restoranu .
+				</div>
 
 
 
         </div>
     </section>
+  <footer class="mt-5">
+        <hr>
+        <div class="container">
+            <p class="text-center text-muted">© 2021 Maja & Jelena. Projekat iz WEB programiranja</p>
+        </div>
+    </footer>
+
 </div>
 	
 	`,
 	mounted(){
-		//axios.get()
-		//.then()
 		
 		var path = location.href;
 		var restID = path.split('/restpage/')[1];
@@ -162,17 +206,125 @@ Vue.component("restpage",{
 		//this.restaurant = response.data
 		console.log("id koji trazm:"+ id);
 		axios.get('rest/restaurants/' + id) 
-			.then(response =>(
-				this.restaurant = response.data
-			));
+			.then(response =>{
+				
+				this.restaurant = response.data;
+				this.isLoaded = true;
+			
+			
+			for (let i = 0; i < this.restaurant.restaurantArticles.length; i++) {
+				 console.log(this.restaurant.restaurantArticles[i].name);
+				
+				this.selection.push({
+						key: this.restaurant.restaurantArticles[i].name,
+						count: 0
+					});
+					
+					
+			
+				}
+				this.isLoaded2 = true;
+			});
+            axios.get('rest/users/myProfile').then(response => {this.user = response.data});
+			
+			
 			
 	},
 	methods:{
-		f:function(){
-			console.log("Restoran page: " + this.restaurant.name);
-		}
+		log:function(index){
+			
+	
+			//treba da saljem na bekend
+			//STEP 1: get the ARTICLE
+			let name = this.selection[index].key;
+			let count = this.selection[index].count;
+			
+			
+			for (let i = 0; i <  this.restaurant.restaurantArticles.length ; i++) {
+			
+					if(this.restaurant.restaurantArticles[i].name == name){
+						
+						//NOW MAKE A POST REQUEST
+                        
+						console.log(this.restaurant.restaurantArticles[i]);
+						console.log("taken the count : " + count);
+                        console.log("moj user ID " + this.user.id);
+                        
+                        
+                        
+						axios
+                        .post('rest/cart/', 
+                        {
+                            "article" : this.restaurant.restaurantArticles[i],
+                            "count" : count,
+                            "userID" : this.user.id
+                        }
+                        
+                        )
+                        .then(response => {
+                            toastr["success"]("Success changes!!", "Success!");
+                            this.message = "user promenjen";
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            toastr["error"]("Failed during changes :(", "Fail");
+                            
+                        })
+
+
+
+
+
+
+					}
+				
+				}			
+				this.selection[index].count = 0;
+			
+			
+				
+			
+    },
+			
+	
+		inc:function(index){
+			 
 		
-	}
+				this.selection[index].count +=1;
+				console.log(this.selection[index].count);
+				
+                   
+		},
+		dec:function(index){
+			
+			if(this.selection[index].count == 0){
+				return;
+			}
+			this.selection[index].count -=1;
+			console.log(this.selection[index].count);
+				
+				
+		},
+		resetCount : function(index){
+			this.selection[index].count = 0;
+			
+		}
+		,
+		isDisabled:function(index){
+			
+			if(!this.isLoaded2){
+				return true;
+			}
+			
+			if(this.selection[index].count == 0){
+				return true;
+			}
+			return false;
+			
+		}
+	},
+	
+	
 	
 	
 	
