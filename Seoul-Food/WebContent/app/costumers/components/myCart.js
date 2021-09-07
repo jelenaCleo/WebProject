@@ -5,13 +5,14 @@ Vue.component("cart",{
 
 				cartItems: {},
 				isLoaded: false,
+               
 
 			}
 		},
 
 		template:
 			`
-			<div v-if="isLoaded">
+	<div v-if="isLoaded">
 			<link rel="stylesheet" href="css/users/myCart.css">
 			<section>
             <div class="main-banner d-flex align-items-center  text-center">
@@ -24,7 +25,7 @@ Vue.component("cart",{
 
 
         <section class="container">
-            <p class="fw-bold fs-20 mt-3"><span id="cart-numb">3</span> proizvoda u Vašoj korpi</p>
+         
 
 
 
@@ -34,10 +35,10 @@ Vue.component("cart",{
                 <div class="row align-items-center">
                     <div class="col-4 d-flex align-items-center">
                         <div class="quantity-field">
-                            <button class="value-button decrease-button" onclick="decreaseValue(this)"
+                            <button class="value-button decrease-button" v-on:click="decreaseValue(item)"
                                 title="Azalt">-</button>
-                            <div class="number">1</div>
-                            <button class="value-button increase-button" onclick="increaseValue(this, 5)"
+                            <input class="number" v-model="item.count" >
+                            <button class="value-button increase-button" v-on:click="increaseValue(item)"
                                 title="Arrtır">+
                             </button>
                         </div>
@@ -49,11 +50,11 @@ Vue.component("cart",{
                         <div class="d-flex justify-content-around align-items-center">
                             <div>
                                 <p class="restourant-name ">{{item.article.name}}</p>
-                                <span class="restourant-price">{{item.count}}</span>
+                                <span class="restourant-price">{{item.article.price}} RSD</span>
                             </div>
-                            <div class="restourant-mark">
+                            <div v-if="isLoaded" class="restourant-mark">
 
-                                <span>15.99KM</span>
+                                <span>{{singleTotal(item)}} RSD</span>
                             </div>
                         </div>
                     </div>
@@ -67,13 +68,12 @@ Vue.component("cart",{
 
             <div class="total-price mt-5">
                 <p class="mb-0 fw-bold">Ukupno za uplatu: </p>
-                <p class="mb-0 ms-1">29,89</p>
-                <p class="mb-0 ms-1">KM</p>
+                <p class="mb-0 ms-1">{{total()}}</p>
+                <p class="mb-0 ms-1">RSD</p>
             </div>
             <div class="text-end">
-                <button type="button" class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
-                    Završite
-                    kupovinu</button>
+                <button v-on:click="createOrder" type="button" class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
+                    Poruči</button>
             </div>
 
 
@@ -91,7 +91,7 @@ Vue.component("cart",{
 				
 
 
-			</div>
+	</div>
 			`
 
 		,  
@@ -108,6 +108,41 @@ Vue.component("cart",{
 								}
 							})
 		
-		}
+		},
+        methods:{
+            decreaseValue:function(item){
+               return item.count -=1;
+
+            },
+            increaseValue:function(item){
+                 return item.count += 1;
+
+            },
+            
+			singleTotal:function(item){
+
+                return  parseFloat(item.article.price) * item.count
+            },
+			total:function(){
+				let t= 0.0;
+			 	for (let i = 0; i < this.cartItems.length; i++) {
+					
+				
+				t += parseFloat(this.cartItems[i].article.price) * this.cartItems[i].count;
+				}
+				
+				return t;
+			},
+			createOrder:function(){
+				
+				
+				 const uint32 = window.crypto.getRandomValues(new Uint32Array(1))[0];
+				 const id =  uint32.toString(8);
+				 console.log(id);
+				
+			}
+        },
+		
+        
 
 });
