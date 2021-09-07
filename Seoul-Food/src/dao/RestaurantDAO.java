@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Article;
 import beans.Restaurant;
+import dto.ArticleDTO;
 import dto.NewRestaurantDTO;
 
 public class RestaurantDAO {
@@ -98,8 +99,10 @@ public class RestaurantDAO {
 				res.endHours, res.imgURL, res.street,res.city,res.zipCode, res.managerID );
 		
 		if(!restaurants.containsValue(newRes)) {
-			
+			System.out.println("id restorana:  " + newRes.getID() + "   id menadzera: " + newRes.getManagerID());
 			restaurants.put(newRes.getID(), newRes);
+			UserDAO userDAO = new UserDAO();
+			userDAO.addRestaurantToManager(newRes.getID(),newRes.getManagerID());
 		}
 	
 		saveRestaurantsJSON();
@@ -156,11 +159,110 @@ public class RestaurantDAO {
 		/* ADD NEW ARTICLE
 		 * Article(String name, double price, Integer type, Integer restaurantID, Quantity quantity, String description,
 			String image) */
-	public Restaurant addArticle(Integer id, Article newArticle) {
-		Restaurant r = findRestaurantById(id);
+	public Restaurant addArticle(Integer restID, ArticleDTO newArticle) {
+		System.out.println("usao u dao za dodavanje artikla");
+		Article a = new Article(newArticle.name,newArticle.price,newArticle.type,restID,newArticle.quantity,newArticle.measure,newArticle.description,newArticle.image);
+		for(Restaurant r : getValues()) {
+			if(r.getID().equals(restID)) {
+				System.out.println("nasao restiran");
+				if(noDuplicateArticleName(r,a.getName())) {
+				r.getRestaurantArticles().add(a);
+				System.out.println("DODAO ARTIKAL");
+				saveRestaurantsJSON();
+				return r;
+				}
+			}
+		}
+		return null;
+	}
 	
-		r.getRestaurantArticles().add(newArticle);
+	public Restaurant deleteArticle(Integer restID, ArticleDTO aDTO) {
+		Article article = new Article(aDTO.name,aDTO.price,aDTO.type,restID,aDTO.quantity,aDTO.measure,aDTO.description,aDTO.image);
+		for(Restaurant r : getValues()) {
+			if(r.getID().equals(restID)) {
+				System.out.println("nasao restiran");
+				ArrayList<Article> oldArticles =(ArrayList<Article>) r.getRestaurantArticles();
+				ArrayList<Article> newArticles = (ArrayList<Article>) r.getRestaurantArticles();
+				for(Article a : oldArticles) {
+					if(a.getName().equals(article.getName())){
+						newArticles.remove(a);
+						System.out.println("UKLONIO ARTIKAL");
+						break;
+					}
+				}
+				
+				r.setRestaurantArticles(newArticles);
+				System.out.println("zamjenjene liste");
+				saveRestaurantsJSON();
+				System.out.println("savuvano");
+				return r;
+				
+			}
+		}
+		return null;
+	}
+	public Restaurant editArticle(Integer restID , ArticleDTO oldArticle) {
+		for(Restaurant r : getValues()) {
+			if(r.getID().equals(restID)) {
+				System.out.println("nasao restiran");
+				for(Article a : r.getRestaurantArticles()) {
+					if(a.getName().equals(oldArticle.name)){
+						a.setName(oldArticle.name);
+						a.setPrice(oldArticle.price);
+						a.setType(oldArticle.type);
+						a.setQuantity(oldArticle.quantity);
+						a.setMeasure(oldArticle.measure);
+						a.setDescription(oldArticle.description);
+						a.setImage(oldArticle.image);
+						System.out.println("EDITOVAN ARTIKAL");
+						break;
+					}
+				}
+				saveRestaurantsJSON();
+				System.out.println("sacuvano");
+				return r;
+				
+			}
+		}
+		return null;
+	}
+	
+	private boolean noDuplicateArticleName(Restaurant r, String articleName) {
+		for(Article a : r.getRestaurantArticles()) {
+			if(a.getName().equals(articleName)){
+				System.out.println("vec nimamo artikal sa zadatim imenom");
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//LOGICKKO BRISANJE
+	public Restaurant deleteRestaurant(Integer id) {
+		Restaurant r = findRestaurantById(id);
+		r.setLogicallyDeleted(1);
+		saveRestaurantsJSON();
+		return r;
+	}
+	// LOGICKI RESTORE RESTORANA
+	public Restaurant restoreRestaurant(Integer id) {
+		Restaurant r = findRestaurantById(id);
+		r.setLogicallyDeleted(0);
+		saveRestaurantsJSON();
 		return r;
 	}
 
+	public Article getArticle(Integer restID, String articleName) {
+		for(Restaurant r : getValues()) {
+			if(r.getID().equals(restID)) {
+				System.out.println("nasao restiran");
+				for(Article a : r.getRestaurantArticles()) {
+					if(a.getName().equals(articleName)){
+						return a;
+					}
+				}
+			}
+		}
+		return null;
+	}
 }

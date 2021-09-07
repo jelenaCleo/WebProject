@@ -15,12 +15,12 @@ Vue.component("admin-all-users", {
 	  <section class="container mt-4">
         <p class="fw-bold fs-20">Prikaz svih registrovanih korisnika</p>
         <label for="nameSearch" style="width:200px;margin-right: 6rem;text-align: left;" >Unesite ime korisnika:</label>
-		<label for="nameSearch" style="width:200px;margin-right: 6rem;" >Unesite ime korisnika:</label>
-		<label for="nameSearch" style="width:200px;margin-right: 11rem;" >Unesite ime korisnika:</label>
+		<label for="surnameSearch" style="width:300px;margin-right: 6rem;" >Unesite prezime korisnika:</label>
+		<label for="usernameSearch" style="width:200px;margin-right: 11rem;" >Unesite korisnicko ime:</label>
         <form  class="example mt-2" style="margin-left: 2rem;">
-            <input type="text"  v-model="nameSearch" class="input-custom1" placeholder="Pretrži po imenu.." name="search">
-            <input type="text" v-model="surnameSearch" class="input-custom1" style="margin-left: 1rem;" placeholder="Pretrži po prezimenu.." name="search">
-			<input type="text" v-model="usernameSearch" class="input-custom1" style="margin-left: 1rem;" placeholder="Pretrži po korisničkom imenu.." name="search">
+            <input type="text"  v-model="nameSearch" class="input-custom1" style="width:300px;" placeholder="Pretrži po imenu.." name="search">
+            <input type="text" v-model="surnameSearch" class="input-custom1"  style="margin-left: 1rem;width:300px;" placeholder="Pretrži po prezimenu.." name="search">
+			<input type="text" v-model="usernameSearch" class="input-custom1"  style="margin-left: 1rem;width:300px;" placeholder="Pretrži po korisničkom imenu.." name="search">
 			<button type="submit" style="width:100px;margin-left: 1rem;" ><i class="fa fa-search"></i></button>
 			
         </form>

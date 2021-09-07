@@ -1,0 +1,172 @@
+.main-banner {
+    position: relative;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    background-image: url(../../assets/imgs/banner-1.jpg);
+    z-index: -1;
+  }
+  
+  #black-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.4;
+    z-index: -1;
+  }
+
+  h2 {
+    font-family: "Berkshire Swash", cursive;
+    color: white;
+    font-weight: 700;
+  }
+  
+  .fs-20 {
+    font-size: 1.5rem;
+  }
+  
+  .fs-15 {
+    font-size: 1.2rem;
+  }
+  
+  .border-bottoms {
+    border-bottom: 1px solid black !important;
+  }
+  
+  .item-picture {
+    width: 150px;
+    height: auto;
+    border-radius: 25px;
+  }
+  
+  .product-price {
+    font-weight: 600;
+    color: gray;
+  }
+  
+  .working {
+    margin-top: 1rem;
+    
+    margin: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .input-custom2{
+    width:400px ;
+    height:30px;
+  }
+  .address-picture {
+    width: 300px;
+  }
+  
+  .reviewer-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-left: 1rem;
+  }
+  
+  .user-logo {
+    width: 100px;
+    border-radius: 50%;
+  }
+  
+  .fs-10 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  
+  .review-text {
+    font-size: 0.9rem;
+  }
+  
+  .working-day {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  
+  .working-time {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: gray;
+  }
+  
+  .product-name {
+    font-weight: 600;
+  }
+  
+  .input-custom {
+    display: block;
+    width: 100%;
+    height: calc(2.40875rem + 2px);
+    padding: 0.57rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dfdfdf;
+    border-radius: 0.25rem;
+  }
+    
+  .input-custom3 {
+    display: block;
+    width: 700px;
+    height: 100px;
+    padding: 0.57rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dfdfdf;
+    border-radius: 0.25rem;
+  }
+  
+  .input-custom1 {
+    display: block;
+    float: left;
+    width: 80%;
+    height: calc(2.40875rem + 2px);
+    padding: 0.57rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dfdfdf;
+    border-radius: 0.25rem;
+  }
+  
+  form.example button {
+    border-radius: 0.25rem;
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #4267b2;
+    color: white;
+    font-size: 0.875rem;
+    border: 1px solid #dfdfdf;
+    cursor: pointer;
+  }
+  
+  form.example button:hover {
+    background: #2d5bb8;
+  }
+  
+  form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+#help{
+    background-color: white;
+  }
+  
+  .box-shadow {
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 13%);
+  }
+  

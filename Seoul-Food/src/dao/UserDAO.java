@@ -34,7 +34,7 @@ public class UserDAO {
 			dir.mkdir();
 		}
 
-		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users.json";
+		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "users4.json";
 		System.out.println("-------------------USERS FOLDER -------------------" + this.path);
 
 		this.users = new LinkedHashMap<String, User>();
@@ -309,22 +309,35 @@ public class UserDAO {
 		saveUsersJSON();
 	}
 	
-	public List<ManagerDTO> getFreeManagers() {
+	public List<User> getFreeManagers() {
 		
-		List<ManagerDTO> managers = new ArrayList<>();
+		List<User> managers = new ArrayList<>();
 		
 		
 		for(User u : getValues()) {
-			if(u.getRole()=="MANAGER") {
-				if(u.getRestarauntID() <0) {
-					ManagerDTO d = (ManagerDTO) new Object();
-					d.ID = u.getID();
-					d.name = u.getName();
-					d.surname = u.getSurname();
-					managers.add(d);
+			if(u.getRole().equals("MANAGER")) {
+				if(u.getRestarauntID() == -1) {
+					managers.add(u);
 				}
 			}
 		}
 		return managers;
+	}
+
+	public void addRestaurantToManager(Integer restaurantId, Integer managerID) {
+		System.out.println("id restorana:  " + restaurantId + "   id menadzera: " + managerID);
+		readUsers();
+		for(User u : getValues()) {
+			System.out.println(u.getID());
+			if(u.getID().equals(managerID)) {
+				
+				System.out.println("NASAO TRAZENOG MENADZERA");
+				u.setRestarauntID(restaurantId);
+				System.out.println("ppostavljen id restorana " + u.getRestarauntID());
+				saveUsersJSON();
+				break;
+			}
+		}
+		
 	}
 }
