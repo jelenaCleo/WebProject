@@ -19,7 +19,7 @@ import beans.Order.Status;
 
 public class OrderDAO {
 
-	private LinkedHashMap<Integer, Order> orders;
+	private LinkedHashMap<String, Order> orders;
 	private String path;
 	
 	public OrderDAO() {
@@ -33,7 +33,7 @@ public class OrderDAO {
 				+ "orders.json";
 		System.out.println("-------------------ORDERS FOLDER -------------------" + this.path);
 
-		this.orders = new LinkedHashMap<Integer, Order>();
+		this.orders = new LinkedHashMap<String, Order>();
 	}
 	
 
@@ -64,7 +64,7 @@ public class OrderDAO {
 
 			System.out.println("---Orders: ----");
 			System.out.println(o.getID() + "\\n");
-			orders.put(o.getRestID(), o);
+			orders.put(o.getID(), o);
 		
 
 		}
@@ -106,7 +106,7 @@ public class OrderDAO {
 //TODO : EDIT THIS SHIT
 	public void addOrder(Order newOrder) {
 
-		orders.put(newOrder.getRestID(), newOrder);
+		orders.put(newOrder.getID(), newOrder);
 		saveOrders();
 	}
 
