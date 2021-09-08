@@ -3,7 +3,7 @@ const RestaurantList = {template: '<reslist></reslist>'}
 const MyProfile = {template : '<myprofile></myprofile>'}
 const RestaurantPage = {template: '<restpage></restpage>'}
 const ShoppingCart = {template: '<cart></cart>'} 
-const OrdersPage = {template: '<orders><orders>'}
+const OrdersPage = {template: '<orders></orders>'}
 
 
 

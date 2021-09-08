@@ -144,7 +144,12 @@ Vue.component("reslist", {
                 </div>
             </div>
         </section>
-        
+        <footer class="mt-5">
+			<hr>
+			<div class="container">
+				<p class="text-center text-muted">© 2021 Maja & Jelena . Projekat iz WEB programiranja</p>
+			</div>
+		</footer>
         
     </div>
         

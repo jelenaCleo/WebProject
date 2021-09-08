@@ -99,7 +99,13 @@ Vue.component("myprofile",{
             </form>
         </div>
     </div>
-<hr>
+
+<footer class="mt-5">
+			<hr>
+			<div class="container">
+				<p class="text-center text-muted">© 2021 Maja & Jelena . Projekat iz WEB programiranja</p>
+			</div>
+		</footer>
 </div>
 
     `,

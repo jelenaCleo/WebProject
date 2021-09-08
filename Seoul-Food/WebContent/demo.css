@@ -1,152 +1,39 @@
 body {
-  background-color: #f7f7f7;
-}
-
-.main-banner {
-  position: relative;
-  height: 250px;
-  background-size: cover;
-  background-position: center;
-  background-image: url(/assets/imgs/default-placeholder.png);
-  z-index: -1;
-}
-h2 {
-  font-family: "Berkshire Swash", cursive;
-}
-#important{
-  float: right !important;
+    background-color: #f7f7f7;
+  }
   
+  .main-banner {
+    position: relative;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    background-image: url(assets/imgs/banner-1.jpg);
+    z-index: -1;
+  }
+  
+  h2 {
+    font-family: "Berkshire Swash", cursive;
+  }
+  
+  #black-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.4;
+    z-index: -1;
+  }
+  table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+bottom: .5em;
 }
-#important:hover {
-  float:right;
-  cursor: pointer;
-}
-
-
-
-#black-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0.4;
-  z-index: -1;
-}
-
-.fs-20 {
-  font-size: 20px;
-}
-
-.cart-logo {
-  width: 200px;
-  height: auto;
-  border-radius: 15px;
-}
-
-.cart-item {
-  background-color: white;
-  padding: 0.5rem 0.5rem;
-  border-radius: 15px;
-}
-
-.restourant-name {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 0;
-}
-
-.restourant-price {
-  font-size: 0.8rem;
-  color: rgba(0, 0, 0, 0.815);
-}
-
-hr {
-  opacity: 0.1;
-}
-
-.restourant-mark i,
-.restourant-mark span,
-.total-price p {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.total-price {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.btn-primary {
-  text-transform: uppercase;
-  background-color: #4267b2 !important;
-}
-
-.quantity-field {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 120px;
-  height: 40px;
-  margin-right: 1rem;
-  margin-left: 0.5rem;
-}
-
-.quantity-field .value-button {
-  border: 1px solid #ddd;
-  margin: 0px;
-  width: 40px;
-  height: 100%;
-  padding: 0;
-  background: #eee;
-  outline: none;
-  cursor: pointer;
-}
-
-.quantity-field .value-button:hover {
-  background: rgb(230, 230, 230);
-}
-
-.quantity-field .value-button:active {
-  background: rgb(210, 210, 210);
-}
-
-.quantity-field .decrease-button {
-  margin-right: -4px;
-  border-radius: 8px 0 0 8px;
-}
-
-.quantity-field .increase-button {
-  margin-left: -4px;
-  border-radius: 0 8px 8px 0;
-}
-
-.quantity-field .number {
-  display: inline-block;
-  text-align: center;
-  border: none;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  margin: 0px;
-  width: 40px;
-  height: 100%;
-  line-height: 40px;
-  font-size: 11pt;
-  box-sizing: border-box;
-  background: white;
-  font-family: calibri;
-}
-
-.quantity-field .number::selection {
-  background: none;
-}
-
-/*
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-*/
