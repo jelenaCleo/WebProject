@@ -28,8 +28,8 @@ var appCostumer = new Vue({
     el:'#appCostumer',
     data:{
         test: '1-2-3 test'
-    }
-
+    },
+ 
 
 
 });

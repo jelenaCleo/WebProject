@@ -2,10 +2,14 @@ Vue.component("orders",{
 	data : function(){
 
 		return{
+			orders:{},
+			
 			namecnt:true,
 			namesearch:null,
-			datefrom:null,
-			dateto:null,
+			datefrom:"",
+			datefromstr:"",
+			dateto:"",
+			datetostr:"",
 			typesearch:"",
 			ordersearch:"",
 			pricefrom:"",
@@ -29,9 +33,6 @@ Vue.component("orders",{
         </section>
 		
 		
-		
-		
-		
 			<!-- Pretraga -->
 			  <form class="form-inline ">
         
@@ -51,12 +52,21 @@ Vue.component("orders",{
                     
                       <!-- TODO :Filter using Range input --> 
 					<div id="range">
-                      <input v-model="datefrom" id="in2" type="text" placeholder="Datum od" />
-				      <input v-model="dateto" id="in2" type="text" placeholder="Datum do " />
+					<vuejs-datepicker  v-model="datefrom" format="dd-MM-yyyy"></vuejs-datepicker>
+					<vuejs-datepicker v-model="dateto" format="dd-MM-yyyy"></vuejs-datepicker>
+		
+						<p>{{ datefrom | dateFormatFrom('DD.MM.YYYY')}}</p> 
+					    <p>{{ dateto | dateFormatTo('DD.MM.YYYY')}}</p> 
+
+						
                     </div>
 					<div id="range">
+					
                       <input v-model="pricefrom" id="in2" type="text" placeholder="Cijena od" />
-				      <input v-model="priceto" id="in2" type="text" placeholder="Cijena do " />
+				    
+
+
+					  <input v-model="priceto" id="in2" type="text" placeholder="Cijena do " />
                     </div>
 
 
@@ -121,7 +131,144 @@ Vue.component("orders",{
 	</div>
 	
 	
-	`
+	`,
+	components: {
+      	vuejsDatepicker
+    },
+
+	mounted(){
+		// axios
+		// 	.get('rest/orders/newOrders')
+		// 	.then(response => {this.orders = response.data})
+
+	},
+	
+	computed:{
+
+		filterOrders:function(){
+
+		
+
+		}
+
+	},
+    filters: {
+    	dateFormatFrom: function (value, format) {
+				
+			
+		
+			if(value == null ){
+				return;
+			}
+			
+			console.log(value);
+			console.log(format);
+			console.log(this.datefrom);
+			
+			let newVal = value;
+			let val = newVal.toString();
+			console.log(val);
+			value = val.substring(4, 15);
+			console.log("this dafag==>" + value);
+			let month = value.substring(0,3);
+			let day = value.substring(4,6);
+			let year = value.substring(7,11);
+			console.log("my shit => " + month );
+			console.log("my shit => " + day );
+			console.log("my shit => " + year );
+			let mon=""
+			if(month=="Jan"){
+				mon = "01";
+			}else if(month=="Feb"){
+				mon = "02";
+			}else if(month=="Mar"){
+				mon = "03";
+			}else if(month=="Apr"){
+				mon = "04";
+			}else if(month=="May"){
+				mon = "05";
+			}else if(month=="Jun"){
+				mon = "06";
+			}else if(month=="Jul"){
+				mon = "07";
+			}else if(month=="Aug"){
+				mon = "08";
+			}else if(month=="Sep"){
+				mon = "09";
+			}else if(month=="Oct"){
+				mon = "10";
+			}else if(month=="Nov"){
+				mon = "11";
+			}else if(month=="Dec"){
+				mon = "12";
+			}
+			let datum = day+"-"+ mon +"-"+year;		
+			this.datefromstr = datum;
+			console.log("EVEGA JELENA datefromstr: " + this.datefromstr);
+			
+			// new Date(parseInt(s.datumRodjenja));
+			
+    	},
+			dateFormatTo: function (value, format) {
+				
+			
+		
+			if(value == null ){
+				return;
+			}
+			
+			console.log(value);
+			console.log(format);
+			console.log(this.datefrom);
+			
+			let newVal = value;
+			let val = newVal.toString();
+			console.log(val);
+			value = val.substring(4, 15);
+			console.log("this dafag==>" + value);
+			let month = value.substring(0,3);
+			let day = value.substring(4,6);
+			let year = value.substring(7,11);
+			console.log("my shit => " + month );
+			console.log("my shit => " + day );
+			console.log("my shit => " + year );
+			let mon=""
+			if(month=="Jan"){
+				mon = "01";
+			}else if(month=="Feb"){
+				mon = "02";
+			}else if(month=="Mar"){
+				mon = "03";
+			}else if(month=="Apr"){
+				mon = "04";
+			}else if(month=="May"){
+				mon = "05";
+			}else if(month=="Jun"){
+				mon = "06";
+			}else if(month=="Jul"){
+				mon = "07";
+			}else if(month=="Aug"){
+				mon = "08";
+			}else if(month=="Sep"){
+				mon = "09";
+			}else if(month=="Oct"){
+				mon = "10";
+			}else if(month=="Nov"){
+				mon = "11";
+			}else if(month=="Dec"){
+				mon = "12";
+			}
+			let datum = day+"-"+ mon +"-"+year;		
+			this.datetostr = datum;
+			console.log("EVEGA JELENA datetostr: " + this.datetostr);
+			
+			// new Date(parseInt(s.datumRodjenja));
+			
+    	},
+		
+		
+	}
+
 	
 	
 });
