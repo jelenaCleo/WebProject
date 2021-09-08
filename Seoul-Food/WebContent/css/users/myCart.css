@@ -132,6 +132,26 @@ hr {
 .quantity-field .number::selection {
   background: none;
 }
+#important{
+  float: right !important;
+  
+}
+#important:hover {
+  float:right;
+  cursor: pointer;
+}
+.quantity-field .count {
+  color: #000;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 30px;
+  padding: 0 2px;
+  min-width: 35px;
+  text-align: center;
+  width : 100%;
+}
 
 /*
 input[type=number]::-webkit-inner-spin-button,

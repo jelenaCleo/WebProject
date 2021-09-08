@@ -13,6 +13,16 @@ body {
 h2 {
   font-family: "Berkshire Swash", cursive;
 }
+#important{
+  float: right !important;
+  
+}
+#important:hover {
+  float:right;
+  cursor: pointer;
+}
+
+
 
 #black-overlay {
   position: absolute;
