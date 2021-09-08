@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,9 +15,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beans.Order;
 import beans.User;
 import dto.ChangePasswordDTO;
-import dto.ManagerDTO;
 import dto.UserDTO;
 
 public class UserDAO {
@@ -339,5 +338,42 @@ public class UserDAO {
 			}
 		}
 		
+	}
+
+	public ArrayList<String> findBuyerUsernames(Integer restId){
+
+		OrderDAO orderDAO = new OrderDAO();
+		orderDAO.readOrders();
+		Collection<Order> allOrders = orderDAO.getValues();
+		ArrayList<String> buyerUsernames = new ArrayList<>();
+		
+		
+		for(Order o : allOrders) {
+			if(o.getRestID().equals(restId)) {
+				if(!buyerUsernames.contains(o.getUsername())) {
+					buyerUsernames.add(o.getUsername());
+					System.out.println("uuuuuuuuuuuuuuuuuu     " + o.getUsername());
+				}
+			}
+		}
+		return buyerUsernames;
+	}
+	
+	public ArrayList<User> findBuyers(ArrayList<String> buyerUsernames){
+		ArrayList<User> buyers = new ArrayList<>();
+		for(User u : getValues()) {
+			if(buyerUsernames.contains(u.getUsername())) {
+				buyers.add(u);
+			}
+		}
+		return buyers;
+	}
+	
+	
+	public ArrayList<User> findRestaurantBuyers(Integer restId) {
+		ArrayList<String> buyerUsernames = findBuyerUsernames(restId);
+		System.out.println(buyerUsernames);
+		ArrayList<User> buyers = findBuyers(buyerUsernames);
+		return buyers;
 	}
 }

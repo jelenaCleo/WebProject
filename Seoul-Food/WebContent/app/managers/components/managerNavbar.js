@@ -11,7 +11,13 @@ Vue.component("manager-navbar",{
                 </li>                
                 <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
                     <router-link to="/managerProfil" exact class="navbar-brand mb-0 h1">Moj profil</router-link>
+                </li>
+                <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
+                    <router-link to="/orders" exact class="navbar-brand mb-0 h1">Porudžbine</router-link>
                 </li> 
+                <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
+                    <router-link to="/buyers" exact class="navbar-brand mb-0 h1">Korisnici</router-link>
+                </li>
                
                 
             	<li><button @click="logout" > Log out </button></li>
