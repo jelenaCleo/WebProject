@@ -3,6 +3,7 @@ package services;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -177,7 +178,7 @@ public class OrderService {
 		if(request.getSession().getAttribute("loginUser") != null) {
 			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
 				
-				ArrayList<Order> orders = getOrdersDAO().getRestaurantOrders(restID);
+				Collection<Order> orders = getOrdersDAO().getRestaurantOrders(restID);
 				return Response
 						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
 						.entity(orders)
@@ -197,7 +198,7 @@ public class OrderService {
 		if(request.getSession().getAttribute("loginUser") != null) {
 			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
 				
-				ArrayList<Order> orders = getOrdersDAO().getChangeStatusToWaitingForDelivery(restID,orderID);
+				Collection<Order> orders = getOrdersDAO().getChangeStatusToWaitingForDelivery(restID,orderID);
 				return Response
 						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
 						.entity(orders)
@@ -216,7 +217,7 @@ public class OrderService {
 		if(request.getSession().getAttribute("loginUser") != null) {
 			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
 				
-				ArrayList<Order> orders = getOrdersDAO().getChangeStatusToPreparing(restID,orderID);
+				Collection<Order> orders = getOrdersDAO().getChangeStatusToPreparing(restID,orderID);
 				return Response
 						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
 						.entity(orders)
@@ -225,6 +226,26 @@ public class OrderService {
 			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
 		}
 		return Response.status(Response.Status.NOT_FOUND).build();
+	}
+	
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOneOrder(@PathParam("id") String orderID) {
+		if(request.getSession().getAttribute("loginUser") != null) {
+			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
+				
+				Order o = getOrdersDAO().getOneOrder(orderID);
+				return Response
+						.status(Response.Status.ACCEPTED)
+						.entity(o)
+						.build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+	
+		
 	}
 		
 		

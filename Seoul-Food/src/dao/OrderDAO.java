@@ -21,7 +21,7 @@ public class OrderDAO {
 
 	private LinkedHashMap<String, Order> orders;
 	private String path;
-	
+
 	public OrderDAO() {
 		File dir = new File(System.getProperty("catalina.base") + File.separator + "appData");
 
@@ -29,16 +29,14 @@ public class OrderDAO {
 			dir.mkdir();
 		}
 
-		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator
-				+ "orders.json";
+		this.path = System.getProperty("catalina.base") + File.separator + "appData" + File.separator + "orders.json";
 		System.out.println("-------------------ORDERS FOLDER -------------------" + this.path);
 
 		this.orders = new LinkedHashMap<String, Order>();
 	}
-	
 
 	// Reading from file and writing to file
-	
+
 	public void readOrders() {
 
 		ObjectMapper om = new ObjectMapper();
@@ -65,38 +63,35 @@ public class OrderDAO {
 			System.out.println("---Orders: ----");
 			System.out.println(o.getID() + "\\n");
 			orders.put(o.getID(), o);
-		
 
 		}
 	}
+
 	public void saveOrders() {
 		List<Order> ordersList = new ArrayList<Order>();
-		for(Order o : getValues()) {
+		for (Order o : getValues()) {
 			ordersList.add(o);
 		}
-		
+
 		ObjectMapper om = new ObjectMapper();
-		
+
 		try {
 			om.writeValue(new FileOutputStream(this.path), ordersList);
 			System.out.println("WRITING IN orders.json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-	}
 
+	}
 
 	public Collection<Order> getValues() {
 		return orders.values();
 	}
 
-
 	public Order findOrderByID(String iD) {
-	
-		for( Order o : getValues()) {
-			if ( o.getID() == iD){
+
+		for (Order o : getValues()) {
+			if (o.getID() == iD) {
 				return o;
 			}
 		}
@@ -110,69 +105,56 @@ public class OrderDAO {
 		saveOrders();
 	}
 
-	
 	public String getSaltString(int len) {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < len) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String saltStr = salt.toString();
-        return saltStr;
+		String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+		StringBuilder salt = new StringBuilder();
+		Random rnd = new Random();
+		while (salt.length() < len) { // length of the random string.
+			int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+			salt.append(SALTCHARS.charAt(index));
+		}
+		String saltStr = salt.toString();
+		return saltStr;
 
-    }
+	}
+	//JS
+	public Collection<Order> getRestaurantOrders(Integer restID) {
+		Collection<Order> restOrders = new ArrayList<>();
 
+		for (Order o : getValues()) {
+			if (o.getRestID().equals(restID)) {
+				restOrders.add(o);
+			}
+		}
 
-	public ArrayList<Order> getRestaurantOrders(Integer restID) {
-		// ovo kad se popravi mapa 
-		//ArrayList<Order> restOrders = orders.get(restID);
-		ArrayList<Order> restOrders = new ArrayList<>();
-		restOrders.add(orders.get(restID));
-		return  restOrders;
+		return restOrders;
 	}
 
-
-	public ArrayList<Order> getChangeStatusToWaitingForDelivery(Integer restID, String orderID) {
+	public Collection<Order> getChangeStatusToWaitingForDelivery(Integer restID, String orderID) {
 		ChangeStatusToWaitingForDelivery(restID, orderID);
-				// ovo kad se popravi mapa 
-				//ArrayList<Order> restOrders = orders.get(restID);
-				ArrayList<Order> restOrders = new ArrayList<>(); //ovo zakomentarisatiposle
-				restOrders.add(orders.get(restID));              //ovo zakomentarisatiposle
-				return  restOrders;
+		Collection<Order> restOrders = getRestaurantOrders(restID);
+		return restOrders;
 	}
-	public ArrayList<Order> getChangeStatusToPreparing(Integer restID, String orderID) {
+
+	public Collection<Order> getChangeStatusToPreparing(Integer restID, String orderID) {
 		ChangeStatusToPreparing(restID, orderID);
-				// ovo kad se popravi mapa 
-				//ArrayList<Order> restOrders = orders.get(restID);
-				ArrayList<Order> restOrders = new ArrayList<>(); //ovo zakomentarisatiposle
-				restOrders.add(orders.get(restID));				//ovo zakomentarisatiposle
-				return  restOrders;
+		Collection<Order> restOrders = getRestaurantOrders(restID);
+		return restOrders;
 	}
-	
+
 	public void ChangeStatusToWaitingForDelivery(Integer restID, String orderID) {
-		//ArrayList<Order> restaurantsOrders = orders.get(restID);
-		//for(Order o : restaurantsOrders) {
-			//if(o.getID().equals(orderID)) {
-				//o.setStatus(Status.CEKA_DOSTAVU);
-				//break;
-			//}
-		//}
-		orders.get(restID).setStatus(Status.CEKA_DOSTAVU);
+		orders.get(orderID).setStatus(Status.CEKA_DOSTAVU);
+		saveOrders();
 	}
+
 	public void ChangeStatusToPreparing(Integer restID, String orderID) {
-		//ArrayList<Order> restaurantsOrders = orders.get(restID);
-		//for(Order o : restaurantsOrders) {
-			//if(o.getID().equals(orderID)) {
-			//	o.setStatus(Status.U_PRIPREMI);
-			//break;
-			//}
-		//}
-		orders.get(restID).setStatus(Status.U_PRIPREMI);
+
+		orders.get(orderID).setStatus(Status.U_PRIPREMI);
+		saveOrders();
 	}
-	
-	
-	
-	
+
+	public Order getOneOrder(String orderID) {
+		return orders.get(orderID);
+	}
+
 }
