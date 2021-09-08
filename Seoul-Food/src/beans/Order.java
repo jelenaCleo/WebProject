@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 
 public class Order {
-	enum Status {
+	public enum Status {
 		  OBRADA,
 		  U_PRIPREMI,
 		  CEKA_DOSTAVU,

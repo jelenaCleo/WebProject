@@ -5,6 +5,8 @@ import dto.LoginUserDTO;
 import dto.UserDTO;
 import dto.UserDTOJSON;
 
+import java.util.ArrayList;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -412,6 +414,35 @@ public class UserService {
 		System.out.println("set3");
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
+	}
+	
+	private boolean isUserManager() {
+		User user = (User) request.getSession().getAttribute("loginUser");
+		System.out.println(user.getRole());
+		if (user != null) {
+			if (user.getRole().equals("MANAGER")) {
+				System.out.println("jeste menadzer");
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@GET
+	@Path("/restaurantBuyers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRestaurantBuyers() {
+		
+		if(isUser()) {
+			if(isUserManager()) {
+				Integer restId = ((User) request.getSession().getAttribute("loginUser")).getRestarauntID();
+				ArrayList<User> buyers = getUsers().findRestaurantBuyers(restId);
+				
+				return Response.status(Response.Status.ACCEPTED).entity(buyers).build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 	
 }

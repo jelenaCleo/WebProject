@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Order;
-import dto.NewOrderDTO;
+import beans.Order.Status;
 
 public class OrderDAO {
 
@@ -123,6 +123,54 @@ public class OrderDAO {
         return saltStr;
 
     }
+
+
+	public ArrayList<Order> getRestaurantOrders(Integer restID) {
+		// ovo kad se popravi mapa 
+		//ArrayList<Order> restOrders = orders.get(restID);
+		ArrayList<Order> restOrders = new ArrayList<>();
+		restOrders.add(orders.get(restID));
+		return  restOrders;
+	}
+
+
+	public ArrayList<Order> getChangeStatusToWaitingForDelivery(Integer restID, String orderID) {
+		ChangeStatusToWaitingForDelivery(restID, orderID);
+				// ovo kad se popravi mapa 
+				//ArrayList<Order> restOrders = orders.get(restID);
+				ArrayList<Order> restOrders = new ArrayList<>(); //ovo zakomentarisatiposle
+				restOrders.add(orders.get(restID));              //ovo zakomentarisatiposle
+				return  restOrders;
+	}
+	public ArrayList<Order> getChangeStatusToPreparing(Integer restID, String orderID) {
+		ChangeStatusToPreparing(restID, orderID);
+				// ovo kad se popravi mapa 
+				//ArrayList<Order> restOrders = orders.get(restID);
+				ArrayList<Order> restOrders = new ArrayList<>(); //ovo zakomentarisatiposle
+				restOrders.add(orders.get(restID));				//ovo zakomentarisatiposle
+				return  restOrders;
+	}
+	
+	public void ChangeStatusToWaitingForDelivery(Integer restID, String orderID) {
+		//ArrayList<Order> restaurantsOrders = orders.get(restID);
+		//for(Order o : restaurantsOrders) {
+			//if(o.getID().equals(orderID)) {
+				//o.setStatus(Status.CEKA_DOSTAVU);
+				//break;
+			//}
+		//}
+		orders.get(restID).setStatus(Status.CEKA_DOSTAVU);
+	}
+	public void ChangeStatusToPreparing(Integer restID, String orderID) {
+		//ArrayList<Order> restaurantsOrders = orders.get(restID);
+		//for(Order o : restaurantsOrders) {
+			//if(o.getID().equals(orderID)) {
+			//	o.setStatus(Status.U_PRIPREMI);
+			//break;
+			//}
+		//}
+		orders.get(restID).setStatus(Status.U_PRIPREMI);
+	}
 	
 	
 	
