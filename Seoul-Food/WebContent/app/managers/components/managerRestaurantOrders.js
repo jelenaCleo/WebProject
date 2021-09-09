@@ -270,8 +270,9 @@ Vue.component("rest-orders", {
     computed: {
         filteredOrders: function () {
             console.log("usao u computed");
-            var d1 = this.dateFrom;
-           
+            var d1 = fixDate(this.dateFrom) ;
+            var d2 = fixDate( this.dateTo);
+           console.log(d1 + '----' + d2);
 
             if (this.orders == null) {
                 return;
@@ -285,15 +286,18 @@ Vue.component("rest-orders", {
                             if(!this.isSmaller(order.price,this.priceTo)){
                                 return;
                             }
-                            if(this.datefrom !== undefined){
-                                if(!this.isBigger(order.oderDate,fixDate(this.dateFrom))){
-                                    return;
-                                }
+                            
+                        }
+                        if(this.dateFrom !== undefined){
+                            if(!this.isBigger(order.oderDate,d1)){
+                                console.log('date from');
+                                return;
                             }
-                            if(this.dateTo !== undefined){
-                                if(!this.isSmaller(order.oderDate,fixDate(this.dateTo))){
-                                    return;
-                                }
+                        }
+                        if(this.dateTo !== undefined){
+                            if(!this.isSmaller(order.oderDate,d2)){
+                                console.log('date to ');
+                                return;
                             }
                         }
                         o = order;
