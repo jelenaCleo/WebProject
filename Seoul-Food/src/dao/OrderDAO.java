@@ -209,6 +209,14 @@ public class OrderDAO {
 		
 		return dao.findRestaurantById(restID);
 	}
+
+
+	public void ChangeStatusToCanceled(String orderID) {
+		
+		orders.get(orderID).setStatus(Status.OTKAZANA);
+		
+		
+	}
 	
 	
 	

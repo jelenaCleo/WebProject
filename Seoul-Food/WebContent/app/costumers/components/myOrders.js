@@ -135,8 +135,8 @@ Vue.component("orders",{
 					 <select v-model="ordersearch" id="in1" >
                            <option value=""> Sve porudžbine </option>
                           <option value="OBRADA">U Obradi</option>
-                          <option value="U_PRIPREMI">U Pripremi</option>
-                          <option value="U_TRANSPORTU">U Transportu</option>
+                          <option value="NEDOSTAVLJENA">Nedostavljene</option>
+                         
 						  <option value="DOSTAVLJENA">Dostavljene</option>
 					  	<option value="OTKAZANA">Otkazane</option>
                       </select>
@@ -164,6 +164,8 @@ Vue.component("orders",{
 									<button v-on:click="datecnt? sortByDateAscending() : sortByDateDescending()" data-toggle="button"  class="btn  btn-primary" ><i class=" fas fa-sort"></i></button>
 								</th>
 								<th class="th-sm">Status</th>
+								</th>
+								<th class="th-sm"></th>
 							</tr>
 						</thead>
 						
@@ -175,7 +177,9 @@ Vue.component("orders",{
 								<th> {{o.restaurantType}} </th>
 								<td> {{o.order.price}} DIN </td>
 								<td><span> {{o.order.oderDate}} </span></td>
-								<td><a  class="btn btn-success"> {{o.order.status}} </a></td>
+							
+								<td><a  class="btn btn-success"> {{o.order.status | filterStatus}} </a></td>
+								<td><button v-on:click="cancelOrder(o.order.id)" :disabled="o.order.status != 'OBRADA'" class="btn btn-danger"> OTKAZI </button></td>
 							
 							</tr>
 							
@@ -302,7 +306,28 @@ Vue.component("orders",{
             if (a >= b)
                 return true;
  			
-        }
+        },
+		cancelOrder:function(ID){
+			
+			if(ID == null){
+				return;
+			}
+			axios
+				.put('rest/orders/cancel', ID)
+				.then(response => this.orders = response.data);			
+			
+			
+		}
+		,
+		getStatus:function(value){
+			if (value == 'U_PRIPREMI') return 'NEDOSTAVLJENA';
+			if (value == 'CEKA_DOSTAVU') return 'NEDOSTAVLJENA';
+			if (value == 'U_TRANSPORTU') return 'NEDOSTAVLJENA';
+			
+			return value;
+		}
+	
+		
 
 	},
 	
@@ -316,7 +341,7 @@ Vue.component("orders",{
     		console.log(d1 + '----' + d2);
 			
 			
-			if(this.orders == null){
+			if(this.orders == null ){
 				return;
 				
 				}
@@ -324,10 +349,15 @@ Vue.component("orders",{
 					var o = null;
 					
 					
+					if(order.restaurantType == null){
+						console.log(order.order.id);
+						return;
+					}
+					let mainstatus = this.getStatus(order.order.status);
 					
 					if(order.restaurantType.match(this.typesearch) && order.resName.trim().toUpperCase().match(this.namesearch.trim().toUpperCase())
 						
-						&& order.order.status.match(this.ordersearch) ){
+						&& mainstatus.match(this.ordersearch)){
 							
 							if(this.priceform !== ''){
 								if(!this.isBigger(order.order.price,this.pricefrom)){
@@ -363,7 +393,27 @@ Vue.component("orders",{
 		
 	},
     filters: {
-    
+	/*  OBRADA,
+		  U_PRIPREMI,
+		  CEKA_DOSTAVU,
+		  U_TRANSPORTU,
+		  DOSTAVLJENA,
+		  OTKAZANA*/
+	
+	
+    	 filterStatus:function(value){
+			if (value == 'U_PRIPREMI') return 'NEDOSTAVLJENA';
+			if (value == 'CEKA_DOSTAVU') return 'NEDOSTAVLJENA';
+			if (value == 'U_TRANSPORTU') return 'NEDOSTAVLJENA';
+			
+			if (value == 'OBRADA') return value;
+			if (value == 'DOSTAVLJENA') return value;
+			if (value == 'OTKAZANA') return value;
+			
+			//OBRADA DOSTAVLJENA I OTKAZANA
+						
+	
+		}
 		
 	}
 
