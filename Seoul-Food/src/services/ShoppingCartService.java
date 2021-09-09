@@ -3,6 +3,7 @@ package services;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -61,7 +62,7 @@ public class ShoppingCartService {
 					.entity(dao.addToCart(dto))
 					.build();
 	}
-
+	
 	@PUT
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -73,6 +74,21 @@ public class ShoppingCartService {
 		dao.removeArticle(i);
 			return Response
 					.status(Response.Status.ACCEPTED).entity("ARTICLE DELETED")
+					.entity(dao.getItems())
+					.build();
+		
+		
+	}
+	@DELETE
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteAll(){
+		
+		ShoppingCartDAO dao = getShoppingCart();	
+		dao.removeAll();
+			return Response
+					.status(Response.Status.ACCEPTED).entity("CART DELETED")
 					.entity(dao.getItems())
 					.build();
 		

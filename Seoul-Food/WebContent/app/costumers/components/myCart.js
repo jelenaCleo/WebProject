@@ -74,8 +74,9 @@ Vue.component("cart",{
                 <p class="mb-0 ms-1">RSD</p>
             </div>
             <div class="text-end">
-                <button v-on:click="createOrder" type="button" class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
+                <button v-on:click="createOrder" type="button" :disabled="totalPrice == 0.0" class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
                     Poruči</button>
+	
             </div>
 
 
@@ -161,7 +162,7 @@ Vue.component("cart",{
 			createOrder:function(){
 				
                 //Neke validacije
-                if(this.totalPrice == 0){
+                if(this.totalPrice == 0.0){
 
                   //  toastr("Success changes!!", "Success!");
                     return;
@@ -186,12 +187,12 @@ Vue.component("cart",{
                         "surname" : this.user.surname
                     
                     });
-                    
-                    
-                
+					
 
-
-				
+				  axios
+                    .delete('rest/cart/')
+                    .then(response =>(this.cartItems = response.data)); 
+                   
 			}
         },
 		

@@ -98,4 +98,10 @@ public class ShoppingCartDAO {
 		return sc.getItems();
 	}
 
+	public void removeAll() {
+		System.out.println("clearing items form shopping casrt");
+		sc.getItems().clear();
+		
+	}
+
 }

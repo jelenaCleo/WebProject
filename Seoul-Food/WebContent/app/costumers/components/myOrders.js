@@ -158,10 +158,10 @@ Vue.component("orders",{
 								
 								</th>
 								<th class="th-sm">Cena
-									<button v-on:click="namecnt? sortByNameAscending() : sortByNameDescending()" data-toggle="button"  class="btn  btn-primary" ><i class=" fas fa-sort"></i></button>
+									<button v-on:click="pricecnt? sortByPriceAscending() : sortByPriceDescending()" data-toggle="button"  class="btn  btn-primary" ><i class=" fas fa-sort"></i></button>
 								</th>
 								<th class="th-sm">Datum
-									<button v-on:click="namecnt? sortByNameAscending() : sortByNameDescending()" data-toggle="button"  class="btn  btn-primary" ><i class=" fas fa-sort"></i></button>
+									<button v-on:click="datecnt? sortByDateAscending() : sortByDateDescending()" data-toggle="button"  class="btn  btn-primary" ><i class=" fas fa-sort"></i></button>
 								</th>
 								<th class="th-sm">Status</th>
 							</tr>
@@ -175,7 +175,7 @@ Vue.component("orders",{
 								<th> {{o.restaurantType}} </th>
 								<td> {{o.order.price}} DIN </td>
 								<td><span> {{o.order.oderDate}} </span></td>
-								<td><a href="#" class="btn btn-success"> {{o.order.status}} </a></td>
+								<td><a  class="btn btn-success"> {{o.order.status}} </a></td>
 							
 							</tr>
 							
@@ -210,6 +210,85 @@ Vue.component("orders",{
 
 	},
 	methods:{
+		 sortByNameAscending:function(){
+			function compare(a, b) {
+                if (a.resName < b.resName)
+                    return -1;
+                if (a.resName > b.resName)
+                    return 1;
+                return 0;
+            }
+
+            this.orders.sort(compare);
+            this.namecnt = false;
+			
+		},
+		sortByNameDescending:function(){
+			
+			function compare(a, b) {
+                if (a.resName > b.resName)
+                    return -1;
+                if (a.resName < b.resName)
+                    return 1;
+                return 0;
+            }
+
+            this.orders.sort(compare);
+            this.namecnt = true;
+		},
+		sortByPriceAscending:function(){
+			 function compare(a, b) {
+                if (a.order.price < b.order.price)
+                    return -1;
+                if (a.order.price > b.order.price)
+                    return 1;
+                return 0;
+            }
+
+            this.orders.sort(compare);
+            this.pricecnt = false;
+			
+		},
+		sortByPriceDescending:function(){
+			 function compare(a, b) {
+                if (a.order.price > b.order.price)
+                    return -1;
+                if (a.order.price < b.order.price)
+                    return 1;
+                return 0;
+            }
+
+            this.orders.sort(compare);
+            this.pricecnt = true;
+			
+		},
+		sortByDateAscending:function(){
+			  function compare(a, b) {
+                if (a.order.oderDate < b.order.oderDate)
+                    return -1;
+                if (a.order.oderDate > b.order.oderDate)
+                    return 1;
+                return 0;
+            }
+
+            this.orders.sort(compare);
+            this.datecnt = false;
+			
+		},
+		sortByDateDescending:function(){
+			
+			 function compare(a, b) {
+                if (a.order.oderDate > b.order.oderDate)
+                    return -1;
+                if (a.order.oderDate < b.order.oderDate)
+                    return 1;
+                return 0;
+            }
+
+            this.orders.sort(compare);
+            this.datecnt = true;
+		},
+		
 		  isSmaller: function (a, b) {
             if (a >= b)
                 return false;
