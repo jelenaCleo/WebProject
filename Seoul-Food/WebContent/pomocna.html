@@ -1,201 +1,137 @@
 <!DOCTYPE html>
+
 <head>
     <meta charset="utf-8">
-    
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	<link rel="stylesheet" href="css/toast.css"/>
-	<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
-	<link rel="stylesheet" href="assets/fontawesome/css">
-	<link rel="stylesheet" href="css/administrators/adminHomeStyle.css">
-	<link rel="stylesheet" href="css/administrators/adminHomeStyle.scss">
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">	
-    <link rel= "stylesheet" href="css/users/restaurant.css">
-    <link rel= "stylesheet" href="css/users/myProfile.css">
-    <link rel= "stylesheet" href="css/administrators/adminRestaurant.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/toast.css" />
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="assets/fontawesome/css">
+    <link rel="stylesheet" href="css/administrators/adminHomeStyle.css">
+    <link rel="stylesheet" href="css/administrators/adminHomeStyle.scss">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/users/restaurant.css">
+    <link rel="stylesheet" href="css/users/myProfile.css">
+    <link rel="stylesheet" href="css/administrators/adminRestaurant.css">
 </head>
+
 <body>
-    <div  >
-        <section>
-            <div class="main-banner help d-flex align-items-center  text-center">
-                <div class="container help">
-                    <h2>Restoran - <span>{{this.restaurant.name}}</span></h2>
-                </div>
-                <span id="black-overlay"></span>
-            </div>
-        </section>
-    
-        <!-- section 2 -->
-        <section class="container help mt-5">
-            <h3 class="fw-bold fs-20" style="color: brown;">{{deletedMessage}} </h3>
-    
+    <section class="container mt-4">
+        <p class="fw-bold fs-20">Prikaz svih registrovanih korisnika</p>
+        <label for="priceFrom" style="width:200px;margin-right: 6rem;text-align: left;">Cena(od):</label>
+        <label for="priceTo" style="width:300px;margin-right: 6rem;">Cena(do):</label>
+        <label for="dateFrom" style="width:200px;margin-right: 11rem;">Datum(od):</label>
+        <label for="dateTo" style="width:200px;margin-right: 11rem;">Datum(do):</label>
+        <form class="example mt-2" style="margin-left: 2rem;">
+            <input type="text" v-model="priceFrom" class="input-custom1" style="width:300px;" placeholder="Pocetna cena"
+                name="search">
+            <input type="text" v-model="priceTo" class="input-custom1" style="width:300px;" placeholder="Krajnja cena"
+                name="search">
+            <button v-on:click="sortPrice? sortByPriceAscending() : sortByPriceDescending()" data-toggle="button"
+                class="btn  btn-primary"><i class=" fas fa-sort"></i></button>
+
+            <!-- <input type="text"  v-model="dateFrom" class="input-custom1" style="width:300px;" placeholder="Pocetni datum" name="search">
+            <input type="text"  v-model="dateTo" class="input-custom1" style="width:300px;" placeholder="Krajnji datum" name="search">
+            -->
+            <vuejs-datepicker format="dd-MM-yyyy" v-model="dateFrom" placeholder="Pocetni datum">
+            </vuejs-datepicker>
+            <vuejs-datepicker format="dd-MM-yyyy" v-model="dateTo" placeholder="Krajnji datum">
+            </vuejs-datepicker>
+            <button v-on:click="sortDate? sortByDateAscending() : sortByDateDescending()" data-toggle="button"
+                class="btn  btn-primary"><i class=" fas fa-sort"></i></button>
+
+        </form>
+        </br>
+
+        <label for="selRole">Status porudzbine:</label>
+
+        <select v-model="statusFilter" style="width:200px;height:30px;" class="custom-select" id="selStatus"
+            name="selectStatus">
+
+            <option>OBRADA</option>
+            <option value="MANAGER">U_PRIPREMI</option>
+            <option value="DELIVERYMAN">CEKA_DOSTAVU</option>
+            <option value="BUYER">U_TRANSPORTU</option>
+            <option value="BUYER">DOSTAVLJENA</option>
+            <option value="BUYER">OTKAZANA</option>
+        </select>
+        <button @click="clearStatusFilter()" for="selStatus"
+            style="width:30px;height:30px;margin-right: 6rem">X</button>
+
+        </br>
+
+
+
+        <div>
             <div class="box-shadow mt-3 px-4 py-4">
                 <div class="border-bottoms">
-                    <p class="fw-bold fs-15">Ponude</p>
+                    <p class="fw-bold fs-15">Porudžbine</p>
                 </div>
-                
-
                 <!-- novo -->
-                <div  v-for="a in this.restaurant.restaurantArticles" >
-               
+                <div id="for" v-for="(o,index) in orders" :key="index">
+
                     <div class="mt-3 d-flex border-bottom align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <img v-bind:src="a.image"  class="item-picture" alt="menu item picture">
-                        <div class="ms-3">
-                            <p class="product-name">{{a.name}}</p>
-                            <p class="product-price">{{a.price}} din</p>
+                        <a v-on:click="showOrder(o.id)">
+                            <div class="d-flex align-items-center">
+
+                                <div class="ms-3">
+
+                                    <p class="product-name"> Porudzbina: {{o.id}}</p>
+                                    <p class="product-price">{{o.price}} din</p>
+                                    <label>Kupac: {{o.name}} {{o.surname}}</label>
+                                </div>
+
+                            </div>
+                        </a>
+                        <div class="d-flex align-items-center">
+                            <p class="product-price" style="margin-right:50px">Status : {{o.status}} </p>
+                            <p class="product-price"> Datum : {{o.oderDate}} </p>
                         </div>
+                        <button type="button" v-if="o.status == 'OBRADA' " @click="changeStatusPrepared(o)"
+                            class="btn btn-success btn-sm">->U pripremi</button>
+                        <button type="button" v-if="o.status == 'U_PRIPREMI' " @click="changeStatusWaiting(o)"
+                            class="btn btn-success btn-sm">->Čeka dostavu</button>
+                        <button type="button" v-if="o.status == 'CEKA_DOSTAVU' " class="btn btn-success btn-sm"
+                            disabled>->Čeka dostavu</button>
                     </div>
-                    <button type="button"  class="btn btn-success btn-sm">OBRISI</button>
-                    </div>
+
+
+
                 </div>
 
-                <!-- novo -->
             </div>
-        </section>
-        <div class="col-md-5" style="margin-top: 30px;">
-           <!-- <button type="button" @click="editRestaurant()" class="btn btn-primary btn-sm">IZMENI RESTORAN</button>
-            <button type="button" @click="saveChanges()" id="saveChangesBtn" disabled=true class="btn btn-success btn-sm">SACUVAJ IZMENE</button> -->
-            <button type="button" @click="deleteRestaurant()" class="btn btn-danger btn-sm">OBRISI RESRORAN</button>
-            <button type="button" @click="restoreRestaurant()" class="btn btn-secondary btn-sm">VRATI RESTORAN</button>
         </div>
-    
-        <section class="container mt-5">
-            <p class="fw-bold fs-20">O restoranu</p>
-    
-            <div class="box-shadow mt-3 px-4 py-4">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <p class="fw-bold fs-15" style="margin: 2rem;">Radno vrijeme svakim danom</p>
-    
-                        <div class="border-bottom working" >
-                            <p class="working-day">OD:</p>
-                            <!--<input disabled=true type="time" id="startTime" v-model="restaurant.startHours" > -->
-                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{restaurant.startHours}} </label>
-                        </div>
-                        <div class="border-bottom working">
-                            <p class="working-day">DO:</p>
-                            <!--<input disabled=true type="time" id="endTime"  v-model="restaurant.endHours" > -->
-                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{restaurant.endHours}} </label>
-                        </div>
-                        <div class="ms-3 " style="margin:30px ;">
-                            <p class="fs-20">Lokacija</p>
-                           <!-- <input disabled=true class="input-custom2" type="text" id="resStreet" v-model="restaurant.location.street" placeholder="Ulica" ></br></br>
-                            <input disabled=true class="input-custom2" type="text" id="resCity" v-model="restaurant.location.street" placeholder="Grad" ></br></br>
-                            <input disabled=true class="input-custom2" type="text" id="resZip" v-model="restaurant.location.zipCode"  placeholder="Postanski broj"></br></br>
-                           -->
-                           <div class="border-bottom working">
-                            <p class="working-day">Ulica:</p>
-                            <!--<input disabled=true type="time" id="endTime"  v-model="restaurant.endHours" > -->
-                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{restaurant.location.street}} </label>
-                        </div>
-                        <div class="border-bottom working">
-                            <p class="working-day">Grad:</p>
-                            <!--<input disabled=true type="time" id="endTime"  v-model="restaurant.endHours" > -->
-                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{restaurant.location.street}} </label>
-                        </div>
-                        <div class="border-bottom working">
-                            <p class="working-day">Poštanski broj:</p>
-                            <!--<input disabled=true type="time" id="endTime"  v-model="restaurant.endHours" > -->
-                            <label style="padding: 5px;margin-bottom: 5px;" class=" fs-15"  >{{restaurant.location.zipCode}} </label>
-                        </div>
-                           
-                    </div>
-    
-                    </div>
-                    <div class="col-6 d-flex align-items-center">
-                        <div>
-                            
-                            <img src="assets/imgs/adresa.jpg" class="address-picture" alt="address">
-                            </br></br></br>
-                    
-                            
-                        </div>
-                        
-                    </div>
-                </div>
-                <div class="details">
-                <div class="col-md-6">
-                    <label   style="padding: 5px;margin-bottom: 20px;" class=" fs-15"  >Ime restorana: {{this.restaurant.name}} </label>
-                   <!-- <input  disabled=true type="text" id="restourantName" style="margin-bottom: 40px;" v-model="this.restaurant.name" class=" mt-2 input-custom" placeholder="Ime restorana"
-                        required> -->
-                </div>
-                <div class="col-md-6">
-                    
-                    <label  style="padding: 5px;margin-bottom: 20px;"  v-if="restaurant.working == '1'"  class="  fs-15" >Status: Radi </label>
-                    <label style="padding: 5px;margin-bottom: 20px;"  v-if="restaurant.working == '0'" class="  fs-15" >Status: Ne radi </label>
-                    
-                   <!-- <select disabled=true data-trigger="" id="resStatus"  style="margin-bottom: 40px;"  class="input-custom mt-2">
-                        <option  value=true>Da</option>
-                        <option  value=false>Ne</option>
-                    </select> -->
-                </div>
-                <div class="col-md-6">
-                    <label  style="padding: 5px;margin-bottom: 20px;"  class="  fs-15" >Tip restorana: {{restaurant.restaurantType}} </label>
-                   <!-- <select disabled=true data-trigger="" id="type" style="margin-bottom: 40px;"  v-model="restaurant.restaurantType" class="input-custom mt-2">
-                    <option v-for="option in typeOptions" :value="option">{{ option }}</option>
-                    </select> -->
-                </div>
-                <div>
-                    <label   style="padding: 5px;margin-bottom: 20px;"  class="  fs-15" >Menadžer: {{manager.name}} {{manager.surname}} </label>
-                </div>
-                <div class="d-flex">
-                     <label  style="padding: 5px;margin-bottom: 20px;"  class=" fs-15" >Ocena restorana: {{restaurant.rating}} <i class="fas fa-star text-warning"></i></label>
-                </div>
-            </div>
-                <!-- TODO -->
-                <p class="fw-bold fs-15 mt-4">Pregled komentara</p>
-    
-                <div class="row border-top border-bottom py-3">
-                    <div class="col-6 d-flex align-items-center">
-                       
-                        <p class="reviewer-name">Jovan Jovanović Zmaj</p>
-                    </div>
-                    <div class="col-6">
-                        <p class="fs-10">Poruka:</p>
-                        <p class="review-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam, sint dicta!
-                            Quo natus quae in
-                            nisi delectus eius molestias nobis reiciendis ad eveniet consequuntur omnis, dicta rerum animi
-                            eligendi veritatis!
-                            Iste, officiis! Dolorum odio nesciunt nemo deserunt accusantium officia cum, molestiae
-                            distinctio eius. Porro ex a ipsa suscipit! Impedit quisquam accusamus repellat, ut nisi qui
-                            ipsum non tempora ab nobis?</p>
-                    </div>
-                </div>
-    
-             
-    
-    
-    
-            </div>
-        </section>
-    </div>
 
-
+    </section>
 
     <script src="js/vue.js"></script>
-<script src="js/vue-router.js"></script>
-<script src="js/axios.js"></script>
-<script src="js/jquery.min.js"></script> 
-<script src="js/toast.js"></script> 
-<script src="js/toastr.min.js"></script>
-<script src="js/vuejs-datepicker.min.js"></script>
-<script src="js/moment.min.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/toastr.min.js"></script>
+    <script src="js/vuejs-datepicker.min.js"></script>
+    <script src="js/moment.min.js"></script>
 
-<!-- MOJE .JS STRANICE  -->
-<script src="app/administrators/components/adminCreateRestaurant.js"></script>
-<script src="app/administrators/components/adminCreateUser.js"></script>
-<script src="app/administrators/components/adminAllRestaurants.js"></script>
-<script src="app/administrators/components/adminAllUsers.js"></script>
-<script src="app/administrators/components/adminProfil.js"></script>
-<script src="app/administrators/components/dateInput.js"></script>
-<script src="app/administrators/components/adminRestaurant.js"></script>
-<script src="app/administrators/components/administratorNavbar.js"></script>
-<script src="app/administrators/appAdministrators.js"></script>
+    <!-- MOJE .JS STRANICE  -->
+    <script src="app/administrators/components/adminCreateRestaurant.js"></script>
+    <script src="app/administrators/components/adminCreateUser.js"></script>
+    <script src="app/administrators/components/adminAllRestaurants.js"></script>
+    <script src="app/administrators/components/adminAllUsers.js"></script>
+    <script src="app/administrators/components/adminProfil.js"></script>
+    <script src="app/administrators/components/dateInput.js"></script>
+    <script src="app/administrators/components/adminRestaurant.js"></script>
+    <script src="app/administrators/components/administratorNavbar.js"></script>
+    <script src="app/administrators/appAdministrators.js"></script>
 
-<!-- Optional JavaScript; choose one of the two! -->
+    <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 
 </body>
+
 </html>
