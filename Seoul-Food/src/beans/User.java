@@ -27,7 +27,7 @@ public class User  {
 	private List<Integer> allOrders;		//kupac
 	// Korpa								//kupac
 	private Integer restarauntID;		// JELENA IZMENILA ovo treba biti samo jedan restoran bas tog managera ako je user manager
-	private List<Integer> ordersToDeliver;	//dostavljac
+	private List<String> ordersToDeliver;	//dostavljac
 	private Double points;					//kupac
 	private Integer buyerClass; // GOLD, SILVER, BRONZE //kupac
 
@@ -36,7 +36,7 @@ public class User  {
 	}
 	public User(Integer iD, Integer logicalDeleted, Integer blocked, String username, String password, String name,
 			String surname, String gender, Date birthday, String role, List<Integer> allOrders,
-			Integer restaurantID, List<Integer> ordersToDeliver, Double points, Integer buyerClass) {
+			Integer restaurantID, List<String> ordersToDeliver, Double points, Integer buyerClass) {
 		super();
 		ID = iD;
 		this.logicalDeleted = logicalDeleted;
@@ -58,7 +58,7 @@ public class User  {
 
 	public User(Integer iD, Integer logicalDeleted, Integer blocked, String username, String password, String name,
 			String surname, String gender, String birthday, String role, List<Integer> allOrders,
-			Integer restaurantID, List<Integer> ordersToDeliver, Double points, Integer buyerClass) {
+			Integer restaurantID, List<String> ordersToDeliver, Double points, Integer buyerClass) {
 		super();
 		ID = iD;
 		this.logicalDeleted = logicalDeleted;
@@ -101,13 +101,6 @@ public class User  {
 
 	
 
-	public List<Integer> getOrdersToDeliver() {
-		return ordersToDeliver;
-	}
-
-	public void setOrdersToDeliver(List<Integer> ordersToDeliver) {
-		this.ordersToDeliver = ordersToDeliver;
-	}
 
 	public Double getPoints() {
 		return points;
@@ -228,6 +221,12 @@ public class User  {
 	}
 	public void setRestarauntID(Integer restarauntID) {
 		this.restarauntID = restarauntID;
+	}
+	public List<String> getOrdersToDeliver() {
+		return ordersToDeliver;
+	}
+	public void setOrdersToDeliver(List<String> ordersToDeliver) {
+		this.ordersToDeliver = ordersToDeliver;
 	}
 	
 	

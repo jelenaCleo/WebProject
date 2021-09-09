@@ -3,9 +3,11 @@ package services;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.el.ArrayELResolver;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -24,6 +26,7 @@ import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrderDAO;
 import dto.NewOrderDTO;
+import dto.OrderRestDTO;
 
 @Path("/orders")
 public class OrderService {
@@ -177,7 +180,7 @@ public class OrderService {
 		if(request.getSession().getAttribute("loginUser") != null) {
 			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
 				
-				ArrayList<Order> orders = getOrdersDAO().getRestaurantOrders(restID);
+				Collection<Order> orders = getOrdersDAO().getRestaurantOrders(restID);
 				return Response
 						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
 						.entity(orders)
@@ -197,7 +200,7 @@ public class OrderService {
 		if(request.getSession().getAttribute("loginUser") != null) {
 			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
 				
-				ArrayList<Order> orders = getOrdersDAO().getChangeStatusToWaitingForDelivery(restID,orderID);
+				Collection<Order> orders = getOrdersDAO().getChangeStatusToWaitingForDelivery(restID,orderID);
 				return Response
 						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
 						.entity(orders)
@@ -216,7 +219,7 @@ public class OrderService {
 		if(request.getSession().getAttribute("loginUser") != null) {
 			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
 				
-				ArrayList<Order> orders = getOrdersDAO().getChangeStatusToPreparing(restID,orderID);
+				Collection<Order> orders = getOrdersDAO().getChangeStatusToPreparing(restID,orderID);
 				return Response
 						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
 						.entity(orders)
@@ -225,6 +228,174 @@ public class OrderService {
 			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
 		}
 		return Response.status(Response.Status.NOT_FOUND).build();
+	}
+	@PUT
+	@Path("/statusDenied/{restID}/{orderID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getChangeStatusToDenied(@PathParam("restID") Integer restID, @PathParam("orderID") String orderID) {
+		
+		if(request.getSession().getAttribute("loginUser") != null) {
+			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
+				
+				Collection<Order> orders = getOrdersDAO().getChangeStatusBackToWaitingForDelivery(restID,orderID);
+				return Response
+						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
+						.entity(orders)
+						.build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+	}
+	
+	
+	@PUT
+	@Path("/statusPermission/{orderID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getChangeStatusWaitingForPermission(@PathParam("orderID") String orderID) {
+		
+		if(request.getSession().getAttribute("loginUser") != null) {
+			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("DELIVERYMAN")) {
+				Integer delId =((User) request.getSession().getAttribute("loginUser")).getID();
+				ArrayList<OrderRestDTO> orders = getOrdersDAO().getChangeStatusToWaitingForPermission(orderID,delId);
+				System.out.println("CEKA_DOSTAVU => CEKA_ODOBRENJE");
+				return Response
+						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
+						.entity(orders)
+						.build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		System.out.println("wtf");
+		return Response.status(Response.Status.NOT_FOUND).build();
+	}
+	
+	@PUT
+	@Path("/statusTransport/{orderID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getChangeStatusInTransport(@PathParam("orderID") String orderID) {
+		
+		if(request.getSession().getAttribute("loginUser") != null) {
+			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("DELIVERYMAN")) {
+				
+				ArrayList<OrderRestDTO> orders = getOrdersDAO().getChangeStatusToInTransport(orderID);
+				System.out.println("ODOBRENA => U TRANSPORTU");
+				return Response
+						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
+						.entity(orders)
+						.build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		System.out.println("wtf");
+		return Response.status(Response.Status.NOT_FOUND).build();
+	}
+	@PUT
+	@Path("/statusDelivered/{orderID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getChangeStatusToDelivers(@PathParam("orderID") String orderID) {
+		
+		if(request.getSession().getAttribute("loginUser") != null) {
+			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("DELIVERYMAN")) {
+				
+				ArrayList<OrderRestDTO> orders = getOrdersDAO().getChangeStatusToDelivered(orderID);
+				System.out.println("U TRANSPORTU => U DOSTAVLJENA");
+				return Response
+						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
+						.entity(orders)
+						.build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		System.out.println("wtf");
+		return Response.status(Response.Status.NOT_FOUND).build();
+	}
+	
+	@PUT
+	@Path("/statusApproved/{restId}/{orderID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getChangeStatusApproved(@PathParam("restId") Integer restId,@PathParam("orderID") String orderID) {
+		
+		if(request.getSession().getAttribute("loginUser") != null) {
+			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
+				Collection<Order> orders = getOrdersDAO().getChangeStatusToApproved(restId, orderID);
+				System.out.println("CEKA_ODOBRENJE => ODOBRENA");
+				return Response
+						.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
+						.entity(orders)
+						.build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		System.out.println("wtf");
+		return Response.status(Response.Status.NOT_FOUND).build();
+	}
+	
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOneOrder(@PathParam("id") String orderID) {
+		if(request.getSession().getAttribute("loginUser") != null) {
+			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("MANAGER")) {
+				
+				Order o = getOrdersDAO().getOneOrder(orderID);
+				return Response
+						.status(Response.Status.ACCEPTED)
+						.entity(o)
+						.build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+	
+		
+	}
+	
+	@GET
+	@Path("/allOrders")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllOrders() {
+		if(request.getSession().getAttribute("loginUser") != null) {
+			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("DELIVERYMAN")) {
+				
+				ArrayList<OrderRestDTO> orders = getOrdersDAO().getAllOrders();
+				for(OrderRestDTO o : orders) {
+					System.out.println("/////////////////////////////////");
+					System.out.println(o.order.getID());
+					System.out.println(o.order.getName());
+					System.out.println(o.order.getSurname());
+					System.out.println(o.order.getPrice());
+					//System.out.println(o.rest.getName());
+				}
+				return Response
+						.status(Response.Status.ACCEPTED)
+						.entity(orders)
+						.build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+	
+		
+	}
+	@GET
+	@Path("/oneOrder/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOneOrderDTO(@PathParam("id") String orderID) {
+		if(request.getSession().getAttribute("loginUser") != null) {
+			if(((User) request.getSession().getAttribute("loginUser")).getRole().equals("DELIVERYMAN")) {
+				
+				OrderRestDTO o = getOrdersDAO().getOneOrderDTO(orderID);
+				return Response
+						.status(Response.Status.ACCEPTED)
+						.entity(o)
+						.build();
+			}
+			return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).build();
+	
+		
 	}
 		
 		

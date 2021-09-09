@@ -6,7 +6,11 @@ Vue.component("rest-buyers",{
 			surnameSearch: '',
 			usernameSearch: '',
 			roleSearch: '',
-			classSearch: ''
+			classSearch: '',
+			sortName: false,
+			sortSurname: false,
+			sortUsername: false,
+			sortPoints: false,
 
 		}
 	},
@@ -47,27 +51,7 @@ Vue.component("rest-buyers",{
       <button @click="clearClassSearch()" for="selectType" style="width:30px;height:30px;">X</button>
 
       </br>
-      </br>
-      <div  style="display: inline-block;">
-      <button @click="sortByNameAscending()"  style="width:200px;height:30px;">Rastuce:ime</button>
-      </br>
-      <button @click="sortByNameDescending()"  style="width:200px;height:30px;">Opadajuce:ime</button>
-      </div>
-      <div style="display: inline-block;">
-      <button @click="sortBySurnameAscending()"  style="width:200px;height:30px;">Rastuce:prezime</button>
-      </br>
-      <button @click="sortBySurnameDescending()"  style="width:200px;height:30px;">Opadajuce:prezime</button>
-      </div>
-      <div style="display: inline-block;">
-      <button @click="sortByUsernameAscending()"  style="width:250px;height:30px;">Rastuce:korisnicko ime</button>
-      </br>
-      <button @click="sortByUsernameDescending()"  style="width:250px;height:30px;">Opadajuce:korisnicko ime</button>
-      </div>
-      <div style="display: inline-block;">
-      <button @click="sortByPointsAscending()"  style="width:250px;height:30px;">Rastuce:bodovi</button>
-      </br>
-      <button @click="sortBypointsDescending()"  style="width:250px;height:30px;">Opadajuce:bodovi</button>
-      </div>
+      
 
       <div class="ftco-section mt-4">
           <div class="row">
@@ -76,14 +60,20 @@ Vue.component("rest-buyers",{
                       <table class="table table-striped">
                           <thead>
                               <tr>
-                                  <th>Korisnicko ime</th>
-                                  <th>Ime</th>
-                                  <th>Prezime</th>
+                                  <th>Korisnicko ime 
+								  <button v-on:click="sortUsername? sortByUsernameAscending() : sortByUsernameDescending()" data-toggle="button"  class="btn  btn-primary"  ><i class=" fas fa-sort"></i></button></th>
+                                  <th>Ime        
+								  <button v-on:click="sortName? sortByNameAscending() : sortByNameDescending()" data-toggle="button"  class="btn  btn-primary" ><i class=" fas fa-sort"></i></button>
+								  </th>
+                                  <th>Prezime      
+								  <button v-on:click="sortSurname? sortBySurnameAscending() : sortBySurnameDescending()" data-toggle="button"  class="btn  btn-primary" ><i class=" fas fa-sort"></i></button>
+								  </th>
                                   <th>Datum rodjenja</th>
                                   <th>Pol</th>
                                   <th>Uloga</th>
                                   <th>Tip kupca</th>
-                                  <th>Broj bodova</th>
+                                  <th>Broj bodova  
+								  <button v-on:click="sortPoints? sortByPointsAscending() : sortBypointsDescending()" data-toggle="button"  class="btn  btn-primary" ><i class=" fas fa-sort"></i></button></th>
                               </tr>
                           </thead>
                           <tbody>
@@ -96,7 +86,6 @@ Vue.component("rest-buyers",{
                           <td> {{ user.role  | roleFormat }} </td>
                           <td> {{ user.buyerClass | buyerTypeFormat }} </td>
                           <td> {{ user.points | pointsFormat }} </td>
-                          <td>da/ne</td>
                   </tr>
                               
                           </tbody>
@@ -121,6 +110,7 @@ Vue.component("rest-buyers",{
 			  }
 		  
 			this.users.sort(compare);
+			this.sortName = false;
 		},
 		sortByNameDescending: function () {
 			function compare(a, b) {
@@ -132,6 +122,7 @@ Vue.component("rest-buyers",{
 			  }
 		  
 			this.users.sort(compare);
+			this.sortName = true;
 		},
 		sortBySurnameAscending: function () {
 			function compare(a, b) {
@@ -143,6 +134,7 @@ Vue.component("rest-buyers",{
 			  }
 		  
 			this.users.sort(compare);
+			this.sortSurname = false;
 		},
 		sortBySurnameDescending: function () {
 			function compare(a, b) {
@@ -154,6 +146,7 @@ Vue.component("rest-buyers",{
 			  }
 		  
 			this.users.sort(compare);
+			this.sortSurname = true;
 		},
 		sortByUsernameAscending: function () {
 			function compare(a, b) {
@@ -165,6 +158,7 @@ Vue.component("rest-buyers",{
 			  }
 		  
 			this.users.sort(compare);
+			this.sortUsername = false;
 		},
 		sortByUsernameDescending: function () {
 			function compare(a, b) {
@@ -176,12 +170,35 @@ Vue.component("rest-buyers",{
 			  }
 		  
 			this.users.sort(compare);
+			this.sortUsername = true;
 		},
 		sortByPointsAscending: function () {
-			this.users.sort((a,b) => a.points > b.points ? 1 : -1);
+			function compare(a, b) {
+				if (a.points < b.points)
+				  return -1;
+				if (a.points > b.points)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.users.sort(compare);
+			this.points = false;
+			
+
+			//this.users.sort((a,b) => a.points > b.points ? 1 : -1);
 		},
 		sortByPointsDescending: function () {
-			this.users.sort((a,b) => a.points < b.points ? 1 : -1);
+			function compare(a, b) {
+				if (a.points > b.points)
+				  return -1;
+				if (a.points < b.points)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.users.sort(compare);
+			this.points = true;
+			//this.users.sort((a,b) => a.points < b.points ? 1 : -1);
 		},
 		clearRoleSearch : function(){
 			this.roleSearch = undefined;
@@ -197,6 +214,9 @@ Vue.component("rest-buyers",{
 			this.users = response.data;
 			this.users.forEach(u => {
 				u.buyerClass = u.buyerClass.toString();
+				console.log(u.birthday);
+				u.birthday = new Date(parseInt(u.birthday)).toLocaleDateString();
+				console.log(u.birthday);
 			});
 		});
 

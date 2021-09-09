@@ -4,6 +4,7 @@ const ShowArticle = { template: '<show-article></show-article>' }
 const AddItem = { template: '<add-item></add-item>' }
 const Buyers = { template: '<rest-buyers></rest-buyers>' }
 const Orders = { template: '<rest-orders></rest-orders>' }
+const OrderView = { template: '<order-view></order-view>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -14,6 +15,7 @@ const router = new VueRouter({
 		{ path: '/:id/article/:name', component: ShowArticle},
 		{ path: '/orders', component: Orders},
 		{ path: '/buyers', component: Buyers},
+		{ path: '/orders/:id', component: OrderView},
 	  ]
 });
 

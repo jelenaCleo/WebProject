@@ -1,9 +1,57 @@
  function fixDate(user) {
-		
-			user.birthday = new Date(parseInt(user.birthday)).toLocaleDateString();
-			
-			return user;
+		var format = "dd-MM-yyyy";
+
+
+		if(value == null ){
+			return;
 		}
+
+		console.log(value);
+		console.log(format);
+		console.log(this.datefrom);
+
+		let newVal = value;
+		let val = newVal.toString();
+		console.log(val);
+		value = val.substring(4, 15);
+		console.log("this dafag==>" + value);
+		let month = value.substring(0,3);
+		let day = value.substring(4,6);
+		let year = value.substring(7,11);
+		console.log("my shit => " + month );
+		console.log("my shit => " + day );
+		console.log("my shit => " + year );
+		let mon=""
+		if(month=="Jan"){
+			mon = "01";
+		}else if(month=="Feb"){
+			mon = "02";
+		}else if(month=="Mar"){
+			mon = "03";
+		}else if(month=="Apr"){
+			mon = "04";
+		}else if(month=="May"){
+			mon = "05";
+		}else if(month=="Jun"){
+			mon = "06";
+		}else if(month=="Jul"){
+			mon = "07";
+		}else if(month=="Aug"){
+			mon = "08";
+		}else if(month=="Sep"){
+			mon = "09";
+		}else if(month=="Oct"){
+			mon = "10";
+		}else if(month=="Nov"){
+			mon = "11";
+		}else if(month=="Dec"){
+			mon = "12";
+		}
+		let datum = day+"-"+ mon +"-"+year;
+		//this.datetostr = datum;
+		//console.log("EVEGA JELENA datetostr: " + this.datetostr);
+		return datum;
+	}
 
 
 Vue.component("admin-profil", {
