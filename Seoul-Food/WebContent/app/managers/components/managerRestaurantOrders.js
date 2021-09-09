@@ -109,6 +109,7 @@ Vue.component("rest-orders", {
             <option>OBRADA</option>
             <option>U_PRIPREMI</option>
             <option>CEKA_DOSTAVU</option>
+            <option>CEKA_ODOBRENJE</option>
             <option>U_TRANSPORTU</option>
             <option>DOSTAVLJENA</option>
             <option>OTKAZANA</option>
@@ -149,6 +150,12 @@ Vue.component("rest-orders", {
                             class="btn btn-success btn-sm">->U pripremi</button>
                         <button type="button" v-if="o.status == 'U_PRIPREMI' " @click="changeStatusWaiting(o)"
                             class="btn btn-success btn-sm">->Čeka dostavu</button>
+                        <div>
+                        <button type="button" v-if="o.status == 'CEKA_ODOBRENJE' " @click="changeStatusApproved(o)"
+                        class="btn btn-success btn-sm">->Odobrena</button>
+                        <button type="button" v-if="o.status == 'CEKA_ODOBRENJE' " @click="changeStatusDenied(o)"
+                        class="btn btn-success btn-sm">->Odbijena</button>
+                        </div>
                         <button type="button" v-if="o.status == 'CEKA_DOSTAVU' " class="btn btn-success btn-sm"
                             disabled>->Čeka dostavu</button>
                     </div>
@@ -195,6 +202,28 @@ Vue.component("rest-orders", {
                     console.log(err);
 
                 });
+        },
+        //CEKA ODOBRENJE => ODBIJENA
+        changeStatusDenied: function(order){
+            axios.put('rest/orders/statusDenied/' +order.restID + '/' + order.id)
+            .then(response => {
+                this.orders = response.data;
+            }).catch(err => {
+                console.log("\n\n ------- ERROR -------\n");
+                console.log(err);
+
+            });
+        },
+        //CEKA ODOBRENJE => ODOBRENA
+        changeStatusApproved: function(order){
+            axios.put('rest/orders/statusApproved/' +order.restID + '/' + order.id)
+            .then(response => {
+                this.orders = response.data;
+            }).catch(err => {
+                console.log("\n\n ------- ERROR -------\n");
+                console.log(err);
+
+            });
         },
         showOrder: function (id) {
             location.href = "#/orders/" + id;

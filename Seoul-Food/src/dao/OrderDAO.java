@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Order;
 import beans.Order.Status;
+import dto.OrderRestDTO;
 
 public class OrderDAO {
 
@@ -117,7 +118,7 @@ public class OrderDAO {
 		return saltStr;
 
 	}
-	//JS
+	//JS//JELENA/////////////////////////////////////////////////////////////////////////////
 	public Collection<Order> getRestaurantOrders(Integer restID) {
 		Collection<Order> restOrders = new ArrayList<>();
 
@@ -135,15 +136,55 @@ public class OrderDAO {
 		Collection<Order> restOrders = getRestaurantOrders(restID);
 		return restOrders;
 	}
+	public Collection<Order> getChangeStatusBackToWaitingForDelivery(Integer restID, String orderID) {
+		ChangeStatusBackToWaitingForDelivery(restID, orderID);
+		Collection<Order> restOrders = getRestaurantOrders(restID);
+		return restOrders;
+	}
 
 	public Collection<Order> getChangeStatusToPreparing(Integer restID, String orderID) {
 		ChangeStatusToPreparing(restID, orderID);
 		Collection<Order> restOrders = getRestaurantOrders(restID);
 		return restOrders;
 	}
+	public ArrayList<OrderRestDTO> getChangeStatusToWaitingForPermission( String orderID,Integer delId) {
+		ChangeStatusToWaitingForPermission(orderID,delId);
+		ArrayList<OrderRestDTO> restOrders = getAllOrders();
+		return restOrders;
+	}
+	public ArrayList<OrderRestDTO> getChangeStatusToInTransport(String orderID) {
+		ChangeStatusToInTransport(orderID);
+		ArrayList<OrderRestDTO> restOrders = getAllOrders();
+		return restOrders;
+	}
+	
+	public ArrayList<OrderRestDTO> getChangeStatusToDelivered(String orderID) {
+		ChangeStatusToDelivered(orderID);
+		ArrayList<OrderRestDTO> restOrders = getAllOrders();
+		return restOrders;
+	}
+
+	private void ChangeStatusToDelivered( String orderID) {
+		orders.get(orderID).setStatus(Status.DOSTAVLJENA);
+		saveOrders();
+		
+	}
+
+	private void ChangeStatusToInTransport(String orderID) {
+		orders.get(orderID).setStatus(Status.U_TRANSPORTU);
+		System.out.println(orders.get(orderID).getStatus());
+		saveOrders();
+		
+	}
 
 	public void ChangeStatusToWaitingForDelivery(Integer restID, String orderID) {
 		orders.get(orderID).setStatus(Status.CEKA_DOSTAVU);
+		saveOrders();
+	}
+	public void ChangeStatusBackToWaitingForDelivery(Integer restID, String orderID) {
+		removeOrderToDeliveryMan(orderID);
+		orders.get(orderID).setStatus(Status.CEKA_DOSTAVU);
+		System.out.println("////////////////////" + orders.get(orderID).getStatus());
 		saveOrders();
 	}
 
@@ -152,9 +193,76 @@ public class OrderDAO {
 		orders.get(orderID).setStatus(Status.U_PRIPREMI);
 		saveOrders();
 	}
+	public void ChangeStatusToWaitingForPermission(String orderID,Integer delId) {
+
+		orders.get(orderID).setStatus(Status.CEKA_ODOBRENJE);
+		addOrderToDeliveryMan(orderID,delId);
+		saveOrders();
+	}
+
+	private void addOrderToDeliveryMan(String orderID, Integer delId) {
+		UserDAO userDAO = new UserDAO();
+		userDAO.addOrderToDeliveryMan(orderID,delId);
+		
+	}
+	private void removeOrderToDeliveryMan(String orderID) {
+		UserDAO userDAO = new UserDAO();
+		userDAO.removeOrderFromDeliveryMan(orderID);
+		
+	}
 
 	public Order getOneOrder(String orderID) {
 		return orders.get(orderID);
 	}
+
+	public ArrayList<OrderRestDTO> getAllOrders() {
+		ArrayList<OrderRestDTO> allOrders = new ArrayList<>();
+		
+		for(Order o : getValues()) {
+			OrderRestDTO dto = new OrderRestDTO();
+			dto.order = o;
+			RestaurantDAO restDao = new RestaurantDAO();
+			restDao.readRes();
+			dto.rest = restDao.findRestaurantById(o.getRestID());
+			System.out.println(restDao.findRestaurantById(o.getRestID()).getName());
+			System.out.println(dto.order.getID());
+			allOrders.add(dto);
+		}
+		
+		return allOrders;
+	}
+
+	public OrderRestDTO getOneOrderDTO(String orderID) {
+		OrderRestDTO muOrderDTO = new OrderRestDTO();
+		RestaurantDAO restDao = new RestaurantDAO();
+		restDao.readRes();
+		
+		for(Order o : getValues()) {
+			if(o.getID().equals(orderID)) {
+				muOrderDTO.rest = restDao.findRestaurantById(o.getRestID());
+				muOrderDTO.order = o;
+			}
+			
+		}
+		return muOrderDTO ;
+	}
+
+	public Collection<Order> getChangeStatusToApproved(Integer restId, String orderID) {
+		ChangeStatusToApproved(restId, orderID);
+		Collection<Order> restOrders = getRestaurantOrders(restId);
+		return restOrders;
+	}
+
+	private void ChangeStatusToApproved(Integer restId, String orderID) {
+		orders.get(orderID).setStatus(Status.ODOBRENA);
+		saveOrders();
+		
+	}
+
+	
+
+	
+	
+	//JELENA/////////////////////////////////////////////////////////////////////////////
 
 }

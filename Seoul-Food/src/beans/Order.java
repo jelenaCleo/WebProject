@@ -11,7 +11,9 @@ public class Order {
 		  CEKA_DOSTAVU,
 		  U_TRANSPORTU,
 		  DOSTAVLJENA,
-		  OTKAZANA
+		  OTKAZANA,
+		  CEKA_ODOBRENJE,
+		  ODOBRENA
 		}
 	
 

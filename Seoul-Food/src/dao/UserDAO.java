@@ -93,7 +93,7 @@ public class UserDAO {
 	public Integer addUser(UserDTO user) {
 		User newUser = new User(getValues().size() + 1, 0, 0, user.username, user.password, user.name, user.surname,
 				user.gender, user.birthday, user.role, new ArrayList<Integer>(), -1,
-				new ArrayList<Integer>(), 0.0, 3); //promenila sam posle broj sa 0 na 3 (Bronzani)
+				new ArrayList<String>(), 0.0, 3); //promenila sam posle broj sa 0 na 3 (Bronzani)
 		if (!users.containsValue(newUser)) {
 			users.put(newUser.getUsername(), newUser);
 			saveUsersJSON();
@@ -375,5 +375,39 @@ public class UserDAO {
 		System.out.println(buyerUsernames);
 		ArrayList<User> buyers = findBuyers(buyerUsernames);
 		return buyers;
+	}
+
+	public void addOrderToDeliveryMan(String orderID, Integer delId) {
+		readUsers();
+		for(User u : getValues()) {
+			if(u.getID().equals(delId)) {
+				u.getOrdersToDeliver().add(orderID);
+			}
+		}
+		saveUsersJSON();
+		
+	}
+	public void removeOrderFromDeliveryMan(String orderID) {
+		readUsers();
+		boolean hisOrder = false;
+		for(User u : getValues()) {
+			if(u.getRole().equals("DELIVERYMAN")) {
+				hisOrder = false;
+				for(String id : u.getOrdersToDeliver()) {
+					if(id.equals(orderID)) {
+						hisOrder = true;
+						break;
+					}
+				}
+				if(hisOrder) {
+					u.getOrdersToDeliver().remove(orderID);
+					saveUsersJSON();
+					break;
+				}
+				
+			}
+			
+		}
+		saveUsersJSON();
 	}
 }
