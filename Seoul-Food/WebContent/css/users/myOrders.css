@@ -53,7 +53,9 @@ body {
   margin: 12px 20px 12px 40px;
 }
   
-  
+[contentEditable=true]:empty:not(:focus):before{
+  content:attr(data-text)
+}
   
   
   

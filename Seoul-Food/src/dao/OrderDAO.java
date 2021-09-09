@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Order;
 import beans.Order.Status;
+import beans.Restaurant;
+import dto.DisplayUserOrderDTO;
 
 public class OrderDAO {
 
@@ -91,7 +93,7 @@ public class OrderDAO {
 	public Collection<Order> getValues() {
 		return orders.values();
 	}
-
+ 
 
 	public Order findOrderByID(String iD) {
 	
@@ -170,6 +172,42 @@ public class OrderDAO {
 			//}
 		//}
 		orders.get(restID).setStatus(Status.U_PRIPREMI);
+	}
+
+
+	public ArrayList<DisplayUserOrderDTO> createNewOrders() {
+	
+		 Collection<Order> orders =  getValues();
+		
+		ArrayList<DisplayUserOrderDTO> newOrders = new ArrayList<DisplayUserOrderDTO>();
+		
+		
+		for(Order o : orders) {
+			
+			DisplayUserOrderDTO dto = new DisplayUserOrderDTO();
+			dto.order = o;
+			Restaurant r = getRest(o.getRestID());
+			if( r == null) {
+				System.out.println("Nije pronadjenm restoran ----------");
+				return null;
+			}
+			dto.resName = r.getName();
+			dto.restaurantType = r.getRestaurantType();
+			newOrders.add(dto);
+			System.out.println( dto.order + " - " + dto.resName + " - " + dto.restaurantType);
+		}
+		
+		return newOrders;
+		
+		
+	}
+
+
+	private Restaurant getRest(Integer restID) {
+		RestaurantDAO dao = new RestaurantDAO();
+		dao.readRes();
+		
+		return dao.findRestaurantById(restID);
 	}
 	
 	

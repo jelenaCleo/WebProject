@@ -65,6 +65,26 @@ public class OrderService {
 		
 	}
 	
+	//GET
+		@GET
+		@Path("/newOrders")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getNewOrders() {
+			
+			OrderDAO dao = getOrdersDAO();
+			 
+		
+			
+			return Response
+					.status(Response.Status.ACCEPTED).entity("GET NEW ORDER SUCCESS")
+					.entity(dao.createNewOrders())
+					.build();
+			
+			
+		}
+	
+	
+	
 	//POST
 	
 	@POST
@@ -102,23 +122,13 @@ public class OrderService {
 		}
 		
 		createOrders(order.username, order.name, order.surname);
+
+		return Response
+				.status(Response.Status.ACCEPTED).entity("ADD ORDER SUCCESS")
+				.entity(getOrdersDAO().getValues())
+				.build();
 		
-//		String id = dao.getSaltString(10);
-//		System.out.println(id);
-		return null;
-		
-		/*
-		 * OrderDAO dao = getOrdersDAO(); if(dao.findOrderByID(newOrder.ID) != null) {
-		 * 
-		 * System.out.println("\n\n Order sa istim ID vec postoji" +
-		 * "ovo ne bi trbalo da se desava i  nadam se da nece nikad"); //eventualno
-		 * mozemo ovdje izmijeniti as special case order
-		 * return Response.status(Response.Status.BAD_REQUEST).build();
-		 * }
-		 * dao.addOrder(newOrder); System.out.println("POST -- New Order " + newOrder.ID
-		 * );
-		 * return Response.status(Response.Status.ACCEPTED).entity("/").build();
-		 */
+		 
 		
 		
 	}
