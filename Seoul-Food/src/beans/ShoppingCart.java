@@ -57,50 +57,5 @@ public class ShoppingCart {
 		this.totalCost = totalCost;
 	}
 
-	//METHODS
-	public void addItems(ShoppingCartItem item) {
-		if(unique(item)) {
-			
-			items.add(item);
-			
-			
-		}
-		
-		
-	}
-
-	private boolean unique(ShoppingCartItem item) {
-		
-		
-		for(ShoppingCartItem i : items)
-		{
-			if(i.getArticle().getName().equals(item.getArticle().getName()) && i.getArticle().getRestaurantID() == item.getArticle().getRestaurantID()) {
-				//samo dodaj kolicinu
-				
-				System.out.println("uslaaaaaaa--------------------------!!!!!!!!!");
-				i.setCount(i.getCount() + item.getCount());
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean addArticle(AddToCartDTO dto) {
-		
-		if(this.getUserID() == null) {
-			this.setUserID(dto.userID);
-		}
-
-		ShoppingCartItem sci = new ShoppingCartItem(dto.article, dto.count);
-		addItems(sci);
-		
-		return true;
-	}
-
-	
-	
-	
-	
-
 	
 }

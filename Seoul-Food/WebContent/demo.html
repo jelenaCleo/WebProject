@@ -14,78 +14,58 @@
     <!-- <link rel="stylesheet" href="Login.css">-->
 
     <link rel="stylesheet" href="demo.css">
+  
 
 </head>
 
 <body>
 
     <div id="appCostumer" align="center">
+    
         <section>
             <div class="main-banner d-flex align-items-center  text-center">
                 <div class="container">
-                    <h2 class="text-white">Vaša korpa za kupovinu</h2>
+                    <h2 class="text-white">Pregled Porudžbina</h2>
                 </div>
                 <span id="black-overlay"></span>
             </div>
         </section>
+        
+        
+        <!-- Section 4 -->
+
+    <section class="container">
+        <p class="fw-bold fs-20">Pregled svih porudžbina</p>
 
 
-        <section class="container">
-            <p class="fw-bold fs-20 mt-3"><span id="cart-numb">3</span> proizvoda u Vašoj korpi</p>
 
+        <div class="table-wrap">
+            <table class=" sortable table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th class="th-sm">ID porudžbine</th>
+                        <th class="th-sm">Korisnik</th>
+                        <th class="th-sm">Količina</th>
+                        <th class="th-sm">Dostavljač</th>
+                        <th class="th-sm">Porudžbina</th>
+                        <th class="th-sm">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">0</th>
+                        <td>Desanka Maksimović</td>
+                        <td>2 <span>porcije</span></td>
+                        <td>Pero Perić</td>
+                        <td>Ćevapi sa lukom</td>
+                        <td><a href="#" class="btn btn-success">Dostavljena</a></td>
+                    </tr>
 
+                 
+            </table>
+        </div>
 
-
-
-            <div class="cart-item py-3">
-                <div class="row align-items-center">
-                    <div class="col-4 d-flex align-items-center">
-                        <div class="quantity-field">
-                            <button class="value-button decrease-button" onclick="decreaseValue(this)"
-                                title="Azalt">-</button>
-                            <div class="number">1</div>
-                            <button class="value-button increase-button" onclick="increaseValue(this, 5)"
-                                title="Arrtır">+
-                            </button>
-                        </div>
-
-                        <img src="assets/imgs/default-placeholder.png" class="cart-logo"
-                            alt="assets/imgs/cart-meal.jpg">
-                    </div>
-                    <div class="col-8">
-                        <div class="d-flex justify-content-around align-items-center">
-                            <div>
-                                <p class="restourant-name ">Meat Steak</p>
-                                <span class="restourant-price">San Marco Bijeljina</span>
-                            </div>
-                            <div class="restourant-mark">
-
-                                <span>15.99KM</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="my-2">
-                        <hr>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <div class="total-price mt-5">
-                <p class="mb-0 fw-bold">Ukupno za uplatu: </p>
-                <p class="mb-0 ms-1">29,89</p>
-                <p class="mb-0 ms-1">KM</p>
-            </div>
-            <div class="text-end">
-                <button type="button" class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
-                    Završite
-                    kupovinu</button>
-            </div>
-
-
-        </section>
-
+    </section>
 
 
 
@@ -119,6 +99,8 @@
 
 
     <script src="app/costumers/components/navbar.js"></script>
+
+
     <script src="app/costumers/appCostumer.js"></script>
 
     <!-- bootstrap -->

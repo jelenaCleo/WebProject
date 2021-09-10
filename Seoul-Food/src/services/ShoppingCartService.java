@@ -6,14 +6,16 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import beans.ShoppingCart;
+import beans.Article;
 import beans.ShoppingCartItem;
+import dao.ShoppingCartDAO;
 import dto.AddToCartDTO;
 
 @Path("/cart")
@@ -36,11 +38,11 @@ public class ShoppingCartService {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getJustItems() {
-		ShoppingCart sc = getShoppingCart();
+		ShoppingCartDAO dao = getShoppingCart();
 		
 		return Response
 				.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
-				.entity(sc.getItems())
+				.entity(dao.getItems())
 				.build();
 		
 	}
@@ -51,42 +53,52 @@ public class ShoppingCartService {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String addArticle(AddToCartDTO dto) {
-		
-		ShoppingCart sc = getShoppingCart();
-		if(sc.addArticle(dto)) {
-			
+	public Response   Article(AddToCartDTO dto) {
+		ShoppingCartDAO dao = getShoppingCart();
 		
 			
-			
-			return "Added article to cart";
-		}
-		return "Already exists in cart";
-		
-		
+			return Response
+					.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
+					.entity(dao.addToCart(dto))
+					.build();
 	}
-
-	@DELETE
-	@Path("/delete")
+	
+	@PUT
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteArticle(String name){
+	public Response deleteArticle( Article article){
 		
-		  /*  ShoppingCartItem sci= getShoppingCart().getShoppingCartItem(name);
-			getShoppingCart().getItems().remove(sci);
-		
+		ShoppingCartDAO dao = getShoppingCart();	
+		ShoppingCartItem i = dao.removeFromCart(article);
+		dao.removeArticle(i);
 			return Response
-					.status(Response.Status.ACCEPTED).entity("USER DELETED")
-					.entity(getShoppingCart().getItems())
+					.status(Response.Status.ACCEPTED).entity("ARTICLE DELETED")
+					.entity(dao.getItems())
 					.build();
-		*/
-		return null;
+		
+		
+	}
+	@DELETE
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteAll(){
+		
+		ShoppingCartDAO dao = getShoppingCart();	
+		dao.removeAll();
+			return Response
+					.status(Response.Status.ACCEPTED).entity("CART DELETED")
+					.entity(dao.getItems())
+					.build();
+		
+		
 	}
 
-	private ShoppingCart getShoppingCart() {
-		ShoppingCart sc = (ShoppingCart) request.getSession().getAttribute("shoppingCart");
+	private ShoppingCartDAO getShoppingCart() {
+		ShoppingCartDAO sc = (ShoppingCartDAO) request.getSession().getAttribute("shoppingCart");
 		if (sc == null) {
-			sc = new ShoppingCart();
+			sc = new ShoppingCartDAO();
 			request.getSession().setAttribute("shoppingCart", sc);
 		} 
 		return sc;

@@ -304,10 +304,6 @@ Vue.component("restpage",{
 			console.log(this.selection[index].count);
 				
 				
-		},
-		resetCount : function(index){
-			this.selection[index].count = 0;
-			
 		}
 		,
 		isDisabled:function(index){

@@ -5,8 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -132,11 +134,22 @@ public class RestaurantDAO {
 	public Restaurant findRestaurantById(Integer ID) {
 		
 		if(restaurants.containsKey(ID)) {
+
 			return restaurants.get(ID);
 		}
 		return null;
 		
 	}
+	public void ispisimapu() {
+		 Iterator<Map.Entry<Integer, Restaurant>> itr = restaurants.entrySet().iterator();
+         
+	        while(itr.hasNext())
+	        {
+	             Map.Entry<Integer, Restaurant> entry = itr.next();
+	             System.out.println("Key = " + entry.getKey() +
+	                                 ", Value = " + entry.getValue());
+	        }
+	    }
 	
 	
 	

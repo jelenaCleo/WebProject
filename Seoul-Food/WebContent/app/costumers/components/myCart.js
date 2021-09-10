@@ -7,6 +7,7 @@ Vue.component("cart",{
 				isLoaded: false,
                 selection:[],
                 user: null,
+                totalPrice: 0.0,
 
                 
 
@@ -35,18 +36,16 @@ Vue.component("cart",{
 
      
             <div v-for="item in cartItems"  class="cart-item py-3">
+           <button id="important" v-on:click="deleteArticle(item)" type="button" class="btn-close" aria-label="Close"></button>
                 <div class="row align-items-center">
                     <div class="col-4 d-flex align-items-center">
                         <div class="quantity-field">
-                            <button class="value-button decrease-button" v-on:click="decreaseValue(item)"
-                                title="Azalt">-</button>
-                            <input class="number" v-model="item.count" >
-                            <button class="value-button increase-button" v-on:click="increaseValue(item)"
-                                title="Arrtır">+
-                            </button>
+                         
+                                <input  min="0" max="50" v-model.number="item.count" type="number" class="count" name="qty" >
+                           
                         </div>
 
-                        <img v-bind:src="item.article.image" class="cart-logo"
+                        <img src="assets/imgs/default-placeholder.png" class="cart-logo"
                             alt="assets/imgs/cart-meal.jpg">
                     </div>
                     <div class="col-8">
@@ -75,8 +74,9 @@ Vue.component("cart",{
                 <p class="mb-0 ms-1">RSD</p>
             </div>
             <div class="text-end">
-                <button v-on:click="createOrder" type="button" class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
+                <button v-on:click="createOrder" type="button" :disabled="totalPrice == 0.0" class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
                     Poruči</button>
+	
             </div>
 
 
@@ -88,7 +88,7 @@ Vue.component("cart",{
         <footer class="mt-5">
             <hr>
             <div class="container">
-                <p class="text-center text-muted">© 2021 Maja & Jelena . Projekat iz WEB programiranja</p>
+                <p id="try" class="text-center text-muted">© 2021 Maja & Jelena . Projekat iz WEB programiranja</p>
             </div>
         </footer>	
 				
@@ -119,12 +119,20 @@ Vue.component("cart",{
 		
 		},
         methods:{
-            decreaseValue:function(item){
+            dec:function(item){
+
+                if(item.count == 0){
+                    return;
+                }
                return item.count -=1;
 
             },
-            increaseValue:function(item){
+            inc:function(item){
+                if(item.count > 50){
+                    return;
+                }
                  return item.count += 1;
+
 
             },
             
@@ -139,27 +147,36 @@ Vue.component("cart",{
 				
 				t += parseFloat(this.cartItems[i].article.price) * this.cartItems[i].count;
 				}
-				
+				this.totalPrice = t;
 				return t;
-			},
+			},  
+            deleteArticle:function(item){
+
+              
+                axios
+                    .put('rest/cart/', item.article)
+                    .then(response =>(this.cartItems = response.data)); 
+                   
+
+            },
 			createOrder:function(){
 				
-                
+                //Neke validacije
+                if(this.totalPrice == 0.0){
+
+                  //  toastr("Success changes!!", "Success!");
+                    return;
+                }
+
                 for (let i = 0; i < this.cartItems.length; i++) {
 					
                     this.selection.push({
-						"article": this.cartItems[i].article,
-						"count": this.cartItems[i].count
+						article: this.cartItems[i].article,
+						count: this.cartItems[i].count
 					});
                 }
                
-				console.log("cartitems");
-				console.log(this.cartItems);
-				
-				console.log("selecetion");
-				console.log(this.selection);
-				
-            	console.log("============================================//////////")
+            
 				
                 axios
                     .post('rest/orders/',
@@ -170,11 +187,12 @@ Vue.component("cart",{
                         "surname" : this.user.surname
                     
                     });
-                    
-                
+					
 
-
-				
+				  axios
+                    .delete('rest/cart/')
+                    .then(response =>(this.cartItems = response.data)); 
+                   
 			}
         },
 		
