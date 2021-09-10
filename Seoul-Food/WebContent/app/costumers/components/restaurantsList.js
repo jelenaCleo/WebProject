@@ -255,7 +255,7 @@ Vue.component("reslist", {
 	
 	            return this.restaurants.filter((r) =>{
 	
-					// DOPUNI ZA RATING I r.location.match(this.locationsearch) && S
+					// DOPUNI ZA RATING 
 	              
 		            if( r.name.toUpperCase().match(this.namesearch.trim().toUpperCase()) && r.restaurantType.match(this.typesearch) &&
 							r.location.address.street.toUpperCase().match(this.locationsearch.trim().toUpperCase()) ){
