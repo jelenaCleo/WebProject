@@ -26,19 +26,12 @@ Vue.component("myprofile",{
 
 
     template:`
-
-
-
-
-    <div id="profile" class="container bootstrap snippets bootdey">
-	<link rel= "stylesheet" href="css/users/myProfile.css">
-        <h1 class="text-primary"><span class="glyphicon glyphicon-user"></span>Izmjena Profila</h1>
+    <div id="profile">
+	<h1 class="text-primary"><span class="glyphicon glyphicon-user"></span>Izmjena Profila</h1>
         <hr>
-    <div class="row">
-        <!-- edit form column -->
+	  <div class="row">
         <div class="col-md-13 personal-info">
-
-                <h3>Lične info</h3>
+         <h3>Lične Informacije</h3>
 
             <form class="form-horizontal" role="form">
                         <div class="form-group">
@@ -67,7 +60,7 @@ Vue.component("myprofile",{
                         </div>
                         <div class="form-check">
                             <label class="col-lg-3 control-label">Pol:</label>
-                            <hr class="col-lg-3">
+                         
                             <div class="col-lg-3">
                             <input checked="female"  v-model="editedUser.gender"  value="F"  class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                             <label class="form-check-label  " for="flexRadioDefault1">
@@ -83,30 +76,27 @@ Vue.component("myprofile",{
                             </label>
                             </div>
                         </div>
-                    
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">Datum rođenja :</label>
-                    <div class="col-lg-8">
-	                      <vuejs-datepicker format="dd.MM.yyyy" v-model="editedUser.birthday"  placeholder="Datum rođenja"></vuejs-datepicker>
-					</div>
-                </div>
-			 <section class="container mt-4">
-		        <br><br>
-		        <button class="btn btn-success" @click="saveChanges()" ><i class="fa fa-check" aria-hidden="true"></i> Save changes
-		        </button>
-			</section>
-              
-            </form>
+           </form>
+              <hr class="col-lg-3">
+           
+         
+	           <label class="col-lg-3 control-label">Datum rođenja :</label>
+	             <div  class="d-flex justify-content-around" >
+		           <vuejs-datepicker format="dd.MM.yyyy" v-model="editedUser.birthday"  placeholder="Datum rođenja"></vuejs-datepicker>
+				</div>
+	      	</div>        
         </div>
-    </div>
-
-<footer class="mt-5">
+      </div>
+      
+     
+                
+	<footer class="mt-5">
 			<hr>
 			<div class="container">
 				<p class="text-center text-muted">© 2021 Maja & Jelena . Projekat iz WEB programiranja</p>
 			</div>
 		</footer>
-</div>
+	</div>
 
     `,
     mounted() {
