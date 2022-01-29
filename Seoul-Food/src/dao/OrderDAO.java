@@ -37,9 +37,7 @@ public class OrderDAO {
 
 		this.orders = new LinkedHashMap<String, Order>();
 	}
-
-	// Reading from file and writing to file
-
+	
 	public void readOrders() {
 
 		ObjectMapper om = new ObjectMapper();
@@ -62,9 +60,6 @@ public class OrderDAO {
 		}
 
 		for (Order o : ordersList) {
-
-			System.out.println("---Orders: ----");
-			System.out.println(o.getID() + "\\n");
 			orders.put(o.getID(), o);
 
 		}
@@ -102,7 +97,7 @@ public class OrderDAO {
 		return null;
 	}
 
-//TODO : EDIT THIS SHIT
+//TODO : EDIT THIS 
 	public void addOrder(Order newOrder) {
 
 		orders.put(newOrder.getID(), newOrder);
@@ -121,7 +116,7 @@ public class OrderDAO {
 		return saltStr;
 
 	}
-	//JS//JELENA/////////////////////////////////////////////////////////////////////////////
+
 	public Collection<Order> getRestaurantOrders(Integer restID) {
 		Collection<Order> restOrders = new ArrayList<>();
 
@@ -197,7 +192,6 @@ public class OrderDAO {
 		saveOrders();
 	}
 
-
 	public ArrayList<DisplayUserOrderDTO> createNewOrders() {
 	
 		 Collection<Order> orders =  getValues();
@@ -220,9 +214,7 @@ public class OrderDAO {
 			System.out.println( dto.order + " - " + dto.resName + " - " + dto.restaurantType);
 		}
 		
-		return newOrders;
-		
-		
+		return newOrders;	
 	}
 
 
@@ -306,10 +298,15 @@ public class OrderDAO {
 		
 	}
 
-	
-
-	
-	
-	//JELENA/////////////////////////////////////////////////////////////////////////////
+	public List<Order> getUserOrders(String username) {
+		
+		List<Order> orders = new ArrayList();
+		for(Order o : getValues()) {
+			if(o.getUsername().equals(username)) {
+				orders.add(o);			}
+			
+		}
+		return orders;
+	}
 
 }

@@ -205,7 +205,7 @@ Vue.component("orders",{
 
 	mounted(){
 		axios
-		 	.get('rest/orders/newOrders')
+		 	.get('rest/orders/userOrders')
 		 	.then(response => {this.orders = response.data})
 
 			 if(this.orders != null){

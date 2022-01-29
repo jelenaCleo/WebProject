@@ -25,6 +25,7 @@ import org.json.simple.JSONObject;
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import beans.User;
+import dao.OrderDAO;
 import dao.UserDAO;
 
 
@@ -46,7 +47,7 @@ public class UserService {
 
 		/* If we have already that user, we can't register him */
 		if (usersDAO.getUserByUsername(user.username) != null) {
-			return Response.status(Response.Status.ACCEPTED).entity("Korisničko ime je zauzeto!Nije moguće registrovati korisnika!").build();
+			return Response.status(Response.Status.ACCEPTED).entity("Korisnicok ime je zauzeto!Nije moguce registrovati korisnika!").build();
 		}
 
 		
@@ -63,7 +64,7 @@ public class UserService {
 			}
 		}
 		System.out.println("idemo 4");
-		return Response.status(Response.Status.ACCEPTED).entity("Korisnik već postoji!").build();
+		return Response.status(Response.Status.ACCEPTED).entity("Korisnik veÄ‡ postoji!").build();
 		
 	}
 	
@@ -86,7 +87,7 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(LoginUserDTO user) {
-		System.out.println("aaaaaaaaaaaaaaaa");
+		
 		UserDAO allUsersDAO = getUsers();
 
 		User userForLogin = allUsersDAO.getUserByUsername(user.username);
@@ -269,18 +270,17 @@ public class UserService {
 	@Path("/myProfile")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMyProfile() {
-		System.out.println("hana1");
 		User user = getUsers().findUserByUsername(((User)request.getSession().getAttribute("loginUser")).getUsername());
-		System.out.println(user.getBirthday());
+		
 		//umesto da vratim objekat iz sesije nadjem taj objekat u bazi
 		if( request.getSession().getAttribute("loginUser") != null) {
-			System.out.println("dul2");
+
 			return Response
 					.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
 					.entity(user)
 					.build();
 		}
-		System.out.println("set3");
+		
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
 	}
@@ -360,6 +360,7 @@ public class UserService {
 		return Response.status(403).type("text/plain")
 				.entity("You do not have permission to access!").build();
 	}
+
 	
 	@POST
 	@Path("/undeleteUser")

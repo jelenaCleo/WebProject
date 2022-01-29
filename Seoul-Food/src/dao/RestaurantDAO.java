@@ -124,7 +124,6 @@ public class RestaurantDAO {
 				r.setLocation(res.street,res.city,res.zipCode);			
 				r.setImgURL(res.imgURL);
 				
-				
 			}
 		}
 	}
@@ -150,9 +149,6 @@ public class RestaurantDAO {
 	                                 ", Value = " + entry.getValue());
 	        }
 	    }
-	
-	
-	
 
 	public Collection<Restaurant> getValues() {
 		return restaurants.values();

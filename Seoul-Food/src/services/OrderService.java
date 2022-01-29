@@ -70,20 +70,15 @@ public class OrderService {
 	
 	//GET
 		@GET
-		@Path("/newOrders")
+		@Path("/userOrders")
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getNewOrders() {
-			
-			OrderDAO dao = getOrdersDAO();
-			 
-		
-			
+			User user = (User) request.getSession().getAttribute("loginUser");
+			OrderDAO dao = getOrdersDAO();	
 			return Response
 					.status(Response.Status.ACCEPTED).entity("GET NEW ORDER SUCCESS")
-					.entity(dao.createNewOrders())
+					.entity(dao.getUserOrders(user.getUsername()))
 					.build();
-			
-			
 		}
 	
 	
