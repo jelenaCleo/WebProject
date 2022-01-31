@@ -121,8 +121,8 @@ a{
 }
 nav{
   background: rgb(68, 68, 68);
-  padding: 14px 0;
-  margin-bottom: 40px;
+  padding: 19px;
+  margin-bottom: unset;
 }
 
 .router-link-active{

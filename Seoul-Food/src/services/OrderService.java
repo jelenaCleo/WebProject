@@ -70,23 +70,33 @@ public class OrderService {
 	
 	//GET
 		@GET
-		@Path("/newOrders")
+		@Path("/userOrders")
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response getNewOrders() {
-			
-			OrderDAO dao = getOrdersDAO();
-			 
-		
-			
+		public Response userOrders() {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			OrderDAO dao = getOrdersDAO();	
 			return Response
 					.status(Response.Status.ACCEPTED).entity("GET NEW ORDER SUCCESS")
-					.entity(dao.createNewOrders())
+					.entity(dao.getUserOrders(user.getUsername()))
+					.build();
+		}
+
+		@PUT
+		@Path("/cancel")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response changeStatusToCanceled(String orderID) {
+			
+			 User user = (User) request.getSession().getAttribute("loginUser");
+			 OrderDAO dao = getOrdersDAO();
+			 dao.ChangeStatusToCanceled(orderID);
+			 dao.saveOrders();
+			return Response
+					.status(Response.Status.ACCEPTED).entity("CANCELED ORDER")
+					.entity(dao.getUserOrders(user.getUsername()))
 					.build();
 			
-			
 		}
-	
-	
+			
 	
 	//POST
 	
@@ -165,10 +175,8 @@ public class OrderService {
 				temp.clear();
 		
 			
-	}
-		
-		
-		
+		}
+				
 	}
 
 	private double calculatePrice(ArrayList<ShoppingCartItem> items) {
@@ -181,25 +189,6 @@ public class OrderService {
 		
 	}
 	
-	//CANCEL ORDER -- MAJA
-	//PUT
-	@PUT
-	@Path("/cancel")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response changeStatusToCanceled(String orderID) {
-		//OTKAZANA
-		
-		OrderDAO dao = getOrdersDAO();
-		 dao.ChangeStatusToCanceled(orderID);
-		 dao.saveOrders();
-//		 dao.readOrders();
-		return Response
-				.status(Response.Status.ACCEPTED).entity("CANCELED ORDER")
-				.entity(dao.createNewOrders())
-				.build();
-		
-	}
-		
 	
 	@GET
 	@Path("/restaurantOrders")

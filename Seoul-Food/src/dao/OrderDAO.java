@@ -37,9 +37,7 @@ public class OrderDAO {
 
 		this.orders = new LinkedHashMap<String, Order>();
 	}
-
-	// Reading from file and writing to file
-
+	
 	public void readOrders() {
 
 		ObjectMapper om = new ObjectMapper();
@@ -62,9 +60,6 @@ public class OrderDAO {
 		}
 
 		for (Order o : ordersList) {
-
-			System.out.println("---Orders: ----");
-			System.out.println(o.getID() + "\\n");
 			orders.put(o.getID(), o);
 
 		}
@@ -101,8 +96,42 @@ public class OrderDAO {
 		}
 		return null;
 	}
+//TIP : Maja New Code
 
-//TODO : EDIT THIS SHIT
+	public ArrayList<DisplayUserOrderDTO> getUserOrders(String username) {
+		
+		ArrayList<Order> orders = new ArrayList<Order>();
+		for(Order o : getValues()) {
+			if(o.getUsername().equals(username)) {
+				orders.add(o);			}
+			
+		}
+		return createNewOrders(orders);
+	}
+	public ArrayList<DisplayUserOrderDTO> createNewOrders(List<Order> orders) {
+			
+		ArrayList<DisplayUserOrderDTO> newOrders = new ArrayList<DisplayUserOrderDTO>();
+				
+		for(Order o : orders) {
+			
+			DisplayUserOrderDTO dto = new DisplayUserOrderDTO();
+			dto.order = o;
+			Restaurant r = getRest(o.getRestID());
+			if( r == null) {
+				System.out.println("Nije pronadjenm restoran ----------");
+				return null;
+			}
+			dto.resName = r.getName();
+			dto.restaurantType = r.getRestaurantType();
+			newOrders.add(dto);
+		
+		}
+		
+		return newOrders;	
+	}
+
+
+//TODO : EDIT THIS 
 	public void addOrder(Order newOrder) {
 
 		orders.put(newOrder.getID(), newOrder);
@@ -121,7 +150,7 @@ public class OrderDAO {
 		return saltStr;
 
 	}
-	//JS//JELENA/////////////////////////////////////////////////////////////////////////////
+
 	public Collection<Order> getRestaurantOrders(Integer restID) {
 		Collection<Order> restOrders = new ArrayList<>();
 
@@ -197,34 +226,7 @@ public class OrderDAO {
 		saveOrders();
 	}
 
-
-	public ArrayList<DisplayUserOrderDTO> createNewOrders() {
 	
-		 Collection<Order> orders =  getValues();
-		
-		ArrayList<DisplayUserOrderDTO> newOrders = new ArrayList<DisplayUserOrderDTO>();
-		
-		
-		for(Order o : orders) {
-			
-			DisplayUserOrderDTO dto = new DisplayUserOrderDTO();
-			dto.order = o;
-			Restaurant r = getRest(o.getRestID());
-			if( r == null) {
-				System.out.println("Nije pronadjenm restoran ----------");
-				return null;
-			}
-			dto.resName = r.getName();
-			dto.restaurantType = r.getRestaurantType();
-			newOrders.add(dto);
-			System.out.println( dto.order + " - " + dto.resName + " - " + dto.restaurantType);
-		}
-		
-		return newOrders;
-		
-		
-	}
-
 
 	private Restaurant getRest(Integer restID) {
 		RestaurantDAO dao = new RestaurantDAO();
@@ -305,11 +307,4 @@ public class OrderDAO {
 		saveOrders();
 		
 	}
-
-	
-
-	
-	
-	//JELENA/////////////////////////////////////////////////////////////////////////////
-
 }

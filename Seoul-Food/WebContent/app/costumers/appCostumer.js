@@ -15,20 +15,16 @@ const router = new VueRouter({
         {path: '/myprofile', component: MyProfile},
 		{path: '/restpage/:id', component: RestaurantPage},
         {path: '/cart', component : ShoppingCart},
-		{path: '/orders', component : OrdersPage},
-		
-        
+		{path: '/orders', component : OrdersPage},   
     ]
-
-
 })
 
 var appCostumer = new Vue({
     router,
     el:'#appCostumer',
     data:{
-        test: '1-2-3 test'
-    },
+       
+    }
  
 
 
