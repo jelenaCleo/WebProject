@@ -27,13 +27,8 @@ Vue.component("cart",{
             </div>
         </section>
 
-
         <section class="container">
          
-
-
-
-
      
             <div v-for="item in cartItems"  class="cart-item py-3">
            <button id="important" v-on:click="deleteArticle(item)" type="button" class="btn-close" aria-label="Close"></button>
@@ -44,10 +39,8 @@ Vue.component("cart",{
                                 <input  min="0" max="50" v-model.number="item.count" type="number" class="count" name="qty" >
                            
                         </div>
-
-                        <img src="assets/imgs/default-placeholder.png" class="cart-logo"
-                            alt="assets/imgs/cart-meal.jpg">
-                    </div>
+						    <img v-bind:src="item.article.image" class="cart-logo" alt="article image">
+                    	</div>
                     <div class="col-8">
                         <div class="d-flex justify-content-around align-items-center">
                             <div>
@@ -105,9 +98,9 @@ Vue.component("cart",{
 							this.cartItems = response.data
 							this.isLoaded = true;
 							
-								if(this.cartItems != null){
-								
+								if(this.cartItems != null){				
 								console.log ("chart items: " + this.cartItems)
+				
 								}
 							});
              axios
@@ -160,23 +153,17 @@ Vue.component("cart",{
 
             },
 			createOrder:function(){
-				
-                //Neke validacije
-                if(this.totalPrice == 0.0){
-
-                  //  toastr("Success changes!!", "Success!");
+             
+                if(this.totalPrice == 0.0){            
                     return;
                 }
 
-                for (let i = 0; i < this.cartItems.length; i++) {
-					
+                for (let i = 0; i < this.cartItems.length; i++) {				
                     this.selection.push({
 						article: this.cartItems[i].article,
 						count: this.cartItems[i].count
 					});
-                }
-               
-            
+                }         
 				
                 axios
                     .post('rest/orders/',

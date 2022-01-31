@@ -96,6 +96,40 @@ public class OrderDAO {
 		}
 		return null;
 	}
+//TIP : Maja New Code
+
+	public ArrayList<DisplayUserOrderDTO> getUserOrders(String username) {
+		
+		ArrayList<Order> orders = new ArrayList<Order>();
+		for(Order o : getValues()) {
+			if(o.getUsername().equals(username)) {
+				orders.add(o);			}
+			
+		}
+		return createNewOrders(orders);
+	}
+	public ArrayList<DisplayUserOrderDTO> createNewOrders(List<Order> orders) {
+			
+		ArrayList<DisplayUserOrderDTO> newOrders = new ArrayList<DisplayUserOrderDTO>();
+				
+		for(Order o : orders) {
+			
+			DisplayUserOrderDTO dto = new DisplayUserOrderDTO();
+			dto.order = o;
+			Restaurant r = getRest(o.getRestID());
+			if( r == null) {
+				System.out.println("Nije pronadjenm restoran ----------");
+				return null;
+			}
+			dto.resName = r.getName();
+			dto.restaurantType = r.getRestaurantType();
+			newOrders.add(dto);
+		
+		}
+		
+		return newOrders;	
+	}
+
 
 //TODO : EDIT THIS 
 	public void addOrder(Order newOrder) {
@@ -192,31 +226,7 @@ public class OrderDAO {
 		saveOrders();
 	}
 
-	public ArrayList<DisplayUserOrderDTO> createNewOrders() {
 	
-		 Collection<Order> orders =  getValues();
-		
-		ArrayList<DisplayUserOrderDTO> newOrders = new ArrayList<DisplayUserOrderDTO>();
-		
-		
-		for(Order o : orders) {
-			
-			DisplayUserOrderDTO dto = new DisplayUserOrderDTO();
-			dto.order = o;
-			Restaurant r = getRest(o.getRestID());
-			if( r == null) {
-				System.out.println("Nije pronadjenm restoran ----------");
-				return null;
-			}
-			dto.resName = r.getName();
-			dto.restaurantType = r.getRestaurantType();
-			newOrders.add(dto);
-			System.out.println( dto.order + " - " + dto.resName + " - " + dto.restaurantType);
-		}
-		
-		return newOrders;	
-	}
-
 
 	private Restaurant getRest(Integer restID) {
 		RestaurantDAO dao = new RestaurantDAO();
@@ -297,16 +307,4 @@ public class OrderDAO {
 		saveOrders();
 		
 	}
-
-	public List<Order> getUserOrders(String username) {
-		
-		List<Order> orders = new ArrayList();
-		for(Order o : getValues()) {
-			if(o.getUsername().equals(username)) {
-				orders.add(o);			}
-			
-		}
-		return orders;
-	}
-
 }

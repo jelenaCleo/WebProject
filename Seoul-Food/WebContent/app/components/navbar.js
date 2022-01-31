@@ -13,7 +13,10 @@ Vue.component("navbar",{
                 
                 <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
                     <router-link to="/x" exact class="navbar-brand mb-0 h1">Surprise</router-link>
-                </li>      
+                </li>   
+                 <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
+                    <router-link to="/login" exact class="navbar-brand mb-0 h1">Register and Login</router-link>
+                </li>   
             
             </ul>
         </div>

@@ -4,6 +4,7 @@ Vue.component("myprofile",{
     data: function(){
       return{
         user : {},
+        isLoaded: false,
         editedUser:{
             username: '',
             name: '',
@@ -27,7 +28,7 @@ Vue.component("myprofile",{
 
     template:`
 
-    <div id="profile">
+    <div v-if="isLoaded" id="profile">
         <h1 class="text-primary"><span class="glyphicon glyphicon-user"></span>Izmjena Profila</h1>
         <hr>
         <div class="row">
@@ -106,7 +107,13 @@ Vue.component("myprofile",{
 </div>
     `,
     mounted() {
-      axios.get('rest/users/myProfile').then(response => {this.user = response.data;
+      axios.get('rest/users/myProfile').then(response => {
+		this.user = response.data;
+		if( this.user == null){
+			this.isLoaded = false;
+			return ;
+		}
+		this.isLoaded = true;
       console.log(this.user.birthday);
       this.editedUser.username = this.user.username;
       this.editedUser.name = this.user.name;

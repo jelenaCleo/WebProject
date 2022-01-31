@@ -1,60 +1,17 @@
-function fixDate(value){
-	
-	  var format = "dd-MM-yyyy";
-
-
-    if(value == null ){
-        return;
-    }
-
-    console.log(value);
-    console.log(format);
-    console.log(this.datefrom);
-
-    let newVal = value;
-    let val = newVal.toString();
-    console.log(val);
-    value = val.substring(4, 15);
-    console.log("this dafag==>" + value);
-    let month = value.substring(0,3);
-    let day = value.substring(4,6);
-    let year = value.substring(7,11);
-    console.log("my shit => " + month );
-    console.log("my shit => " + day );
-    console.log("my shit => " + year );
-    let mon=""
-    if(month=="Jan"){
-        mon = "01";
-    }else if(month=="Feb"){
-        mon = "02";
-    }else if(month=="Mar"){
-        mon = "03";
-    }else if(month=="Apr"){
-        mon = "04";
-    }else if(month=="May"){
-        mon = "05";
-    }else if(month=="Jun"){
-        mon = "06";
-    }else if(month=="Jul"){
-        mon = "07";
-    }else if(month=="Aug"){
-        mon = "08";
-    }else if(month=="Sep"){
-        mon = "09";
-    }else if(month=="Oct"){
-        mon = "10";
-    }else if(month=="Nov"){
-        mon = "11";
-    }else if(month=="Dec"){
-        mon = "12";
-    }
-    let datum = day+"-"+ mon +"-"+year;
-    //this.datetostr = datum;
-    //console.log("EVEGA JELENA datetostr: " + this.datetostr);
-    return datum;
-	
+function formatDate(value){
+		
+		if(value == null ){
+        	return;
+    	}
+		
+		let val = value.toString();	
+		var date = new Date(val.substring(4, 15));
+		var day =  (date.getDate() > 9 ? '' : '0') + date.getDate();
+		var month = ((date.getMonth() + 1) > 9 ? '' : '0') + (date.getMonth() + 1) 
+		var year =  date.getFullYear();
+		let datum = day+"-"+ month +"-"+year;
+		return datum;	
 }
-
 
 Vue.component("orders",{
 	data : function(){
@@ -127,7 +84,7 @@ Vue.component("orders",{
 					<div id="range">
 		
                       <input v-model="pricefrom" id="in2" type="number" placeholder="Cijena od" />
-				  		<input v-model="priceto" min=100000 id="in2" type="number" placeholder="Cijena do" />
+				  	  <input v-model="priceto" min=100000 id="in2" type="number" placeholder="Cijena do" />
 						
 					
                     </div>
@@ -209,7 +166,7 @@ Vue.component("orders",{
 		 	.then(response => {this.orders = response.data})
 
 			 if(this.orders != null){
-				 console.log(this.orders);
+				console.log(this.orders);
 			 }
 
 	},
@@ -314,9 +271,7 @@ Vue.component("orders",{
 			}
 			axios
 				.put('rest/orders/cancel', ID)
-				.then(response => this.orders = response.data);			
-			
-			
+				.then(response => this.orders = response.data);					
 		}
 		,
 		getStatus:function(value){
@@ -326,20 +281,17 @@ Vue.component("orders",{
 			
 			return value;
 		}
-	
-		
-
 	},
 	
 	computed:{
 
 		filterOrders:function(){
-			console.log("usla u filterOrders");
-			
-			 var d1 = fixDate(this.datefrom) ;
-             var d2 = fixDate(this.dateto);
-    		console.log(d1 + '----' + d2);
-			
+		
+			 var d1 = formatDate(this.datefrom) ;
+             var d2 = formatDate(this.dateto);
+             
+             
+    		console.log("Filter from: "+d1 +" Filter to: "+ d2);
 			
 			if(this.orders == null ){
 				return;
@@ -382,14 +334,10 @@ Vue.component("orders",{
                         }
 						
 						o = order;
-						
-						
 					}
 					return o;
-					
-				});
-		},
-		
+					});
+		},		
 		
 	},
     filters: {
@@ -411,12 +359,5 @@ Vue.component("orders",{
 			if (value == 'OTKAZANA') return value;
 			
 			//OBRADA DOSTAVLJENA I OTKAZANA
-						
-	
-		}
-		
-	}
-
-	
-	
+		}}	
 });

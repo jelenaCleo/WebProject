@@ -7,7 +7,7 @@ body {
     height: 250px;
     background-size: cover;
     background-position: center;
-    background-image: url(assets/imgs/banner-1.jpg);
+     background-image: url(../../assets/imgs/delivery.jpg);
     z-index: -1;
   }
   
