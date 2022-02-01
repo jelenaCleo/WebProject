@@ -9,9 +9,9 @@ Vue.component("create-user", {
 				password: '',
 				name: '',
 				surname: '',
-				gender: '',
+				gender: 'm',
                 role: '',
-				birthday: null
+				birthday: new Date()
 
 			}
 		}
@@ -51,7 +51,7 @@ Vue.component("create-user", {
                         </div>
                         <div class="combo-style1">
                         	<label for="selRole">Uloga:</label>
-	                      	<select class="custom-select" v-model="selected" name="selRole">
+	                      	<select class="custom-select" v-model="selected" name="selRole" required>
 	                      		
 	 					 		<option  value="1">Menadžer</option>
 	  							<option  value="2">Dostavljač</option>
@@ -64,7 +64,7 @@ Vue.component("create-user", {
 						</div>
                         <!-- BUTTON REGISTER -->
                         <div class="submitbtn-style1" >
-	                        <button type="submit"  class="btn btn-warning fw-600 mt-3" >Registrujte se </button>
+	                        <button type="submit"  class="btn btn-warning fw-600 mt-3" >Registruj </button>
 	                        <br><br>
 	                    </div>
                     </form>
@@ -78,7 +78,7 @@ Vue.component("create-user", {
     methods: {
     userRegister:function(event){
             event.preventDefault();
-            console.log("aaaaaaaaa");
+            console.log("aaaaaaa");
             console.log(this.checked);
 			console.log(this.selected);
 			if(this.checked == "z"){
@@ -99,10 +99,11 @@ Vue.component("create-user", {
             console.log(this.user.birthday);
             
 			axios
-            .post('rest/users/registration',this.user)
+            .post('rest/users/registrationByAdmin',this.user)
             .then(response=> {
                 console.log(response.data);
-                toastr["success"]("Success log in!");
+                toastr["success"]("Success!User registered!");
+				console.log("Success!")
 				this.user.gender ='';
 				this.user.role = '';
 				this.user.password = '';

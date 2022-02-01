@@ -34,13 +34,13 @@ public class RestaurantService {
 
 	private RestaurantDAO getRestaurants() {
 
-		RestaurantDAO restaurants = (RestaurantDAO) ctx.getAttribute("restaurants");
+		//RestaurantDAO restaurants = (RestaurantDAO) ctx.getAttribute("restaurants");
 
-		if (restaurants == null) {
-			restaurants = new RestaurantDAO();
+		//if (restaurants == null) {
+			RestaurantDAO restaurants = new RestaurantDAO();
 			restaurants.readRes();
 			ctx.setAttribute("restaurants", restaurants);
-		}
+		//}
 		return restaurants;
 
 	}
