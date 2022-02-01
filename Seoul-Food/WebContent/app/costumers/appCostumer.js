@@ -4,6 +4,7 @@ const MyProfile = {template : '<myprofile></myprofile>'}
 const RestaurantPage = {template: '<restpage></restpage>'}
 const ShoppingCart = {template: '<cart></cart>'} 
 const OrdersPage = {template: '<orders></orders>'}
+const StarRating = {template: '<star-rating></star-rating>'}
 
 
 

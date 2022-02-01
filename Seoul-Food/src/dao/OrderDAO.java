@@ -99,7 +99,7 @@ public class OrderDAO {
 //TIP : Maja New Code
 
 	public ArrayList<DisplayUserOrderDTO> getUserOrders(String username) {
-		
+		readOrders();
 		ArrayList<Order> orders = new ArrayList<Order>();
 		for(Order o : getValues()) {
 			if(o.getUsername().equals(username)) {
@@ -130,8 +130,6 @@ public class OrderDAO {
 		return newOrders;	
 	}
 
-
-//TODO : EDIT THIS 
 	public void addOrder(Order newOrder) {
 
 		orders.put(newOrder.getID(), newOrder);
@@ -307,5 +305,16 @@ public class OrderDAO {
 		orders.get(orderID).setStatus(Status.ODOBRENA);
 		saveOrders();
 		
+	}
+
+	public boolean canLeaveComment(String username, Integer restId) {
+		Collection<Order> restOrders = getRestaurantOrders(restId);
+		for (Order o : restOrders) {
+			System.out.println(o.getStatus() + "= DOSTAVLJENA");
+			if(o.getUsername().equals(username) && o.getStatus() == Status.DOSTAVLJENA) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

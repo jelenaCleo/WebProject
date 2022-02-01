@@ -1,17 +1,24 @@
+Vue.component('star-rating', VueStarRating.default);
+
 Vue.component("restpage",{
 	
 	data:function(){
 		return{
 			isLoaded : false,
 			user : null,
+			comments:null,
 			restaurant : null,
 			name: '',
-			disable: true,
+			canLeaveComment: false,
+			disableButton: true,
+			comment: '',
 		
 			selection:[],
 			selectionOK:false,
 			isLoaded2: false,
+			isLoaded3 : false,
             article: null,
+            rating: 0
 		}
 	},
 	
@@ -142,41 +149,38 @@ Vue.component("restpage",{
         <!-- TODO -->
         <p class="fw-bold fs-15 mt-4">Pregled komentara</p>
 
-        <div c class="overflow-auto row border-top border-bottom py-3">
+        <div v-if="isLoaded3" v-for="(c,index) in comments" class="overflow-auto row border-top border-bottom py-3">
             <div class="col-6 d-flex align-items-center">
 
-                <p class="reviewer-name">Jovan Jovanović Zmaj</p>
+                <p class="reviewer-name">{{c.user.name}} {{c.user.surname}}</p>
             </div>
             <div class="col-6">
                 <p class="fs-10">Poruka:</p>
                 <p class="review-text">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam, sint dicta!
-                    Quo natus quae in
-                    nisi delectus eius molestias nobis reiciendis ad eveniet consequuntur omnis, dicta rerum animi
-                    eligendi veritatis!
-                    Iste, officiis! Dolorum odio nesciunt nemo deserunt accusantium officia cum, molestiae
-                    distinctio eius. Porro ex a ipsa suscipit! Impedit quisquam accusamus repellat, ut nisi qui
-                    ipsum non tempora ab nobis?</p>
+                   {{c.content}}</p>
+            </div>
+            <div>
+            <star-rating v-model="c.grade" :star-size="25" :read-only="true" ></star-rating>
             </div>
         </div>
-
+<div  v-if="isLoaded">
         <p class="fw-bold fs-15 mt-4">Ostavite komentar</p>
         <form>
             <div class="row">
-                <div class="col-6">
-                    <label for="reviewer" class="mb-2">Unesite Vaše ime:</label>
-                    <input :disabled="disable" type="text" id="reviewer" class="input-custom">
+                <div class="col-3" id="white">
+                    <label for="reviewer" class="mb-2" @mouseleave="checkInput()" ><star-rating :star-size="40" v-model="rating" ></star-rating></label>     
                 </div>
-                <div class="col-6">
+                <div class="col-8">
                     <label for="review-message" class="mb-2">Unesite poruku:</label>
-                    <textarea :disabled="disable" type="text" id="review-message" class="input-custom"></textarea>
+                    <textarea :disabled="!canLeaveComment" v-on:input="checkInput()" v-model="comment" type="text" id="review-message" class="input-custom"></textarea>
                 </div>
             </div>
-            <button :disabled="disable" type="submit" class="btn btn-success mt-3">Pošaljite review</button>
+            <button :disabled="!canLeaveComment || disableButton" v-on:click="leaveReview()" type="button" class="btn btn-success mt-3">Pošaljite review</button>
         </form>
+</div>
 
         <br>
-        <div class="alert alert-warning" role="alert">
+        <div v-if="!canLeaveComment" class="alert alert-warning" role="alert">
             Ne možete ostaviti komentar ako niste kupovali u restoranu .
         </div>
     </section>
@@ -200,99 +204,70 @@ Vue.component("restpage",{
 		*/
 		console.log("DUG JE PUT: " + path +"\n" + restID);
 		var id = restID.replace('%20', ' ');
-		//this.restaurant = response.data
-		console.log("id koji trazm:"+ id);
 		axios.get('rest/restaurants/' + id) 
 			.then(response =>{
-				
 				this.restaurant = response.data;
 				this.isLoaded = true;
 			
-			
 			for (let i = 0; i < this.restaurant.restaurantArticles.length; i++) {
-				 console.log(this.restaurant.restaurantArticles[i].name);
-				
+				 console.log(this.restaurant.restaurantArticles[i].name);	
 				this.selection.push({
 						key: this.restaurant.restaurantArticles[i].name,
 						count: 0
-					});
-					
-					
-			
+					});		
 				}
 				this.isLoaded2 = true;
 			});
-            axios.get('rest/users/myProfile').then(response => {this.user = response.data});
 			
-			
+            axios.get('rest/comments/'+id).
+            	then(response => {
+					console.log(response.data.restComments);	
+					if(response.data != null){
+						 this.comments = response.data.restComments;	
+						 this.canLeaveComment = response.data.canLeaveComment;
+						  console.log(this.canLeaveComment);
+						 this.isLoaded3 = true;
+					}
+					
+					}); 	
 			
 	},
 	methods:{
 		log:function(index){
-			
-	
-			//treba da saljem na bekend
-			//STEP 1: get the ARTICLE
 			let name = this.selection[index].key;
 			let count = this.selection[index].count;
 			
-			
 			for (let i = 0; i <  this.restaurant.restaurantArticles.length ; i++) {
 			
-					if(this.restaurant.restaurantArticles[i].name == name){
-						
-						//NOW MAKE A POST REQUEST
-                        
-						console.log(this.restaurant.restaurantArticles[i]);
-						console.log("taken the count : " + count);
-                        console.log("moj user ID " + this.user.id);
-                        
-                        
-                        
+					if(this.restaurant.restaurantArticles[i].name == name){                      
 						axios
                         .post('rest/cart/', 
                         {
                             "article" : this.restaurant.restaurantArticles[i],
                             "count" : count,
-                            "userID" : this.user.id
-                        }
-                        
-                        )
+                        })
                         .then(response => {
                             toastr["success"]("Success changes!!", "Success!");
                             this.message = "user promenjen";
                         })
                         .catch(err => {
                             console.log(err);
-                            toastr["error"]("Failed during changes :(", "Fail");
-                            
+                            toastr["error"]("Failed during changes :(", "Fail");                       
                         })
-
 					}
-				
 				}			
 				this.selection[index].count = 0;				
-			
-    },
-			
-	
-		inc:function(index){
-			 
 		
-				this.selection[index].count +=1;
-				console.log(this.selection[index].count);
-				
-                   
+    	},
+			
+		inc:function(index){
+				this.selection[index].count +=1;    
 		},
 		dec:function(index){
-			
 			if(this.selection[index].count == 0){
 				return;
 			}
-			this.selection[index].count -=1;
-			console.log(this.selection[index].count);
-				
-				
+			this.selection[index].count -=1;		
 		}
 		,
 		isDisabled:function(index){
@@ -300,17 +275,43 @@ Vue.component("restpage",{
 			if(!this.isLoaded2 || this.restaurant==null || !this.restaurant.working ){
 				return true;
 			}
-			
 			if(this.selection[index].count == 0){
 				return true;
 			}
 			return false;
-			
+		},
+		leaveReview: function(){
+			console.log("radi radi" + this.content);
+			console.log("radi radi" + this.rating);
+			if (this.content == '' || this.rating == 0) {
+			    return;
+			}
+			axios
+			    .post('rest/comments/' + this.restaurant.id,
+			     {
+			            "content": this.comment,
+			            "grade": this.rating,
+			     })
+			    .then(response => {
+			        toastr["success"]("Success changes!!", "Success!");
+			        this.message = "user promenjen";
+			        this.comment = '';
+			        this.rating = 0;     
+			    })
+			    .catch(err => {
+			        console.log(err);
+			        toastr["error"]("Failed during changes :(", "Fail");
+			    })
+		},
+		checkInput:function(){
+			if(this.rating != 0 && this.comment.trim() != ''){
+				this.disableButton= false;
+			}
+			else
+			{
+				this.disableButton= true;
+			}	
 		}
-	},
-	
-	
-	
-	
+	}
 	
 });

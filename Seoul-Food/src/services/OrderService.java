@@ -76,6 +76,7 @@ public class OrderService {
 		public Response userOrders() {
 			User user = (User) request.getSession().getAttribute("loginUser");
 			OrderDAO dao = getOrdersDAO();	
+			
 			return Response
 					.status(Response.Status.ACCEPTED).entity("GET NEW ORDER SUCCESS")
 					.entity(dao.getUserOrders(user.getUsername()))

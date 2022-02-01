@@ -352,8 +352,7 @@ Vue.component("orders",{
 		  U_TRANSPORTU,
 		  DOSTAVLJENA,
 		  OTKAZANA*/
-	
-	
+
     	 filterStatus:function(value){
 			console.log(value);
 			if (value == 'U_PRIPREMI') return 'NEDOSTAVLJENA';
