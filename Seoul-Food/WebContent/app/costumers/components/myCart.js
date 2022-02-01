@@ -7,9 +7,7 @@ Vue.component("cart",{
 				isLoaded: false,
                 selection:[],
                 user: null,
-                totalPrice: 0.0,
-
-                
+                totalPrice: 0.0,         
 
 			}
 		},
@@ -30,13 +28,13 @@ Vue.component("cart",{
         <section class="container">
          
      
-            <div v-for="item in cartItems"  class="cart-item py-3">
+            <div v-for="(item, index) in cartItems"  class="cart-item py-3">
            <button id="important" v-on:click="deleteArticle(item)" type="button" class="btn-close" aria-label="Close"></button>
                 <div class="row align-items-center">
                     <div class="col-4 d-flex align-items-center">
                         <div class="quantity-field">
                          
-                                <input  min="0" max="50" v-model.number="item.count" type="number" class="count" name="qty" >
+                                <input  min="1" max="10" v-model.number="item.count" v-on:input="checkInput(item.count, index)" type="number" class="count" name="qty" >
                            
                         </div>
 						    <img v-bind:src="item.article.image" class="cart-logo" alt="article image">
@@ -67,17 +65,11 @@ Vue.component("cart",{
                 <p class="mb-0 ms-1">RSD</p>
             </div>
             <div class="text-end">
-                <button v-on:click="createOrder" type="button" :disabled="totalPrice == 0.0" class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
+                <button v-on:click="createOrder" type="button" :disabled="totalPrice <= 0.0 " class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
                     Poruči</button>
 	
             </div>
-
-
         </section>
-
-
-
-
         <footer class="mt-5">
             <hr>
             <div class="container">
@@ -180,6 +172,14 @@ Vue.component("cart",{
                     .delete('rest/cart/')
                     .then(response =>(this.cartItems = response.data)); 
                    
+			},
+			checkInput:function(number,index){
+				if (parseInt(number) > 10){
+					this.cartItems[index].count = 10;
+				}
+				if (parseInt(number) < 1){
+					this.cartItems[index].count = 1;
+				}
 			}
         },
 		

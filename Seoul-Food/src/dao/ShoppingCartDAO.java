@@ -9,16 +9,10 @@ import beans.ShoppingCartItem;
 import dto.AddToCartDTO;
 
 public class ShoppingCartDAO {
-
 	
 	ShoppingCart sc;
-
-	// CRUD
 	public ShoppingCartDAO() {
-
-		
 		sc = new ShoppingCart();
-
 	}
 
 	public ArrayList<ShoppingCartItem> readCart() {
@@ -27,20 +21,14 @@ public class ShoppingCartDAO {
 	}
 	
 	public ShoppingCartItem getShoppingCartItem(String articleName, Integer restID) {
-			
-			
-			
-			
-			return null;
-		}
+		return null;
+	}
 
-	
-	
 
-	public ArrayList<ShoppingCartItem> addToCart(AddToCartDTO dto) {
+	public ArrayList<ShoppingCartItem> addToCart(AddToCartDTO dto, Integer userID) {
 
 		if (sc.getUserID() == null) {
-			sc.setUserID(dto.userID);
+			sc.setUserID(userID);
 		}
 
 		ShoppingCartItem sci = new ShoppingCartItem(dto.article, dto.count);
@@ -50,11 +38,8 @@ public class ShoppingCartDAO {
 
 	public void addItems(ShoppingCartItem item) {
 		if (unique(item)) {
-
 			sc.getItems().add(item);
-
 		}
-
 	}
 
 	private boolean unique(ShoppingCartItem item) {
@@ -62,9 +47,7 @@ public class ShoppingCartDAO {
 		for (ShoppingCartItem i : sc.getItems()) {
 			if (i.getArticle().getName().equals(item.getArticle().getName())
 					&& i.getArticle().getRestaurantID() == item.getArticle().getRestaurantID()) {
-				// samo dodaj kolicinu
 
-				System.out.println("uslaaaaaaa--------------------------!!!!!!!!!");
 				i.setCount(i.getCount() + item.getCount());
 				return false;
 			}
@@ -77,21 +60,14 @@ public class ShoppingCartDAO {
 		for (ShoppingCartItem i :  getItems()) {
 			if (i.getArticle().getName().equals(removeArticle.getName())
 					&& i.getArticle().getRestaurantID() == removeArticle.getRestaurantID()) {			
-				System.out.println("usla ovdje");
-				
-				return i;
-				
-							
+				return i;							
 			}
 		}
-		return null;
-		
+		return null;	
 	}
 	
-	public void removeArticle(ShoppingCartItem i) {
-		
-		sc.getItems().remove(i);
-		
+	public void removeArticle(ShoppingCartItem i) {		
+		sc.getItems().remove(i);		
 	}
 
 	public Collection<ShoppingCartItem> getItems() {
@@ -99,7 +75,6 @@ public class ShoppingCartDAO {
 	}
 
 	public void removeAll() {
-		System.out.println("clearing items form shopping casrt");
 		sc.getItems().clear();
 		
 	}

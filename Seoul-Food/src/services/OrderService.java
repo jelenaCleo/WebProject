@@ -25,6 +25,7 @@ import beans.Order;
 import beans.ShoppingCartItem;
 import beans.User;
 import dao.OrderDAO;
+import dao.UserDAO;
 import dto.NewOrderDTO;
 import dto.OrderRestDTO;
 
@@ -75,6 +76,7 @@ public class OrderService {
 		public Response userOrders() {
 			User user = (User) request.getSession().getAttribute("loginUser");
 			OrderDAO dao = getOrdersDAO();	
+			
 			return Response
 					.status(Response.Status.ACCEPTED).entity("GET NEW ORDER SUCCESS")
 					.entity(dao.getUserOrders(user.getUsername()))
@@ -105,36 +107,28 @@ public class OrderService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addOrder( NewOrderDTO order) {
-		//NewOrderDTO
-		ArrayList<ShoppingCartItem>  newOrder  = order.selection;
 		
-		for(ShoppingCartItem i : newOrder) {
-			
-			System.out.println("SELECTION " + i.getArticle().getName());
-		}
+		ArrayList<ShoppingCartItem>  newOrder  = order.selection;	
+		
 	
-		
-		
-		
-		
-		
 		for (ShoppingCartItem item : newOrder) {
 			
 			int key = item.getArticle().getRestaurantID();
 		
 			if(temp.containsKey(key)) {
-				System.out.println("VEC POSTOJI:" + item.getArticle().getName());
+				
 				temp.get(key).add(item);
 			}
 			else
 			{
-			System.out.println("FIRST OF ITS KIND :" + item.getArticle().getName());
+			
 			temp.put(key, new ArrayList<ShoppingCartItem>());
 			temp.get(key).add(item);
 			}
 		}
 		
 		createOrders(order.username, order.name, order.surname);
+		
 
 		return Response
 				.status(Response.Status.ACCEPTED).entity("ADD ORDER SUCCESS")
@@ -147,8 +141,8 @@ public class OrderService {
 	}
 
 	private void createOrders(String username, String name, String surname) {
-		@SuppressWarnings("unused")
 		OrderDAO dao = getOrdersDAO();
+		UserDAO userDao = new UserDAO();
 		
 		for(Map.Entry<Integer, ArrayList<ShoppingCartItem>> entry : temp.entrySet()) {
 			String id = dao.getSaltString(10);
@@ -156,10 +150,7 @@ public class OrderService {
 			   LocalDateTime now = LocalDateTime.now();  
 			   
 			   ArrayList<ShoppingCartItem> items = entry.getValue();
-			   
 
-			
-		
 			Order o = new Order(id, items, entry.getKey(), dtf.format(now), calculatePrice(items), username, name, surname);
 			dao.addOrder(o);
 			   System.out.println(username);
@@ -171,10 +162,9 @@ public class OrderService {
 				System.out.println(id);	
 				System.out.println("key: " + entry.getKey() );
 			
-			
+				userDao.addPoints(username, calculatePrice(items));
 				temp.clear();
 		
-			
 		}
 				
 	}

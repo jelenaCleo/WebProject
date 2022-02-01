@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import beans.Article;
 import beans.ShoppingCartItem;
+import beans.User;
 import dao.ShoppingCartDAO;
 import dto.AddToCartDTO;
 
@@ -54,12 +55,11 @@ public class ShoppingCartService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response   Article(AddToCartDTO dto) {
-		ShoppingCartDAO dao = getShoppingCart();
-		
-			
+		ShoppingCartDAO dao = getShoppingCart();		
+		User user = (User) request.getSession().getAttribute("loginUser");
 			return Response
 					.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW")
-					.entity(dao.addToCart(dto))
+					.entity(dao.addToCart(dto,user.getID()))
 					.build();
 	}
 	

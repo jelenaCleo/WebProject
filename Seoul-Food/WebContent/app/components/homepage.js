@@ -5,7 +5,18 @@ function findRating(rating , input){
 	}
 		return false;
 }
-				
+function findLocation(address, locationsearch){
+	
+	if(address.street.toUpperCase().match(locationsearch.trim().toUpperCase())){
+		
+		return true;
+	}
+	else if(address.city.toUpperCase().match(locationsearch.trim().toUpperCase())){
+		return true;
+	}
+	return false;
+	
+}			
 
 Vue.component("homepage", {
 
@@ -247,33 +258,36 @@ Vue.component("homepage", {
     }
     ,
 	    computed:{
-	       
-	        filteredRestaurants: function() {
+	           filteredRestaurants: function() {
 
 
 			    if (this.restaurants == null) {
 			        return;
 			    }
-			
+			  
+					
 			    return this.restaurants.filter((r) => {
-						      
-			        if (this.ratingsearch != '') {
-			            if (r.name.toUpperCase().match(this.namesearch.trim().toUpperCase()) && r.restaurantType.match(this.typesearch) &&
-			                r.location.address.street.toUpperCase().match(this.locationsearch.trim().toUpperCase()) || 
-			                r.location.address.city.toUpperCase().match(this.locationsearch.trim().toUpperCase()) &&
-			                findRating(r.rating, parseInt(this.ratingsearch))) {
-			                return r;
-			            }
-			        } else if (r.name.toUpperCase().match(this.namesearch.trim().toUpperCase()) && r.restaurantType.match(this.typesearch) &&
-			            	r.location.address.street.toUpperCase().match(this.locationsearch.trim().toUpperCase())|| 
-			                r.location.address.city.toUpperCase().match(this.locationsearch.trim().toUpperCase())) {
+				console.log(r.location.address);
+				if(this.ratingsearch == '' ){
+			       if (r.name.toUpperCase().match(this.namesearch.trim().toUpperCase()) && r.restaurantType.match(this.typesearch) &&
+			            	findLocation(r.location.address, this.locationsearch)) 
+			        {
 			            return r;
 			
 			        }
+			     } 
+			     else {
+				  if (r.name.toUpperCase().match(this.namesearch.trim().toUpperCase()) && r.restaurantType.match(this.typesearch) &&
+			          findLocation(r.location.address,this.locationsearch) &&
+			          findRating(r.rating, parseInt(this.ratingsearch))) {
+			            return r;
+			
+			        }
+				
+				}   
 			    });
 			}
-
-	    	},
-
+			  
+	    }
 
 });

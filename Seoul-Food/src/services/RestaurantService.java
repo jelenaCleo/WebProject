@@ -46,7 +46,9 @@ public class RestaurantService {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRes() {
-		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW").entity(getRestaurants().getValues())
+		return Response.status(Response.Status.ACCEPTED)
+				.entity("SUCCESS SHOW")
+				.entity(getRestaurants().getValues())
 				.build();
 
 	}

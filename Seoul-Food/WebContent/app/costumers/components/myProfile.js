@@ -84,6 +84,9 @@ Vue.component("myprofile",{
                 <label class="col-lg-2 control-label">Datum rođenja :</label>
 	                 <div class="d-flex col-lg-8 ">
 	               		 <vuejs-datepicker format="dd.MM.yyyy" v-model="editedUser.birthday"  placeholder="Datum rođenja"></vuejs-datepicker>
+	           		 </div> 
+	           		 <div style="margin-inline: auto;">
+	           		 <label> Moji poeni : {{user.points | filterPoints }}</label>
 	           		 </div>
                 </div>
                  <section class="container mt-4">
@@ -155,5 +158,11 @@ Vue.component("myprofile",{
 							});
 					
 			}	
-    }
+    },
+    filters:{
+		filterPoints:function(value){
+			console.log(value);
+			return Math.round(value*100)/100;
+		}
+	}
 });
