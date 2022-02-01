@@ -257,10 +257,12 @@ Vue.component("admin-rest-page",{
 				{
                     this.restaurant = response.data;
                     this.deletedMessage = 'Restoran je obrisan ';
+                    //location.href = response.data;
+                    location.href = "/Seoul-Food/adminHome.html";
                 }).catch(err  =>{ 
                 console.log("\n\n ------- ERROR -------\n");
                 console.log(err);
-               
+                
             });
             
         },

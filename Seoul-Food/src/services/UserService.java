@@ -163,7 +163,7 @@ public class UserService {
 			System.out.println("treci");
 			if(session != null && session.getAttribute("loginUser") != null) {
 				session.invalidate();
-				
+				System.out.println(session);
 				return Response
 						.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html")
 						.build();

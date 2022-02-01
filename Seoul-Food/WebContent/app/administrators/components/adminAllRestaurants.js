@@ -1,3 +1,25 @@
+function findRating(rating , input){
+
+    if (input == Math.floor(rating) ){
+            return true;
+    }
+        return false;
+}
+function findLocation(address, locationsearch){
+    console.log("Adresa: " + address);
+    console.log("Lokacija : " + locationsearch);
+
+    if(address.street.toUpperCase().match(locationsearch.trim().toUpperCase())){
+
+        return true;
+    }
+    else if(address.city.toUpperCase().match(locationsearch.trim().toUpperCase())){
+        return true;
+    }
+    return false;
+
+}
+
 Vue.component("admin-all-restaurants", {
 	
 
@@ -67,7 +89,7 @@ Vue.component("admin-all-restaurants", {
         
             <div  class=" restourant-search py-3">
                 <!--ovdje pocne-->
-                <div  v-for="r in filteredRestaurants" v-if="r.working == true"  >
+                <div  v-for="r in filteredRestaurants" v-if="r.working == true "  >
                
           				<a  v-on:click="restaurantView(r.id)" > 
                         <div  class="row align-items-center ">
@@ -85,6 +107,8 @@ Vue.component("admin-all-restaurants", {
                                         <i class="fas fa-star"></i>
                                         <span>{{r.rating}}</span>
                                     </div>
+                                    <div class="restourant-mark">
+                                    </div>
                                 </div>
                             </div>
                             <div class="my-2">
@@ -98,17 +122,17 @@ Vue.component("admin-all-restaurants", {
         </section>
 		<section class="container">
         
-            <h1 class="fw-bold fs-20">Otvoreni objekti</h1>
+            <h1 class="fw-bold fs-20">Zatvoreni objekti</h1>
         
             <div  class=" restourant-search py-3">
                 <!--ovdje pocne-->
-                <div  v-for="r in filteredRestaurants" v-if="r.working == false">
+                <div  v-for="r in filteredRestaurants" v-if="r.working == false ">
                
                          <a  v-on:click="restaurantView(r.id)" > 
                         <div  class="row align-items-center ">
 
                             <div class="col-4">
-                                <img src="assets/imgs/default-placeholder.png" class="restourant-logo" alt="Image not found" />
+                                <img v-bind:src="r.imgURL" class="restourant-logo" alt="Image not found" />
                             </div>
                             <div class="col-8">
                                 <div class="d-flex justify-content-around align-items-center">
@@ -150,10 +174,15 @@ Vue.component("admin-all-restaurants", {
             
             location.href = "#/admin-rest-page/" + id;
                 
+        },
+        deleteRestarurant:function(id){
+            axios
+            .put('rest/deleteRestaurant/'+id)
+            .then(response => (this.restaurants = response.data))
         }
     }
     ,
-    computed:{
+    /*computed:{
        
         filteredRestaurants:function(){
 
@@ -171,8 +200,40 @@ Vue.component("admin-all-restaurants", {
             }
             });
         }
-    },
+    },*/
 
+	computed:{
+               filteredRestaurants: function() {
+
+
+                if (this.restaurants == null) {
+                    return;
+                }
+
+
+                return this.restaurants.filter((r) => {
+                console.log(r.location.address);
+                if(this.ratingsearch == '' ){
+                   if (r.name.toUpperCase().match(this.namesearch.trim().toUpperCase()) && r.restaurantType.match(this.typesearch) &&
+                            findLocation(r.location.address, this.locationsearch)) 
+                    {
+                        return r;
+
+                    }
+                 } 
+                 else {
+                  if (r.name.toUpperCase().match(this.namesearch.trim().toUpperCase()) && r.restaurantType.match(this.typesearch) &&
+                      findLocation(r.location.address,this.locationsearch) &&
+                      findRating(r.rating, parseInt(this.ratingsearch))) {
+                        return r;
+
+                    }
+
+                }
+                });
+            }
+
+        }
 
 
 });

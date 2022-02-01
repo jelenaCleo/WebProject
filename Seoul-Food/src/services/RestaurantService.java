@@ -1,5 +1,7 @@
 package services;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -17,6 +19,7 @@ import beans.Article;
 import beans.Restaurant;
 import beans.User;
 import dao.RestaurantDAO;
+import dao.UserDAO;
 import dto.ArticleDTO;
 import dto.NewRestaurantDTO;
 import dto.RestaurantDTO;
@@ -41,12 +44,36 @@ public class RestaurantService {
 		return restaurants;
 
 	}
+	private List<Restaurant> getActiveRestaurants() {
+
+		//List<Restaurant> restaurants =  (List<Restaurant>) ctx.getAttribute("activeRestaurants");
+
+		RestaurantDAO dao = new RestaurantDAO();
+		dao.readRes();
+		List<Restaurant> restaurants = dao.getActive();
+		ctx.setAttribute("activeRestaurants", restaurants);
+		
+		return restaurants;
+
+	}
+	private UserDAO getUsers() {
+
+		UserDAO users = (UserDAO) ctx.getAttribute("users");
+
+		if (users == null) {
+			users = new UserDAO();
+			users.readUsers();
+			ctx.setAttribute("users", users);
+		}
+		return users;
+
+	}
 
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRes() {
-		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW").entity(getRestaurants().getValues())
+		return Response.status(Response.Status.ACCEPTED).entity("SUCCESS SHOW").entity(getActiveRestaurants())
 				.build();
 
 	}
@@ -100,7 +127,8 @@ public class RestaurantService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findRestaurantbyID(@PathParam("id") Integer id) {
 
-		RestaurantDAO dao = (RestaurantDAO) ctx.getAttribute("restaurants");
+		//RestaurantDAO dao = (RestaurantDAO) ctx.getAttribute("restaurants");
+		RestaurantDAO dao = getRestaurants();
 		System.out.println("GET -- Restaurant id: "+ id);
 		Restaurant r = dao.findRestaurantById(id);
 
@@ -160,10 +188,14 @@ public class RestaurantService {
 	public Response deleteRestaurant(@PathParam("id") Integer id) {
 		if (isUser()) {
 			if (isUserAdmin()) {
+				UserDAO userDAO = getUsers();
 				RestaurantDAO dao = getRestaurants();
-				Restaurant r = dao.deleteRestaurant(id);
+				Restaurant r = dao.findRestaurantById(id);
+				userDAO.removeRestaurantFromManager(id,r.getManagerID());
+				r = dao.deleteRestaurant(id);
 
 				return Response.status(Response.Status.ACCEPTED).entity(r).build();
+				//return Response.status(Response.Status.ACCEPTED).entity("/Seoul-Food/adminHome.html").build();
 			}
 			return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 		}

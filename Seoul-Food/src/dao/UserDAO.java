@@ -410,4 +410,19 @@ public class UserDAO {
 		}
 		saveUsersJSON();
 	}
+
+	public void removeRestaurantFromManager(Integer id, Integer managerId) {
+		readUsers();
+		for(User u : getValues()) {
+			System.out.println(u.getID());
+			if(u.getID().equals(managerId) && u.getRestarauntID().equals(id)) {
+				
+				System.out.println("NASAO TRAZENOG MENADZERA");
+				u.setRestarauntID(-1);
+				saveUsersJSON();
+				break;
+			}
+		}
+		
+	}
 }

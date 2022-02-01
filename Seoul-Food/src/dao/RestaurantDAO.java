@@ -274,4 +274,15 @@ public class RestaurantDAO {
 		}
 		return null;
 	}
+
+	public List<Restaurant> getActive() {
+		List<Restaurant> rests = new ArrayList<>();
+		for(Restaurant r : getValues()) {
+			System.out.println(r.getName());
+			if(r.getLogicallyDeleted() == 0) {
+				rests.add(r);
+			}
+		}
+		return  rests;
+	}
 }
