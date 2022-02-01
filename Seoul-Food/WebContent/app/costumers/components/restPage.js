@@ -268,18 +268,10 @@ Vue.component("restpage",{
                             
                         })
 
-
-
-
-
-
 					}
 				
 				}			
-				this.selection[index].count = 0;
-			
-			
-				
+				this.selection[index].count = 0;				
 			
     },
 			
@@ -305,7 +297,7 @@ Vue.component("restpage",{
 		,
 		isDisabled:function(index){
 			
-			if(!this.isLoaded2){
+			if(!this.isLoaded2 || this.restaurant==null || !this.restaurant.working ){
 				return true;
 			}
 			

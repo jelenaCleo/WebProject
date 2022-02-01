@@ -135,7 +135,7 @@ Vue.component("orders",{
 								<td> {{o.order.price}} DIN </td>
 								<td><span> {{o.order.oderDate}} </span></td>
 							
-								<td><a  class="btn btn-success"> {{o.order.status | filterStatus}} </a></td>
+								<td><a  class="btn btn-success disabled"> {{o.order.status | filterStatus}} </a></td>
 								<td><button v-on:click="cancelOrder(o.order.id)" :disabled="o.order.status != 'OBRADA'" class="btn btn-danger"> OTKAZI </button></td>
 							
 							</tr>
@@ -251,13 +251,18 @@ Vue.component("orders",{
 		},
 		
 		  isSmaller: function (a, b) {
+            if (a == b)
+            	return true;
             if (a >= b)
                 return false;
             if (a <= b)
                 return true;
+          
 			
         },
         isBigger: function (a,b) {
+             if (a == b)
+            	return true;
             if (a <= b)
                 return false;
             if (a >= b)
@@ -318,7 +323,7 @@ Vue.component("orders",{
 							}
 							
 							if(this.priceto !== ''){
-								if(!this.isSmaller(order.order.price,this.priceto)){
+								if(!this.isSmaller(order.order.price,this.priceto) ){
 									return;
 								}
 							}
@@ -350,6 +355,7 @@ Vue.component("orders",{
 	
 	
     	 filterStatus:function(value){
+			console.log(value);
 			if (value == 'U_PRIPREMI') return 'NEDOSTAVLJENA';
 			if (value == 'CEKA_DOSTAVU') return 'NEDOSTAVLJENA';
 			if (value == 'U_TRANSPORTU') return 'NEDOSTAVLJENA';

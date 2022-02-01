@@ -237,10 +237,11 @@ public class OrderDAO {
 
 
 	public void ChangeStatusToCanceled(String orderID) {
-		
-		orders.get(orderID).setStatus(Status.OTKAZANA);
-		
-		
+		UserDAO userDAO = new UserDAO();
+		Order order = orders.get(orderID);
+		order.setStatus(Status.OTKAZANA);
+		userDAO.subtractPoints( order.getPrice(), order.getUsername());
+	
 	}
 	public void ChangeStatusToWaitingForPermission(String orderID,Integer delId) {
 
