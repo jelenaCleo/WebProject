@@ -20,7 +20,10 @@ Vue.component("admin-navbar",{
                 </li> 
                 <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
                     <router-link to="/createUser" exact class="navbar-brand mb-0 h1">Dodaj menadžera ili dostavljača</router-link>
-                </li>       
+                </li>    
+                <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
+                    <router-link to="/comments" exact class="navbar-brand mb-0 h1">Komentari</router-link>
+                </li>   
             	<li><button @click="logout" > Log out </button></li>
             </ul>
         </div>

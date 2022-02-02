@@ -17,6 +17,7 @@ import dao.OrderDAO;
 import dao.RestaurantDAO;
 import dao.UserDAO;
 import dto.NewCommentDto;
+import dto.RestCommentWithStatus;
 import dto.RestCommentsDTO;
 import dto.SmallUserDTO;
 
@@ -109,6 +110,67 @@ public class CommentService {
 				.build();	
 	}
 	
+	@GET
+	@Path("/manager")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRestCommentsManager() {
+		if(isUserManager()) {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			RestCommentWithStatus comments = new RestCommentWithStatus();
+			
+			comments.restComments = getCommentsDAO().getRestCommentsManager(user.getRestarauntID(),getUsersDAO().getValues());
+			//comments.canLeaveComment = getOrdersDAO().canLeaveComment(user.getUsername(),restId);
+			comments.canLeaveComment = false;
+			return Response
+					.status(Response.Status.ACCEPTED).entity("GET COMMENTS SUCCESS")
+					.entity(comments)
+					.build();
+		}
+		return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();	
+	}
+	
+	@POST
+	@Path("/approve")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response approveComment( String commentId) {
+		if(isUserManager()) {
+			CommentDAO dao = new CommentDAO();
+			dao.readComments();
+			ctx.setAttribute("comments", dao);
+			dao.approveComment(commentId);
+			User user = (User) request.getSession().getAttribute("loginUser");
+			RestCommentWithStatus comments = new RestCommentWithStatus();
+			
+			comments.restComments = dao.getRestCommentsManager(user.getRestarauntID(),getUsersDAO().getValues());
+			//comments.canLeaveComment = getOrdersDAO().canLeaveComment(user.getUsername(),restId);
+			comments.canLeaveComment = false;
+			return Response
+					.status(Response.Status.ACCEPTED).entity("GET COMMENTS SUCCESS")
+					.entity(comments)
+					.build();
+		}
+		return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();	
+	}
+	
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllComments() {
+		if(isUserAdmin()) {
+			//User user = (User) request.getSession().getAttribute("loginUser");
+			RestCommentWithStatus comments = new RestCommentWithStatus();
+			
+			comments.restComments = getCommentsDAO().getRestCommentsAdmin(getUsersDAO().getValues());
+			//comments.canLeaveComment = getOrdersDAO().canLeaveComment(user.getUsername(),restId);
+			comments.canLeaveComment = false;
+			return Response
+					.status(Response.Status.ACCEPTED).entity("GET COMMENTS SUCCESS")
+					.entity(comments)
+					.build();
+		}
+		return Response.status(Response.Status.FORBIDDEN).entity("You do not have permission to access!").build();	
+	}
+	
 	@POST
 	@Path("/{restId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -119,5 +181,28 @@ public class CommentService {
 				.entity(getCommentsDAO().addComment(user, getRestaurantsDAO().findRestaurantById(restId), newComment))
 				.build();
 				
+	}
+	
+	private boolean isUserManager() {
+		User user = (User) request.getSession().getAttribute("loginUser");
+		System.out.println(user.getRole());
+		if (user != null) {
+			if (user.getRole().equals("MANAGER")) {
+				System.out.println("jeste menadzer");
+				return true;
+			}
+		}
+		return false;
+	}
+	private boolean isUserAdmin() {
+		User user = (User) request.getSession().getAttribute("loginUser");
+		System.out.println(user.getRole());
+		if(user!= null) {
+			if(user.getRole().equals("ADMIN")) {
+				System.out.println("jeste admin");
+				return true;
+			}
+		}	
+		return false;
 	}
 }

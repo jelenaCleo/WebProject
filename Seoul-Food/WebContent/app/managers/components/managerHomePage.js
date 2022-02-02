@@ -1,3 +1,4 @@
+Vue.component('star-rating', VueStarRating.default);
 Vue.component("manager-rest-page",{
 	
 	data:function(){
@@ -15,6 +16,9 @@ Vue.component("manager-rest-page",{
                 "Pekara",
                 "Poslasticarnica",
             ],
+            comments:null,
+            rating: 0,
+            isLoaded3 : false,
 		}
 	},
 	
@@ -154,26 +158,26 @@ Vue.component("manager-rest-page",{
     
                 <!-- TODO -->
                 <p class="fw-bold fs-15 mt-4">Pregled komentara</p>
-    
-                <div class="row border-top border-bottom py-3">
-                    <div class="col-6 d-flex align-items-center">
-                       
-                        <p class="reviewer-name">Jovan Jovanović Zmaj</p>
-                    </div>
-                    <div class="col-6">
-                        <p class="fs-10">Poruka:</p>
-                        <p class="review-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam, sint dicta!
-                            Quo natus quae in
-                            nisi delectus eius molestias nobis reiciendis ad eveniet consequuntur omnis, dicta rerum animi
-                            eligendi veritatis!
-                            Iste, officiis! Dolorum odio nesciunt nemo deserunt accusantium officia cum, molestiae
-                            distinctio eius. Porro ex a ipsa suscipit! Impedit quisquam accusamus repellat, ut nisi qui
-                            ipsum non tempora ab nobis?</p>
-                    </div>
+
+                <div v-if="isLoaded3" v-for="(c,index) in comments" class="overflow-auto row border-top border-bottom py-3">
+                <div class="col-6 d-flex align-items-center">
+
+                    <p class="reviewer-name">{{c.user.name}} {{c.user.surname}}</p> 
                 </div>
-    
-             
-    
+                <div class="col-6">
+                    <p class="fs-10">Poruka:</p>
+                    <p class="review-text">
+                    {{c.content}}</p>
+                </div>
+                <div>
+                <star-rating v-model="c.grade" :star-size="25" :read-only="true" ></star-rating>
+                </div>
+                
+                <span >
+                <button v-if="c.status == false" type="button" @click="approve(c.id)"  ><i class="fa fa-ban" aria-hidden="true"></i> Odobri </button>
+                        	
+                </span>
+                </div>
     
     
             </div>
@@ -195,8 +199,19 @@ Vue.component("manager-rest-page",{
                 console.log("\n\n ------- ERROR -------\n");
                 console.log(err);
                
-            });
-			
+        });
+    
+        axios.get('rest/comments/manager').
+            then(response => {
+                console.log(response.data.restComments);
+                console.log('halelujaaa');
+                if(response.data != null){
+                     this.comments = response.data.restComments;	
+                     //this.canLeaveComment = response.data.canLeaveComment;
+                    //  console.log(this.canLeaveComment);
+                     this.isLoaded3 = true;
+                }
+        }); 
 	},
 	methods:{
 		f:function(){
@@ -268,7 +283,21 @@ Vue.component("manager-rest-page",{
             
             location.href = "#/" + this.restaurant.id + "/article" + "/" + name;
                 
-        }
+        },
+        approve: function (commentId) {
+
+			axios
+				.post('rest/comments/approve/', commentId)
+				.then(response => {
+					console.log(response.data.restComments);
+                    console.log('halelujaaa' + commentId);
+                    if(response.data != null){
+                        this.comments = response.data.restComments;	
+                        this.isLoaded3 = true;
+                    }
+				});
+
+		},
 		
 	}
 	
