@@ -68,6 +68,33 @@ public class UserService {
 		
 	}
 	
+	@POST
+	@Path("/registrationByAdmin")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response registrationByAdmin(UserDTO user) {
+		System.out.println("usao u registraciju kao admin");
+		if(isUserAdmin()) {
+			UserDAO usersDAO = getUsers();
+			System.out.println("registrationByAdmin");
+			/* If we have already that user, we can't register him */
+			if (usersDAO.getUserByUsername(user.username) != null) {
+				return Response.status(Response.Status.ACCEPTED).entity("Korisnicok ime je zauzeto!Nije moguce registrovati korisnika!").build();
+			}
+
+			
+			Integer userID = usersDAO.addUserByAdmin(user);
+			System.out.println("REGISTRACIIIJAAA " + user.username);
+			if(userID>0) {
+					return Response.status(Response.Status.ACCEPTED).entity(userID.toString()).build(); 	
+				}
+			return Response.status(Response.Status.ACCEPTED).entity("Korisnik vec postoji!").build();
+		}
+		return Response.status(403).type("text/plain")
+				.entity("You do not have permission to access!").build();
+		
+	}
+	
 	private UserDAO getUsers() {
 		
 		//UserDAO users = (UserDAO) ctx.getAttribute("users");
@@ -110,6 +137,11 @@ public class UserService {
 		if(allUsersDAO.isBlocked(user.username)) {
 			System.out.println("blokiran korisnik");
 			return Response.status(Response.Status.BAD_REQUEST).entity("You account is blocked!")
+					.build();
+		}
+		if(allUsersDAO.isDeleted(user.username)) {
+			System.out.println("obrisan korisnik");
+			return Response.status(Response.Status.BAD_REQUEST).entity("You account is deleted!")
 					.build();
 		}
 
@@ -163,7 +195,7 @@ public class UserService {
 			System.out.println("treci");
 			if(session != null && session.getAttribute("loginUser") != null) {
 				session.invalidate();
-				
+				System.out.println(session);
 				return Response
 						.status(Response.Status.ACCEPTED).entity("/Seoul-Food/index.html")
 						.build();
