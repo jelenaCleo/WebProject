@@ -450,8 +450,22 @@ public class UserDAO {
 		System.out.print("POENI??" + user.getPoints());
 		Double points = user.getPoints() + calculatedPrice/1000*133;
 		user.setPoints(points);
+		updateBuyerClass(user);
 		System.out.println("USER POINTS:" + points);
 		saveUsersJSON();
+		
+	}
+
+	private void updateBuyerClass(User user) {
+	 
+		System.out.println(user.getPoints());
+		if(user.getPoints() >= 500) {
+			user.setBuyerClass(1);
+		}else if(user.getPoints() >= 300) {
+			user.setBuyerClass(2);
+		}else {
+			user.setBuyerClass(3);
+		}
 		
 	}
 
@@ -459,6 +473,7 @@ public class UserDAO {
 		User user = findUserByUsername(username);		
 		Double points = user.getPoints() - calculatedPrice/1000*133*4;
 		user.setPoints(points);
+		updateBuyerClass(user);
 		System.out.println("USER POINTS:" + points);
 		saveUsersJSON();
 		

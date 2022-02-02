@@ -28,7 +28,7 @@ Vue.component("restpage",{
     <link rel="stylesheet" href="css/users/restPage.css">
 
     <section>
-        <div class="main-banner help d-flex align-items-center  text-center"  :style="{ backgroundImage: 'url(' + restaurant.location.imgUrl + ')' }">
+        <div class="main-banner help d-flex align-items-center  text-center"  :style="{ backgroundImage: 'url(' + restaurant.imgURL + ')' }">
             <div class="container help">
                 <h2>Restoran - <span>{{restaurant.name}}</span></h2>
             </div>

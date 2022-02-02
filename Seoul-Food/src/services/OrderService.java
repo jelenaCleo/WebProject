@@ -50,8 +50,6 @@ public class OrderService {
 			ctx.setAttribute("orders", orders);
 		}
 		return orders;
-		
-		
 	}
 	
 	//GET
@@ -64,8 +62,7 @@ public class OrderService {
 				.status(Response.Status.ACCEPTED).entity("GET ORDER SUCCESS")
 				.entity(getOrdersDAO().getValues())
 				.build();
-		
-		
+	
 	}
 	
 	//GET
@@ -96,10 +93,7 @@ public class OrderService {
 					.entity(dao.getUserOrders(user.getUsername()))
 					.build();
 			
-		}
-			
-	
-	//POST
+		}		
 	
 	@POST
 	@Path("/")
@@ -108,8 +102,7 @@ public class OrderService {
 	public Response addOrder( NewOrderDTO order) {
 		
 		ArrayList<ShoppingCartItem>  newOrder  = order.selection;	
-		
-	
+
 		for (ShoppingCartItem item : newOrder) {
 			
 			int key = item.getArticle().getRestaurantID();

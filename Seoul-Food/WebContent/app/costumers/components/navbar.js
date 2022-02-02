@@ -19,8 +19,8 @@ Vue.component("navbar",{
                 </li> 
 				<li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
                     <router-link to="/orders" exact class="navbar-brand mb-0 h1"> Moje Porudžbine </router-link>
-                </li> 
-                <li><button @click="logout" > Log out </button></li>
+                </li > 
+                <li style = "color: #084298; background-color: #cfe2ff;"><button @click="logout" class="navbar-brand mb-0 h1" style=" background-color: transparent; border: none;"> Log out </button></li>
             </ul>
         </div>
     </nav>

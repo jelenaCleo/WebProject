@@ -124,7 +124,7 @@ public class CommentDAO {
 		ArrayList<CommentDTO> restComments = new ArrayList<CommentDTO>();
 		readComments();
 		for( Comment c : getValues()) {
-			if(c.getRestaurantId().equals(restId) && c.isApproved()==true) {
+			if(c.getRestaurantId().equals(restId) && c.isApproved() == true) {
 				
 				restComments.add(new CommentDTO(getCommentUser(c.getUserId(), users),c.getContent(),c.getGrade()));
 			}

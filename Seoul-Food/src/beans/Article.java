@@ -3,7 +3,6 @@ package beans;
 
 public class Article {
 
-
 	private String name;
 	private double price;
 	private Integer type; //0 - jelo , 1- pice
@@ -13,11 +12,9 @@ public class Article {
 	private String description;
 	private String image;
 	
-	
 	public Article() {
 		
 	}
-
 	
 	public Article(String name, double price, Integer type, Integer restaurantID, double quantity,String measure, String description,
 			String image) {
@@ -65,11 +62,9 @@ public class Article {
 		return measure;
 	}
 
-
 	public void setMeasure(String measure) {
 		this.measure = measure;
 	}
-
 
 	public String getDescription() {
 		return description;
