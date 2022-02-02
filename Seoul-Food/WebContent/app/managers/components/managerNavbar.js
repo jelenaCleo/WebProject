@@ -18,6 +18,7 @@ Vue.component("manager-navbar",{
                 <li class="list-group-item list-group-item-primary" mt-2 mt-lg-0>
                     <router-link to="/buyers" exact class="navbar-brand mb-0 h1">Korisnici</router-link>
                 </li>
+                
                
                 
             	<li><button @click="logout" > Log out </button></li>
