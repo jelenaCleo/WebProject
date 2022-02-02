@@ -1,6 +1,14 @@
 body {
     background-color: #f7f7f7;
   }
+.disabled{
+	pointer-events: none;
+  cursor: not-allowed;
+  opacity: 1.0;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;	
+}
   
   .main-banner {
     position: relative;

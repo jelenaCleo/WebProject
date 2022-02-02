@@ -37,6 +37,7 @@ public class UserDAO {
 		System.out.println("-------------------USERS FOLDER -------------------" + this.path);
 
 		this.users = new LinkedHashMap<String, User>();
+		readUsers();
 
 	}
 
@@ -187,6 +188,8 @@ public class UserDAO {
 
 	public User findUserByUsername(String username) {
 		for (User currentUser : getValues()) {
+			System.out.println("USERname :" + currentUser.getUsername());
+			
 			if (currentUser.getUsername().equals(username))
 				return currentUser;
 		}
@@ -416,10 +419,8 @@ public class UserDAO {
 					u.getOrdersToDeliver().remove(orderID);
 					saveUsersJSON();
 					break;
-				}
-				
-			}
-			
+				}		
+			}	
 		}
 		saveUsersJSON();
 	}
@@ -442,5 +443,24 @@ public class UserDAO {
 	public boolean isDeleted(String username) {
 
 		return (getUserByUsername(username).getLogicalDeleted() == 1) ? true : false;
+	}
+	
+	public void addPoints(String username, double calculatedPrice) {		
+		User user = findUserByUsername(username);		
+		System.out.print("POENI??" + user.getPoints());
+		Double points = user.getPoints() + calculatedPrice/1000*133;
+		user.setPoints(points);
+		System.out.println("USER POINTS:" + points);
+		saveUsersJSON();
+		
+	}
+
+	public void subtractPoints(double calculatedPrice, String username) {
+		User user = findUserByUsername(username);		
+		Double points = user.getPoints() - calculatedPrice/1000*133*4;
+		user.setPoints(points);
+		System.out.println("USER POINTS:" + points);
+		saveUsersJSON();
+		
 	}
 }

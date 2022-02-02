@@ -10,13 +10,9 @@ public class ShoppingCart {
 	private Integer userID;
 	private double totalCost;
 	
-	
-	
-	
 	public ShoppingCart() {
 		this.items = new ArrayList<ShoppingCartItem>();
-		this.totalCost = 0.0;
-	
+		this.totalCost = 0.0;	
 	}
 	
 	 public ShoppingCart(Integer userID) {
@@ -25,15 +21,8 @@ public class ShoppingCart {
 			this.userID = userID;
 			this.totalCost = 0.0;
 	 }
-	
-	
-	
+
 	public ArrayList<ShoppingCartItem> getItems() {
-		
-		for( ShoppingCartItem i : items) {
-			System.out.println("DAFAK:" + i.getArticle().getName() +", "+ i.getCount());
-		}
-		
 		return items;
 	}
 
@@ -57,5 +46,4 @@ public class ShoppingCart {
 		this.totalCost = totalCost;
 	}
 
-	
 }
