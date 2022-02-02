@@ -67,6 +67,8 @@ Vue.component("dmOrders-page", {
             statusFilter: '',
             sortDate: false,
             sortPrice: false,
+            restName: '',
+            sortName: false,
         }
     },
 	components: {
@@ -102,6 +104,10 @@ Vue.component("dmOrders-page", {
 
         </form>
         </br>
+        <input type="text" v-model="restName" class="input-custom1" style="width:200px;margin-left: 30px;" placeholder="Naziv restorana"
+                name="search">
+        <button style="width:30px;margin-right:200px;" v-on:click="sortName? sortByRestNameAscending() : sortByRestNameDescending()" data-toggle="button"
+                class="btn  btn-primary"><i class=" fas fa-sort"></i></button>
 
         <label for="selRole">Status porudzbine:</label>
 
@@ -117,8 +123,9 @@ Vue.component("dmOrders-page", {
             <option>OTKAZANA</option>
         </select>
         <button @click="clearStatusFilter()" for="selStatus"
-            style="width:30px;height:30px;margin-right: 6rem">X</button>
+            style="width:30px;height:30px;margin-right: 1rem">X</button>
 
+       
         </br>
 
 
@@ -462,7 +469,31 @@ Vue.component("dmOrders-page", {
                 return false;
             if (a > b)
                 return true;
-        }
+        },
+        sortByRestNameAscending: function () {
+			function compare(a, b) {
+				if (a.rest.name < b.rest.name)
+				  return -1;
+				if (a.rest.name > b.rest.name)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.orders.sort(compare);
+			this.sortName = false;
+		},
+		sortByRestNameDescending: function () {
+			function compare(a, b) {
+				if (a.rest.name > b.rest.name)
+				  return -1;
+				if (a.rest.name < b.rest.name)
+				  return 1;
+				return 0;
+			  }
+		  
+			this.orders.sort(compare);
+			this.sortName = true;
+		},
 
 
 
@@ -484,7 +515,7 @@ Vue.component("dmOrders-page", {
             return this.orders.filter((o) => {
                
 
-                if ((o.order.status).match(this.statusFilter) && this.isBigger(o.order.price,this.priceFrom) ) 
+                if ((o.order.status).match(this.statusFilter) && this.isBigger(o.order.price,this.priceFrom)) 
                     {
                         if(this.priceTo !== ''){
                             if(!this.isSmaller(o.order.price,this.priceTo)){
@@ -492,24 +523,37 @@ Vue.component("dmOrders-page", {
                             }
                             
                         }
-                        if(this.dateFrom !== undefined){
-                            if(!this.isBigger(o.order.oderDate,d1)){
-                                console.log('date from');
-                                return;
-                            }
+                        
+                        if(this.dateFrom !== undefined && this.dateTo !== undefined && !moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)))
+                        {
+                           console.log("BOZANAAA   "+  moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)) )
+                         return;
                         }
-                        if(this.dateTo !== undefined){
-                            if(!this.isSmaller(o.order.oderDate,d2)){
-                                console.log('date to ');
-                                return;
-                            }
-                        }
+                    
+
+                        // if(this.dateFrom !== undefined){
+                        
+                        //         console.log(new Date(o.order.oderDate) + '      xxxxxxxxxxxxxxxx     '+new Date(d1));
+                        //     if(compare(new Date(o.order.oderDate),new Date(d1)) != 1){
+                        //         console.log('date from ' + this.isBigger(o.order.oderDate,d1) );
+                        //         return;
+                        //     }
+                        // }
+                        // if(this.dateTo !== undefined){
+                        //     if(compare(new Date(o.order.oderDate),new Date(d1)) != -1){
+                        //         console.log('date to ');
+                        //         return;
+                        //     }
+                        // }
                         if(o.order.status !== 'CEKA_DOSTAVU'){
                             console.log("nije u dobrom stanju");
                                 return;
                         }
                         
                         console.log(o.order.id);
+                    }
+                    if (( this.restName !== '' && !(o.rest.name).match(this.restName))){
+                        return ;
                     }
                 return o;
             });
@@ -538,24 +582,32 @@ Vue.component("dmOrders-page", {
                             }
                             
                         }
-                        if(this.dateFrom !== undefined){
-                            if(!this.isBigger(o.order.oderDate,d1)){
-                                console.log('date from');
-                                return;
-                            }
-                        }
-                        if(this.dateTo !== undefined){
-                            if(!this.isSmaller(o.order.oderDate,d2)){
-                                console.log('date to ');
-                                return;
-                            }
-                        }
+                        if(this.dateFrom !== undefined && this.dateTo !== undefined && !moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)))
+                         {
+                            console.log("BOZANAAA   "+  moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)) )
+                          return;
+                         }
+                        // if(this.dateFrom !== undefined){
+                        //     if(!this.isBigger(o.order.oderDate,d1)){
+                        //         console.log('date from');
+                        //         return;
+                        //     }
+                        // }
+                        // if(this.dateTo !== undefined){
+                        //     if(!this.isSmaller(o.order.oderDate,d2)){
+                        //         console.log('date to ');
+                        //         return;
+                        //     }
+                        // }
                         if(o.order.status !== 'U_TRANSPORTU'){
                             console.log("nije u dobrom stanju");
                                 return;
                         }
                         
                         console.log(o.order.id);
+                        if (( this.restName !== '' && !(o.rest.name).match(this.restName))){
+                        	return ;
+                    	}
                     }
                 return o;
             });
@@ -575,7 +627,7 @@ Vue.component("dmOrders-page", {
             return this.orders.filter((o) => {
                
 
-                if ((o.order.status).match(this.statusFilter) && this.isBigger(o.order.price,this.priceFrom) ) 
+                if ( (o.order.status).match(this.statusFilter) && this.isBigger(o.order.price,this.priceFrom)) 
                     {
                         if(this.priceTo !== ''){
                             if(!this.isSmaller(o.order.price,this.priceTo)){
@@ -583,24 +635,32 @@ Vue.component("dmOrders-page", {
                             }
                             
                         }
-                        if(this.dateFrom !== undefined){
-                            if(!this.isBigger(o.order.oderDate,d1)){
-                                console.log('date from');
-                                return;
-                            }
-                        }
-                        if(this.dateTo !== undefined){
-                            if(!this.isSmaller(o.order.oderDate,d2)){
-                                console.log('date to ');
-                                return;
-                            }
-                        }
+                        if(this.dateFrom !== undefined && this.dateTo !== undefined && !moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)))
+                         {
+                            console.log("BOZANAAA   "+  moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)) )
+                          return;
+                         }
+                        // if(this.dateFrom !== undefined){
+                        //     if(!this.isBigger(o.order.oderDate,d1)){
+                        //         console.log('date from');
+                        //         return;
+                        //     }
+                        // }
+                        // if(this.dateTo !== undefined){
+                        //     if(!this.isSmaller(o.order.oderDate,d2)){
+                        //         console.log('date to ');
+                        //         return;
+                        //     }
+                        // }
                         if(o.order.status !== 'DOSTAVLJENA'){
                             console.log("nije u dobrom stanju");
                                 return;
                         }
                         
                         console.log(o.order.id);
+                        if (( this.restName !== '' && !(o.rest.name).match(this.restName))){
+                        	return ;
+                    	}
                     }
                 return o;
             });
@@ -620,7 +680,7 @@ Vue.component("dmOrders-page", {
             return this.orders.filter((o) => {
                
 
-                if ((o.order.status).match(this.statusFilter) && this.isBigger(o.order.price,this.priceFrom) ) 
+                if ((o.order.status).match(this.statusFilter) && this.isBigger(o.order.price,this.priceFrom)) 
                     {
                         if(this.priceTo !== ''){
                             if(!this.isSmaller(o.order.price,this.priceTo)){
@@ -628,24 +688,32 @@ Vue.component("dmOrders-page", {
                             }
                             
                         }
-                        if(this.dateFrom !== undefined){
-                            if(!this.isBigger(o.order.oderDate,d1)){
-                                console.log('date from');
-                                return;
-                            }
-                        }
-                        if(this.dateTo !== undefined){
-                            if(!this.isSmaller(o.order.oderDate,d2)){
-                                console.log('date to ');
-                                return;
-                            }
-                        }
+                        if(this.dateFrom !== undefined && this.dateTo !== undefined && !moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)))
+                         {
+                            console.log("BOZANAAA   "+  moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)) )
+                          return;
+                         }
+                        // if(this.dateFrom !== undefined){
+                        //     if(!this.isBigger(o.order.oderDate,d1)){
+                        //         console.log('date from');
+                        //         return;
+                        //     }
+                        // }
+                        // if(this.dateTo !== undefined){
+                        //     if(!this.isSmaller(o.order.oderDate,d2)){
+                        //         console.log('date to ');
+                        //         return;
+                        //     }
+                        // }
                         if(o.order.status !== 'CEKA_ODOBRENJE'){
                             console.log("nije u dobrom stanju");
                                 return;
                         }
                         
                         console.log(o.order.id);
+                        if (( this.restName !== '' && !(o.rest.name).match(this.restName))){
+                        	return ;
+                    	}
                     }
                 return o;
             });
@@ -665,7 +733,7 @@ Vue.component("dmOrders-page", {
              return this.orders.filter((o) => {
                 
  
-                 if ((o.order.status).match(this.statusFilter) && this.isBigger(o.order.price,this.priceFrom) ) 
+                 if ((o.order.status).match(this.statusFilter) && this.isBigger(o.order.price,this.priceFrom)  ) 
                      {
                          if(this.priceTo !== ''){
                              if(!this.isSmaller(o.order.price,this.priceTo)){
@@ -673,28 +741,55 @@ Vue.component("dmOrders-page", {
                              }
                              
                          }
-                         if(this.dateFrom !== undefined){
-                             if(!this.isBigger(o.order.oderDate,d1)){
-                                 console.log('date from');
-                                 return;
-                             }
+                         if(this.dateFrom !== undefined && this.dateTo !== undefined && !moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)))
+                         {
+                             console.log(new Date(o.order.oderDate) + 'koja je porudzbina ' + o.order.oderDate);
+                             console.log(new Date(this.dateFrom));
+                             console.log(new Date(this.dateTo));
+                            console.log("BOZANAAA uu  "+  moment(new Date(o.order.oderDate)).isBetween(new Date(this.dateFrom), new Date(this.dateTo)) )
+                          return;
                          }
-                         if(this.dateTo !== undefined){
-                             if(!this.isSmaller(o.order.oderDate,d2)){
-                                 console.log('date to ');
-                                 return;
-                             }
-                         }
+
+                       
+                        //  if(this.dateFrom !== undefined){
+                        //      if(!this.isBigger(o.order.oderDate,d1)){
+                        //          console.log('date from');
+                        //          return;
+                        //      }
+                        //  }
+                        //  if(this.dateTo !== undefined){
+                        //      if(!this.isSmaller(o.order.oderDate,d2)){
+                        //          console.log('date to ');
+                        //          return;
+                        //      }
+                        //  }
                          if(o.order.status !== 'ODOBRENA'){
                              console.log("nije u dobrom stanju");
                                  return;
                          }
                          
                          console.log(o.order.id);
+                         if (( this.restName !== '' && !(o.rest.name).match(this.restName))){
+                        	return ;
+                    	}
                      }
                  return o;
              });
              
-         }
+         },
+         filteredRest: function () {
+			console.log("usao u computed");
+
+			if (this.orders == null) {
+				return;
+			}
+
+			return this.orders.filter((order) => {
+
+				if (order.rest.name.match(this.restName)) {
+					return order; 
+				}
+			});
+		}
     }
 });

@@ -103,6 +103,19 @@ public class UserDAO {
 			return -1;
 		}
 	}
+	public Integer addUserByAdmin(UserDTO user) {
+		User newUser = new User(getValues().size() + 1, 0, 0, user.username, user.password, user.name, user.surname,
+				user.gender, user.birthday, user.role, new ArrayList<Integer>(), -1,
+				new ArrayList<String>(), 0.0, 0); //promenila sam posle broj sa 0 na -1 (nema klasu kupca jer nije kupac)
+		System.out.println(newUser.getBuyerClass()+ "klasaaa");
+		if (!users.containsValue(newUser)) {
+			users.put(newUser.getUsername(), newUser);
+			saveUsersJSON();
+			return newUser.getID();
+		} else {
+			return -1;
+		}
+	}
 
 	public String editUser(UserDTO user, String oldUsername) {
 
@@ -412,6 +425,26 @@ public class UserDAO {
 		saveUsersJSON();
 	}
 
+	public void removeRestaurantFromManager(Integer id, Integer managerId) {
+		readUsers();
+		for(User u : getValues()) {
+			System.out.println(u.getID());
+			if(u.getID().equals(managerId) && u.getRestarauntID().equals(id)) {
+				
+				System.out.println("NASAO TRAZENOG MENADZERA");
+				u.setRestarauntID(-1);
+				saveUsersJSON();
+				break;
+			}
+		}
+		
+	}
+
+	public boolean isDeleted(String username) {
+
+		return (getUserByUsername(username).getLogicalDeleted() == 1) ? true : false;
+	}
+	
 	public void addPoints(String username, double calculatedPrice) {		
 		User user = findUserByUsername(username);		
 		System.out.print("POENI??" + user.getPoints());

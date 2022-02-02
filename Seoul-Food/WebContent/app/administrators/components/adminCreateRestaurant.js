@@ -34,7 +34,7 @@ Vue.component("create-restaurant",{
 				surname: '',
 				gender: '',
                 role: '',
-				birthday: null
+				birthday: new Date()
 
 			},
             typeOptions: [
@@ -91,15 +91,15 @@ Vue.component("create-restaurant",{
                 </div>
                 <div class="col-md-3">
                     <label for="status">Da li restoran radi: </label>
-                    <select data-trigger="" id="status"   class="input-custom mt-2">
+                    <select data-trigger="" id="status"   class="input-custom mt-2" required>
                         <option  value=true>Da</option>
                         <option  value=false>Ne</option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="type">Unesite tip restorana: </label>
-                    <select data-trigger="" id="type"  v-model="newRestaurant.restaurantType" class="input-custom mt-2">
-                    <option v-for="option in typeOptions" :value="option">{{ option }}</option>
+                    <select data-trigger="" id="type"  v-model="newRestaurant.restaurantType" class="input-custom mt-2" required>
+                    <option v-for="option in typeOptions" :value="option" >{{ option }}</option>
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -124,7 +124,7 @@ Vue.component("create-restaurant",{
             </div>
                 <div class="col-md-6 mt-3">
                     <label for="managerCombo">Unesite menadžera restorana: </label>
-                    <select data-trigger="" id="managerCombo" @change="onChangeManager()"  v-model="newRestaurant.managerID" class="input-custom mt-2">
+                    <select data-trigger="" id="managerCombo" @change="onChangeManager()"  v-model="newRestaurant.managerID" class="input-custom mt-2" required>
                         <option v-for="(m,index) in managers" :key="index" :value="m.id.toString()">{{ m | managerNameAndSurname }}</option>
                     </select>
                 </div>
@@ -142,7 +142,7 @@ Vue.component("create-restaurant",{
                 </div>
             </div>
             <div class="text-end">
-                <button type="submit" @click="addRestoran"  class="btn btn-primary fw-600 mt-3">Dodaj restoran</button>
+                <input type="submit" @click="addRestoran" value="Dodaj restoran"  class="btn btn-primary fw-600 mt-3">
             </div>
         </form>
         <button id="showFormAddManager" type="button" @click="addNewManager()" >Dodaj novog menadzera! </button>
@@ -167,7 +167,7 @@ Vue.component("create-restaurant",{
                         
                     <label class="text-left">Pol</label>
                     <div class="custom-control custom-radio">
-                         <input type="radio" v-model="checked" id="customRadio1" name="customRadio" value="z" class="custom-control-input">
+                         <input type="radio" v-model="checked" id="customRadio1" name="customRadio" value="z" class="custom-control-input" >
                           <label class="custom-control-label" for="customRadio1">Ž</label>
                     </div>
                     <div class="custom-control custom-radio">
@@ -184,7 +184,7 @@ Vue.component("create-restaurant",{
                     </div>
                     <!-- BUTTON REGISTER -->
                     <div class="submitbtn-style1" >
-                        <button type="submit" id="btnAddManager"  class="btn btn-warning fw-600 mt-3" >Dodaj </button>
+                        <input type="submit" id="btnAddManager"  class="btn btn-warning fw-600 mt-3" value="Dodaj" >
                         <br><br>
                     </div>
                 </form>
@@ -250,7 +250,7 @@ Vue.component("create-restaurant",{
 			}
             this.user.role = "MANAGER";
 			axios
-            .post('rest/users/registration',this.user)
+            .post('rest/users/registrationByAdmin',this.user)
             .then(response=> {
                 console.log(response.data);
                 toastr["success"]("Success log in!");
@@ -280,6 +280,7 @@ Vue.component("create-restaurant",{
         addRestoran : function(){
 
             console.log(' ID MENADZERA:  '+this.newRestaurant.managerID);
+            console.log(this.newRestaurant);
             axios
             .post('rest/restaurants/',this.newRestaurant)            
             .then(response=> {
