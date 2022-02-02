@@ -18,6 +18,7 @@ import beans.Comment;
 import beans.Restaurant;
 import beans.User;
 import dto.CommentDTO;
+import dto.CommentWithStatus;
 import dto.NewCommentDto;
 import dto.SmallUserDTO;
 
@@ -80,6 +81,7 @@ public class CommentDAO {
 	}
 	
 	public Collection<Comment> getValues() {
+		System.out.println("get values");
 		return comments.values();
 	}
 
@@ -129,6 +131,28 @@ public class CommentDAO {
 		}
 		return restComments;
 	}
+	
+	public ArrayList<CommentWithStatus> getRestCommentsManager(Integer restId, Collection<User> users) {
+		ArrayList<CommentWithStatus> restComments = new ArrayList<CommentWithStatus>();
+		readComments();
+		for( Comment c : getValues()) {
+			if(c.getRestaurantId().equals(restId) ) {
+				
+				restComments.add(new CommentWithStatus(getCommentUser(c.getUserId(), users),c.getContent(),c.getGrade(),c.isApproved(),c.getId()));
+			}
+		}
+		return restComments;
+	}
+	public ArrayList<CommentWithStatus> getRestCommentsAdmin( Collection<User> users) {
+		ArrayList<CommentWithStatus> restComments = new ArrayList<CommentWithStatus>();
+		readComments();
+		for( Comment c : getValues()) {
+				
+			restComments.add(new CommentWithStatus(getCommentUser(c.getUserId(), users),c.getContent(),c.getGrade(),c.isApproved(),c.getId()));
+			
+		}
+		return restComments;
+	}
 
 	private SmallUserDTO getCommentUser(Integer userId, Collection<User> users) {
 		for(User u : users) {
@@ -145,6 +169,21 @@ public class CommentDAO {
 		comments.put(comment.getId(), comment);
 		saveComments();
 		return restaurant.getID() ;
+		
+	}
+
+	public void approveComment(String commentId) {
+		
+		for (Comment c : getValues()) {
+			if (c.getId().equals( commentId)) {
+				c.setApproved(true);
+				System.out.println("IN");
+				System.out.println(c.isApproved());
+				saveComments();
+				System.out.println(c.isApproved());
+				break;
+			}
+		}
 		
 	}
 
