@@ -8,7 +8,6 @@ Vue.component("cart",{
                 selection:[],
                 user: null,
                 totalPrice: 0.0,         
-
 			}
 		},
 
@@ -26,8 +25,6 @@ Vue.component("cart",{
         </section>
 
         <section class="container">
-         
-     
             <div v-for="(item, index) in cartItems"  class="cart-item py-3">
            <button id="important" v-on:click="deleteArticle(item)" type="button" class="btn-close" aria-label="Close"></button>
                 <div class="row align-items-center">
@@ -58,11 +55,19 @@ Vue.component("cart",{
 
                 </div>
             </div>
-
+			 
             <div class="total-price mt-5">
+           		
+                <label class="mb-0 ms-1"  
+                style = "margin-right: 30px;
+			    font-style: italic;
+			    font-family: revert;
+			    color: darkblue;"
+			    >{{user.buyerClass | filterClass }}</label>
                 <p class="mb-0 fw-bold">Ukupno za uplatu: </p>
                 <p class="mb-0 ms-1">{{total()}}</p>
                 <p class="mb-0 ms-1">RSD</p>
+                
             </div>
             <div class="text-end">
                 <button v-on:click="createOrder" type="button" :disabled="totalPrice <= 0.0 " class="btn btn-primary fw-600 mt-3"><i class="fas fa-shopping-basket"></i>
@@ -76,8 +81,6 @@ Vue.component("cart",{
                 <p id="try" class="text-center text-muted">© 2021 Maja & Jelena . Projekat iz WEB programiranja</p>
             </div>
         </footer>	
-				
-
 
 	</div>
 			`
@@ -127,13 +130,24 @@ Vue.component("cart",{
             },
 			total:function(){
 				let t= 0.0;
+				
 			 	for (let i = 0; i < this.cartItems.length; i++) {
 					
 				
 				t += parseFloat(this.cartItems[i].article.price) * this.cartItems[i].count;
 				}
-				this.totalPrice = t;
-				return t;
+			
+				if(this.user.buyerClass == 1 ){
+					discount = t - t*5/100;
+				}
+				else if( this.user.buyerClass == 2){
+					discount = t - t*3/100;
+				}else{
+					discount = t;
+				}
+				
+				this.totalPrice = discount;
+				return discount;
 			},  
             deleteArticle:function(item){
 
@@ -182,7 +196,13 @@ Vue.component("cart",{
 				}
 			}
         },
-		
+		filters:{
+				filterClass:function(value){
+					if (value == 1) return 'Vi ste Zlatni kupac i imate 5% popusta';
+					if (value == 2) return 'Vi ste Srebrni kupac i imate 3% popusta';
+					if (value == 3) return '';
+				}
+		}
         
 
 });

@@ -88,6 +88,9 @@ Vue.component("myprofile",{
 	           		 <div style="margin-inline: auto;">
 	           		 <label> Moji poeni : {{user.points | filterPoints }}</label>
 	           		 </div>
+	           		  <div>
+	           		 <label> Klasa : {{user.buyerClass | filterClass }}</label>
+	           		 </div>
                 </div>
                  <section class="container mt-4">
 		        	<br><br>
@@ -163,6 +166,11 @@ Vue.component("myprofile",{
 		filterPoints:function(value){
 			console.log(value);
 			return Math.round(value*100)/100;
+		},
+		filterClass:function(value){
+			if (value == 1) return 'GOLD';
+			if (value == 2) return 'SILVER';
+			if (value == 3) return 'BRONZE'
 		}
 	}
 });
