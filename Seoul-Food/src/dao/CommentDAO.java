@@ -167,8 +167,24 @@ public class CommentDAO {
 		String id = getSaltString(10);
 		Comment comment = new Comment(id, user.getID(), restaurant.getID(), newComment.content, newComment.grade);	
 		comments.put(comment.getId(), comment);
+		
+		updateRating(restaurant);
 		saveComments();
+	
 		return restaurant.getID() ;
+		
+	}
+
+	private void updateRating( Restaurant restaurant) {
+		int number =0;
+		Double sum = 0.0;
+		for(Comment c : getValues()) {
+			if(c.getRestaurantId() == restaurant.getID()) {
+				sum +=c.getGrade();
+				number +=1;
+			}
+		}
+		restaurant.setRating(Math.round(sum/number*100.0)/100.0);
 		
 	}
 
